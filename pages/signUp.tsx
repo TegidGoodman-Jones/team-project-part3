@@ -4,8 +4,12 @@ import logo from "../public/transparent_logo.png";
 import axios from "axios";
 import $ from "jquery";
 import { Info } from "lucide-react";
+import { useRouter } from "next/router";
 
 export default function SignUp() {
+  const router = useRouter();
+
+  // function to handle form submit
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -16,38 +20,40 @@ export default function SignUp() {
       $("#email-feedback").removeClass("hidden");
       return;
     } else {
-        $("#email-feedback").addClass("hidden");
+      $("#email-feedback").addClass("hidden");
     }
 
     // validate username
     const username = String($("#username").val());
+    // username must be between 4 and 20 characters, can't start or end with _/., can't include double _/.
     const usernameRegex =
       /^(?=.{4,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/;
     if (!usernameRegex.test(username)) {
       $("#username-feedback").removeClass("hidden");
       return;
     } else {
-        $("#username-feedback").addClass("hidden");
+      $("#username-feedback").addClass("hidden");
     }
 
     // validate password
     const password = String($("#password").val());
     const confirmPassword = $("#confirm-password").val();
-    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+    const passwordRegex =
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
 
-    if(!passwordRegex.test(password)) {
-        $("#password-feedback").removeClass("hidden");
-        console.log(password);
-        return;
+    if (!passwordRegex.test(password)) {
+      $("#password-feedback").removeClass("hidden");
+      console.log(password);
+      return;
     } else {
-        $("#password-feedback").addClass("hidden");
+      $("#password-feedback").addClass("hidden");
     }
 
     if (password != confirmPassword) {
-        $("#confirm-password-feedback").removeClass("hidden");
-        return;
+      $("#confirm-password-feedback").removeClass("hidden");
+      return;
     } else {
-        $("#confirm-password-feedback").addClass("hidden");
+      $("#confirm-password-feedback").addClass("hidden");
     }
 
     const payload = {
@@ -56,11 +62,14 @@ export default function SignUp() {
       password,
     };
 
+    // axios post request to sign up api endpoint
     axios
       .post("/api/signup", payload)
       .then((response) => {
         const { token } = response.data;
         console.log(token);
+        // redirect to chat
+        router.push("/chat");
       })
       .catch((error) => {
         const { message } = error.response.data;

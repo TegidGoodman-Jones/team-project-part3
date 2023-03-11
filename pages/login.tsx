@@ -9,25 +9,33 @@ import { useRouter } from "next/router";
 
 export default function Login() {
   const router = useRouter();
+
+  // function to handle form submit
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    // hide error alert
     $(".alert").addClass("hidden");
     const payload = {
       email: $("#email").val(),
       password: $("#password").val(),
     };
 
+    // axios post request to login api endpoint
     axios
       .post("/api/login", payload)
       .then((response) => {
+        // handle success
         const { token } = response.data;
         console.log(token);
+        // redirect to chat if login successful
         router.push("/chat");
       })
       .catch((error) => {
+        // handle error
         const { message } = error.response.data;
         console.log(message);
         if (message == "Invalid email or password") {
+          // show error alert
           $(".alert").removeClass("hidden");
         }
       });

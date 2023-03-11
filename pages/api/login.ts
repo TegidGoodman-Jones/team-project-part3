@@ -32,7 +32,7 @@ export default async function loginHandler(
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
-    // Generate a JWT token
+    // Generate a JWT token, need to create a jwt secret passkey
     const token = jwt.sign({ userId: user.id }, "your_jwt_secret");
 
     // Send the token back in the response
