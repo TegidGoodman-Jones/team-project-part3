@@ -27,6 +27,8 @@ export default function Login() {
         // handle success
         const { token } = response.data;
         console.log(token);
+        // set token in local storage
+        localStorage.setItem("token", token);
         // redirect to chat if login successful
         router.push("/chat");
       })

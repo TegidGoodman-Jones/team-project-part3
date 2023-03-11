@@ -68,6 +68,8 @@ export default function SignUp() {
       .then((response) => {
         const { token } = response.data;
         console.log(token);
+        // set token in local storage
+        localStorage.setItem("token", token);
         // redirect to chat
         router.push("/chat");
       })

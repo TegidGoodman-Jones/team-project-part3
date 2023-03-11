@@ -29,7 +29,11 @@ export default async function signupHandler(
     });
 
     // Generate a JWT token, need to create a jwt secret passkey
-    const token = jwt.sign({ userId: user.id }, "your_jwt_secret");
+    const token = jwt.sign(
+      { userId: user.id, theme: user.theme },
+      "your_jwt_secret",
+      { expiresIn: "1h" }
+    );
 
     // Send the token back in the response
     res.status(200).json({ token });
