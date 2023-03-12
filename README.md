@@ -12,7 +12,7 @@ git clone "https://github.com/TegidGoodman-Jones/team-project-part3.git"
 npm i
 ```
 
-3. Now you need to add a sql database, here is a tutorial on how to set-up a local database:
+3. Now you need to add a sql database, here is a tutorial on how to set-up a local database (installing docker on Windows caused Ellie's pc to crash so it might be a good idea to find a different way of hosting a sql database on Windows) ) :
 
 https://www.appsdeveloperblog.com/how-to-start-mysql-in-docker-container/
 or
