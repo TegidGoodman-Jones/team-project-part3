@@ -3,6 +3,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import TextInput from "./TextInput";
 
+//static - need to change it so that it opens depending on what user chat is clicked
+
 const DisplayChat = (props: any) => {
   return (
     <>
@@ -39,7 +41,6 @@ const DisplayChat = (props: any) => {
             <div className="chat-footer opacity-50">Seen at 12:46</div>
           </div>
         </div>
-
         <div className="mt-auto p-10">
           <TextInput />
         </div>
