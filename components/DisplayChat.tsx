@@ -1,45 +1,47 @@
+import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
+import TextInput from "./TextInput";
 
 const DisplayChat = (props: any) => {
   return (
     <>
-      <div className="chat chat-start">
-        <div className="chat-image avatar">
-          <div className="w-10 rounded-full">
-            <img src="/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+      <div className="flex flex-col justify-between min-h-screen">
+        <div className="flex-grow p-5">
+          <div className="chat chat-start">
+            <div className="chat-image avatar">
+              <div className="w-10 rounded-full">
+                <FontAwesomeIcon icon={faUser} />
+              </div>
+            </div>
+            <div className="chat-header">user2</div>
+            <div className="chat-bubble">
+              Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+              Consequatur aliquam commodi aperiam, veritatis voluptates officiis
+              nam delectus necessitatibus laboriosam, sit, mollitia consequuntur
+              optio. Repellat vel, quibusdam officiis impedit labore sed?
+            </div>
+            <div className="chat-footer opacity-50">Delivered</div>
+          </div>
+          <div className="chat chat-end">
+            <div className="chat-image avatar">
+              <div className="w-10 rounded-full">
+                <FontAwesomeIcon icon={faUser} />
+              </div>
+            </div>
+            <div className="chat-header">user1</div>
+            <div className="chat-bubble">
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              Distinctio quos necessitatibus quod voluptatum sequi perspiciatis
+              recusandae? Dolorum asperiores quidem in eveniet obcaecati nisi
+              iste consequatur atque. Eveniet quasi ex cum!
+            </div>
+            <div className="chat-footer opacity-50">Seen at 12:46</div>
           </div>
         </div>
-        <div className="chat-bubble">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum,
-          facilis consequatur minima quam reprehenderit fugiat minus commodi
-          voluptatibus voluptates ratione quo dicta aut neque explicabo expedita
-          laudantium corrupti deleniti ipsum.
-        </div>
-      </div>
-      <div className="chat chat-start">
-        <div className="chat-image avatar">
-          <div className="w-10 rounded-full">
-            <img src="/images/stock/photo-1534528741775-53994a69daeb.jpg" />
-          </div>
-        </div>
-        <div className="chat-bubble">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum id
-          incidunt fuga sunt eos placeat similique soluta eaque ea harum commodi
-          nisi expedita rerum sed aspernatur, reprehenderit aperiam quam?
-          Asperiores?
-        </div>
-      </div>
-      <div className="chat chat-start">
-        <div className="chat-image avatar">
-          <div className="w-10 rounded-full">
-            <img src="/images/stock/photo-1534528741775-53994a69daeb.jpg" />
-          </div>
-        </div>
-        <div className="chat-bubble">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam voluptas
-          qui voluptate corrupti enim maiores dolorem, quaerat cumque minima
-          dolore facere ea perspiciatis provident possimus eaque soluta rerum?
-          Iste, libero.
+
+        <div className="mt-auto p-10">
+          <TextInput />
         </div>
       </div>
     </>

@@ -29,7 +29,7 @@ export default function Chat() {
     <div className="flex">
       <div className="flex flex-col bg-blue-500">
         {/*insert side nav bar - Tegid and Isaac*/}
-        <h1>helloo</h1>
+        <h1>Insert sideBar</h1>
       </div>
       <div className="flex shrink-0 basis-1/4 h-screen bg-gray-400">
         <ViewChats />
