@@ -11,35 +11,36 @@ type ChatType = {
 //need to make an api call to the database to get the chat data
 //need to make it so that when chat is clicked it opens that chat page
 
-const chats = [
-  {
-    id: 1,
-    name: "John Doe",
-    lastMessage: "Hey, how's it going?",
-  },
-  {
-    id: 2,
-    name: "Jane Smith",
-    lastMessage: "See you later!",
-  },
-  {
-    id: 3,
-    name: "Bob Johnson",
-    lastMessage: "I'm on my way.",
-  },
-  {
-    id: 4,
-    name: "Alice Lee",
-    lastMessage: "What are you up to?",
-  },
-  {
-    id: 5,
-    name: "Tom Wilson",
-    lastMessage: "Can't wait to see you!",
-  },
-];
 
-const ChatList = ({ chats: ChatType }) => {
+
+const ChatList = () => {
+  const chats = [
+    {
+      id: 1,
+      name: "John Doe",
+      lastMessage: "Hey, how's it going?",
+    },
+    {
+      id: 2,
+      name: "Jane Smith",
+      lastMessage: "See you later!",
+    },
+    {
+      id: 3,
+      name: "Bob Johnson",
+      lastMessage: "I'm on my way.",
+    },
+    {
+      id: 4,
+      name: "Alice Lee",
+      lastMessage: "What are you up to?",
+    },
+    {
+      id: 5,
+      name: "Tom Wilson",
+      lastMessage: "Can't wait to see you!",
+    },
+  ];
   return (
     <div className="flex flex-col gap-2 p-2">
       {chats.map((chat) => (

@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import ChatList from "./ChatList";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { faComments } from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faComments } from "@fortawesome/free-solid-svg-icons";
 import NewChatButton from "./NewChatModal";
 import NewChatModal from "./NewChatModal";
+import $ from 'jquery';
 
 //edit button does not do anything
 //need get search working - client side filter it
@@ -12,9 +12,10 @@ import NewChatModal from "./NewChatModal";
 //new chat opens up modal - but need to be able to click out of it - not working yet - need to set True/False the visibility
 
 const ViewChats = (props: any) => {
-  function handleSearch(event) {
-    event.preventDefault();
-    const searchTerm = event.target.elements.search.value;
+  const [modal, setModal] = useState(false);
+  function handleSearch(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const searchTerm = $("#default-search").val();
     // Filter the chat list using the searchTerm
     console.log("Search term:", searchTerm);
   }
@@ -54,11 +55,16 @@ const ViewChats = (props: any) => {
             </form>
           </div>
           <div>
-            <ChatList chats={undefined} />
+            <ChatList />
           </div>
           <div className="flex justify-center">
-            <NewChatModal />
+            <button className="btn" onClick={() => setModal(true)}>
+              <FontAwesomeIcon icon={faComments} />
+              New Chat
+            </button>
           </div>
+          {/* Modal */}
+          <NewChatModal modal={modal} setModal={setModal}/>
         </div>
       </div>
     </>

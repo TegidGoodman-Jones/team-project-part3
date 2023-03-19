@@ -7,13 +7,6 @@ const TextInput = () => {
   const [text, setText] = useState("");
   const [file, setFile] = useState(null);
 
-  const handleTextChange = (event) => {
-    setText(event.target.value);
-  };
-
-  const handleFileChange = (event) => {
-    setFile(event.target.files[0]);
-  };
 
   const handleSend = () => {
     // Do something with the text and/or file data, such as send it to a server
@@ -30,12 +23,12 @@ const TextInput = () => {
         <input
           type="text"
           placeholder="Type your message here"
+          id="message-text"
           value={text}
-          onChange={handleTextChange}
           className=" rounded-md p-2 mr-2 w-full"
         />
         <label className="flex items-center justify-center rounded-md p-2 mr-2">
-          <input type="file" onChange={handleFileChange} className="hidden" />
+          <input type="file" className="hidden" />
           <FontAwesomeIcon icon={faPaperclip} className="mr-2" />
         </label>
         <button
