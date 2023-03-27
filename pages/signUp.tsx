@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Link from "next/link";
 import Image from "next/image";
 import logo from "../public/transparent_logo.png";
 import axios from "axios";
@@ -92,7 +93,7 @@ export default function SignUp() {
           <div className="border rounded p-8 mx-4 w-full sm:w-3/4 md:w-1/2 ">
             <form onSubmit={handleSubmit}>
               <div className="flex justify-between items-center pb-4">
-                <h1 className="text-3xl">Login</h1>
+                <h1 className="text-3xl">Sign-up</h1>
                 <Image
                   className="w-14"
                   src={logo}
@@ -187,6 +188,12 @@ export default function SignUp() {
                 Submit
               </button>
             </form>
+            <div className="mt-4 mx-auto flex justify-end">
+              Already have an account?&nbsp;
+              <Link href={"/login"} className="text-accent">
+                Login
+              </Link>
+            </div>
           </div>
         </div>
       </main>

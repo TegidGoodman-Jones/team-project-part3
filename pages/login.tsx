@@ -5,6 +5,7 @@ import axios from 'axios';
 import $ from 'jquery';
 import { AlertCircle } from "lucide-react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 
 export default function Login() {
@@ -97,6 +98,12 @@ export default function Login() {
                 Submit
               </button>
             </form>
+            <div className="mt-4 mx-auto flex justify-end">
+              Don't have an account?&nbsp;
+              <Link href={"/signUp"} className="text-accent">
+                Sign-up
+              </Link>
+            </div>
           </div>
         </div>
       </main>
