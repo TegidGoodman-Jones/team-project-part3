@@ -18,30 +18,27 @@ const TextInput = () => {
   };
 
   return (
-    <div className="bg-white rounded-md">
-      <div className="flex items-center">
-        <input
-          type="text"
+      <div className="flex items-center h-15 p-2 bg-gray-600  rounded-md focus-within:opacity-100 hover:opacity-100 opacity-50">
+        <textarea
           placeholder="Type your message here"
           id="message-text"
           value={text}
-          className=" rounded-md p-2 mr-2 w-full"
+          className=" textarea w-full h-full   bg-gray-600 text-white border-none "
         />
-        <label className="flex items-center justify-center rounded-md p-2 mr-2">
+        <div className="flex  h-full items-center justify-center rounded-md p-2  ">
           <input type="file" className="hidden" />
-          <FontAwesomeIcon icon={faPaperclip} className="mr-2" />
-        </label>
-        <button
-          onClick={handleSend}
-          disabled={!text && !file}
-          className={` text-white font-bold py-2 px-4 rounded-md ${
-            !text && !file && "opacity-50 cursor-not-allowed"
-          }`}
-        >
-          <FontAwesomeIcon icon={faPaperPlane} className="text-black mr-2" />
-        </button>
+          <FontAwesomeIcon icon={faPaperclip} className="w-5 m-2" />
+          <button
+            onClick={handleSend}
+            disabled={!text && !file}
+            className={` text-white font-bold rounded-md m-2 active:group ${
+              !text && !file && "opacity-50 cursor-not-allowed"
+            }`}
+          >
+            <FontAwesomeIcon icon={faPaperPlane} className="w-5 text-white" />
+          </button>
+        </div>
       </div>
-    </div>
   );
 };
 

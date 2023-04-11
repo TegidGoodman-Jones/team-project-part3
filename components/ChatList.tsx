@@ -42,13 +42,13 @@ const ChatList = () => {
     },
   ];
   return (
-    <div className="flex flex-col gap-2 p-2">
+    <div className="flex flex-col  gap-2 py-2">
       {chats.map((chat) => (
         <div
           key={chat.id}
-          className="flex items-center gap-2 px-4 py-2 rounded-md cursor-pointer hover:bg-gray-100"
+          className="flex items-start gap-2 py-2 rounded-md cursor-pointer text-gray-900 hover:text-white dark:text-white hover:bg-gray-800 dark:hover:bg-gray-700"
         >
-          <div className="w-12 h-12 bg-gray-400 rounded-full flex items-center justify-center">
+          <div className="w-8 h-12 ml-2 rounded-full flex items-center justify-start">
             <FontAwesomeIcon
               icon={faComments}
               size="lg"
@@ -57,7 +57,7 @@ const ChatList = () => {
           </div>
           <div>
             <h2 className="text-lg font-medium">{chat.name}</h2>
-            <p className="text-gray-500">{chat.lastMessage}</p>
+            <p className="dark:text-gray-500 text-gray-400">{chat.lastMessage}</p>
           </div>
         </div>
       ))}

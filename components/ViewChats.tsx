@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ChatList from "./ChatList";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faComments } from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faComment, faMessage } from "@fortawesome/free-solid-svg-icons";
 import NewChatButton from "./NewChatModal";
 import NewChatModal from "./NewChatModal";
 import $ from 'jquery';
@@ -13,7 +13,22 @@ import $ from 'jquery';
 
 const ViewChats = (props: any) => {
   const [modal, setModal] = useState(false);
-  function handleSearch(e: React.FormEvent<HTMLFormElement>) {
+
+  // useEffect(() => {
+  // const searchButton = document.getElementById("default-search");
+  // searchButton?.addEventListener("keyup", (e) => {
+  //   if (e.key === "Enter") {
+  //     e.preventDefault();
+
+  //     const searchForm = document.getElementById("searchForm");
+  //     handleSearch(new Event("submit"));
+
+  //   }
+  // });
+  // }, []);
+      
+
+  function handleSearch(e: Event | React.FormEvent<HTMLFormElement >) {
     e.preventDefault();
     const searchTerm = $("#default-search").val();
     // Filter the chat list using the searchTerm
@@ -22,51 +37,28 @@ const ViewChats = (props: any) => {
 
   return (
     <>
-      <div className="flex ">
-        <div className="flex flex-col p-2 ">
-          <div className="text-lg m-2">
-            <button type="submit">Edit </button>
-          </div>
-          <div className="text-3xl m-2">Chat</div>
-          <div className="mt-5 m-2 w-fit">
-            <form onSubmit={handleSearch}>
+        <div className="flex flex-col w-full ">
+          <div className=" py-4 px-3">
+            <form id="searchForm" onSubmit={handleSearch}>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                   <FontAwesomeIcon
                     icon={faSearch}
-                    className="w-5 h-5 text-gray-500 dark:text-gray-400"
+                    className="pointer-events-none w-4 h-4 absolute top-1/2 transform -translate-y-1/2 left-3"
                   />
-                </div>
-                <input
-                  type="search"
-                  id="default-search"
-                  className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 "
-                  placeholder="Chats "
-                  required
-                />
-                <button
-                  type="button"
-                  className="text-white absolute right-2.5 bottom-2.5 bg-blue-700 font-medium rounded-lg text-sm px-4 py-2"
-                  onClick={() => console.log("Search clicked")}
-                >
-                  Search
-                </button>
+               
+                <input type="search"  id="default-search" className="input py-3 px-4 dark:text-black appearance-none w-full block pl-10 bg-gray-100 text-black bg-gray-600 " placeholder="January Statements " required/>
               </div>
             </form>
-          </div>
-          <div>
+            <div>
             <ChatList />
           </div>
-          <div className="flex justify-center">
-            <button className="btn" onClick={() => setModal(true)}>
-              <FontAwesomeIcon icon={faComments} />
-              New Chat
+            <button className="btn w-full bg-gray-500 border-gray-800" onClick={() => setModal(true)}>
+              <div><FontAwesomeIcon icon={faComment}/></div>
             </button>
-          </div>
           {/* Modal */}
           <NewChatModal modal={modal} setModal={setModal}/>
+          </div>
         </div>
-      </div>
     </>
   );
 };

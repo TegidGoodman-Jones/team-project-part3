@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import $ from "jquery";
 import DisplayChat from "@/components/DisplayChat";
 import ViewChats from "@/components/ViewChats";
+import Sidebar from "@/components/Sidebar";
 
 export default function Chat() {
   const [userId, setUserId] = useState();
@@ -21,20 +22,25 @@ export default function Chat() {
       $("html").attr("data-theme", decoded.theme);
     } catch (e) {
       // if error with token send user to login page
-      router.push("/login");
+      const darkThemeMq = window.matchMedia("(prefers-color-scheme: dark)");
+      if (darkThemeMq.matches) {
+        $("html").attr("data-theme", "dark");
+        console.log("dark");
+      } else {
+        $("html").attr("data-theme", "light");
+        console.log("light");
+      }
+      // router.push("/login");
     }
   }, []);
 
   return (
-    <div className="flex">
-      <div className="flex flex-col bg-blue-500">
-        {/*insert side nav bar - Tegid and Isaac*/}
-        <h1>Insert sideBar</h1>
-      </div>
-      <div className="flex shrink-0 basis-1/4 h-screen bg-gray-400">
+    <div className="flex divide-x ">
+       < Sidebar />
+      <div className="flex shrink-0 basis-1/4 h-screen dark:bg-gray-800 bg-gray-200 sm:ml-64">
         <ViewChats />
       </div>
-      <div className="flex flex-col flex-1- h-screen bg-gray-300">
+      <div className="flex flex-col h-screen dark:bg-gray-700 bg-gray-300">
         <DisplayChat />
       </div>
     </div>
