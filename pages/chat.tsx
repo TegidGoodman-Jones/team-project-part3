@@ -22,15 +22,8 @@ export default function Chat() {
       $("html").attr("data-theme", decoded.theme);
     } catch (e) {
       // if error with token send user to login page
-      const darkThemeMq = window.matchMedia("(prefers-color-scheme: dark)");
-      if (darkThemeMq.matches) {
-        $("html").attr("data-theme", "dark");
-        console.log("dark");
-      } else {
-        $("html").attr("data-theme", "light");
-        console.log("light");
-      }
-      // router.push("/login");
+     
+      router.push("/login");
     }
   }, []);
 
