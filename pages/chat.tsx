@@ -5,6 +5,7 @@ import $ from "jquery";
 import DisplayChat from "@/components/DisplayChat";
 import ViewChats from "@/components/ViewChats";
 import Sidebar from "@/components/Sidebar";
+import Head from "next/head";
 
 export default function Chat() {
   const [userId, setUserId] = useState();
@@ -28,6 +29,14 @@ export default function Chat() {
   }, []);
 
   return (
+    <>
+      <Head>
+        <title>Chat</title>
+        <meta name="description" content="Make it all chat page" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/transparent_logo.png" />
+      </Head>
+
     <div className="flex divide-x ">
        < Sidebar />
       <div className="flex shrink-0 basis-1/4 h-screen dark:bg-gray-800 bg-gray-200 sm:ml-64">
@@ -37,5 +46,6 @@ export default function Chat() {
         <DisplayChat />
       </div>
     </div>
+    </>
   );
 }

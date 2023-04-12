@@ -1,5 +1,6 @@
 import {  Card, Title, DonutChart, Legend, BarChart, Flex, Text, ProgressBar } from "@tremor/react"
 import Sidebar from "@/components/Sidebar";
+import Head from "next/head";
 
 export default function data(){
     const ProgressBarData = 65
@@ -39,12 +40,19 @@ export default function data(){
     ];
 
         return(
+            <>
+      <Head>
+        <title>Analytics</title>
+        <meta name="description" content="Make it all analytics page" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/transparent_logo.png" />
+      </Head>
             <div className="flex divide-x ">
             < Sidebar />
             <div className="flex flex-col w-full h-full bg-slate-100 dark:bg-gray-600  sm:ml-64">
             <div className=' w-full h-1/3 flex flex-row '>
                             <div className='flex flex-row items-center justify-center p-2 rounded-md bg-slate-100 dark:bg-gray-600 space-x-2 m-4 w-full '>
-                            <select className="select w-1/3 max-w-xs">
+                            <select className="select w-1/3 ">
   <option value="placeholder" disabled selected>Project select</option>
   <option value="all">All</option>
   <option value="0" >Roofing - 5th Mane Street</option>
@@ -53,7 +61,7 @@ export default function data(){
   <option value="3">Lounge Quote - Appt 1b Tall Appts</option>
   <option value="4">Garden Remodel - Barclays Town Hall</option>
 </select>
-<select className="select w-1/3 max-w-xs">
+<select className="select w-1/3 ">
   <option value="placeholder" disabled selected>Employee select</option>
   <option value="all">All</option>
   <option value="0">Homer Ranger</option>
@@ -62,7 +70,7 @@ export default function data(){
   <option value="3">Lisa Felecia</option>
   <option value="4">Maggie Camie</option>
 </select>
-<select className="select w-1/3 max-w-xs">
+<select className="select w-1/3">
   <option value="placeholder" disabled selected>Statistic select</option>
   <option value="project-stats">Project statistics</option>
   <option value="task-stats">Task statistics</option>
@@ -188,6 +196,7 @@ export default function data(){
                         </div>
                     </div>
             </div>  
-         </div>        
+         </div>    
+         </>    
         )
     }
