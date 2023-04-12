@@ -46,15 +46,17 @@ const ViewChats = (props: any) => {
                     className="pointer-events-none w-4 h-4 absolute top-1/2 transform -translate-y-1/2 left-3"
                   />
                
-                <input type="search"  id="default-search" className="input py-3 px-4 dark:text-black appearance-none w-full block pl-10 bg-gray-100 text-black bg-gray-600 " placeholder="January Statements " required/>
+                <input type="search"  id="default-search" className="input py-3 px-4 dark:text-black appearance-none w-full block pl-10 bg-gray-100 text-black dark:bg-gray-600 " placeholder="January Statements " required/>
               </div>
             </form>
             <div>
             <ChatList />
           </div>
-            <button className="btn w-full bg-gray-500 border-gray-800" onClick={() => setModal(true)}>
-              <div><FontAwesomeIcon icon={faComment}/></div>
-            </button>
+            <button className="btn w-full text-white dark:text-white  hover:bg-gray-400 bg-gray-300  dark:bg-gray-500 dark:border-gray-500 border-gray-300" onClick={() => setModal(true)}>
+            <FontAwesomeIcon
+                    icon={faComment}
+                    className="pointer-events-none w-4 h-4"
+                  />            </button>
           {/* Modal */}
           <NewChatModal modal={modal} setModal={setModal}/>
           </div>
