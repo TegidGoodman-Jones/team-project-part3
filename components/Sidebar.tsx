@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import $ from "jquery";
 import { faCalendar, faBook, faChartPie, faComments, faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Link from "next/link";
 
 const Sidebar = (props: any) => {
     useEffect (() => {
@@ -48,42 +49,42 @@ const Sidebar = (props: any) => {
         </div>
        <ul className="space-y-2 font-medium h-2">
           <li className="group">
-             <a href="#" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 no-underline">
+             <Link href="/" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 no-underline">
                 <svg aria-hidden="true" className="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path><path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path></svg>
                 <span className="ml-3">Dashboard</span>
-             </a>
+             </Link>
           </li>
           <li className="group">
-             <a href="#" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 no-underline">
+             <Link href="/" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 no-underline">
              <FontAwesomeIcon icon={faCalendar} className="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
                 <span className="ml-3">Productivity</span>
-             </a>
+             </Link>
           </li>
           <li className="group">
-             <a href="#" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 no-underline">
+             <Link href="/" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 no-underline">
              <FontAwesomeIcon icon={faBook} className="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
                 <span className="ml-3">Knowledge</span>
-             </a>
+             </Link>
           </li>
           
           <li className="group">
-             <a href="#" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 no-underline">
+             <Link href="/analysis" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 no-underline">
              <FontAwesomeIcon icon={faChartPie} className="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
                          <span className="flex-1 ml-3 whitespace-nowrap">Analytics</span>
-             </a>
+             </Link>
           </li>
           <li className="group">
-             <a href="#" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 no-underline">
+             <Link href="/chat" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 no-underline">
              <FontAwesomeIcon icon={faComments} className="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
                 <span className="flex-1 ml-3 whitespace-nowrap">Chat</span>
                 <span className="flex items-center justify-center px-2 text-sm font-medium text-gray-800 text-white bg-blue-500 rounded-full dark:bg-blue-500 dark:text-gray-300">New</span>
-             </a>
+             </Link>
           </li>
           <li className="group">
-             <a href="#" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 no-underline">
+             <Link href="#" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 no-underline">
              <FontAwesomeIcon icon={faRightFromBracket} className="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
                 <span className="flex-1 ml-3 whitespace-nowrap">Log out</span>
-             </a>
+             </Link>
           </li>
          </ul>
 
