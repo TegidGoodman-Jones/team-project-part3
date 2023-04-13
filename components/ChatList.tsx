@@ -40,6 +40,11 @@ const ChatList = () => {
       name: "Tom Wilson",
       lastMessage: "Can't wait to see you!",
     },
+    {
+      id: 6,
+      name: "Tom Wilson, Alice Lee, Bob Johnson",
+      lastMessage: "Can't wait to see you!",
+    },
   ];
   return (
     <div className="flex flex-col  gap-2 py-2">
