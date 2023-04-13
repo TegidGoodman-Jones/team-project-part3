@@ -71,7 +71,7 @@ const NewChatButton = (props: any): JSX.Element => {
     const employeeName = $("#employeeToAdd option:selected").text();
     const employeeId = $("#employeeToAdd option:selected").val();
 
-    if (employeeName !== "") {
+    if (employeeId !== "placeholder" && employeeName !== "") {
       // if the employee name of the option is not empty (I.E not the empty option),
       // then create the badge and add it to the addedEmployees div
       const containerDiv = $("<div/>");
@@ -102,8 +102,9 @@ const NewChatButton = (props: any): JSX.Element => {
         $("#addEmployeeBtn").prop("disabled", false);
         $("#error-message").addClass("hidden");
       });
-    } else {
-      // if the employee name is empty, then disable the add employee button and select as no more employees can be added
+    } 
+    if ($("#employeeToAdd").children().length === 1) {
+      // if only the placeholder is left (so 1 option), then disable the add employee button and select as no more employees can be added
       $("#employeeToAdd").prop("disabled", true);
       $("#addEmployeeBtn").prop("disabled", true);
 
@@ -121,16 +122,16 @@ const NewChatButton = (props: any): JSX.Element => {
             : "hidden"
         }
       >
-        <div className="modal-box flex flex-col space-y-2">
+        <div className="modal-box flex flex-col space-y-2 bg-gray-300 text-black  dark:text-white dark:bg-gray-800">
           <select
             id="employeeToAdd"
-            className="select bg-gray-300 text-black dark:text-white dark:bg-gray-800 "
+            className="select bg-gray-200 border-gray-200 text-black dark:text-white dark:border-gray-600 dark:bg-gray-600 "
           >
             <option value="placeholder" disabled selected>
               Employee select
             </option>
           </select>
-          <button id="addEmployeeBtn" className="btn">
+          <button id="addEmployeeBtn" className="btn bg-gray-200 border-gray-200 text-black dark:text-white dark:border-gray-600 dark:bg-gray-600  dark:hover:bg-gray-600 hover:bg-gray-200">
             Add
           </button>
           <div
@@ -159,10 +160,10 @@ const NewChatButton = (props: any): JSX.Element => {
                 <span id="errorText">No employee selected.</span>
               </div>
             </div>
-            <button id="createChatBtn" className="btn h-4">
+            <button id="createChatBtn" className="btn btn-success h-4">
               Create chat
             </button>
-            <button id="cancelBtn" className="btn h-4">
+            <button id="cancelBtn" className="btn h-4  bg-gray-200 border-gray-200 text-black dark:text-white dark:border-gray-600 dark:bg-gray-600 dark:hover:bg-gray-600 hover:bg-gray-200 ">
               Cancel
             </button>
           </div>

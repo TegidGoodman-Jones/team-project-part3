@@ -89,7 +89,7 @@ const Sidebar = (props: any) => {
            </li>
            <li className="group">
              <Link
-               href="/"
+               href="/productivity"
                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 no-underline"
              >
                <FontAwesomeIcon
@@ -101,7 +101,7 @@ const Sidebar = (props: any) => {
            </li>
            <li className="group">
              <Link
-               href="/"
+               href="/knowledge"
                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 no-underline"
              >
                <FontAwesomeIcon
@@ -141,7 +141,7 @@ const Sidebar = (props: any) => {
            </li>
            <li className="group">
              <Link
-               href="#"
+               href="/login"
                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 no-underline"
              >
                <FontAwesomeIcon
@@ -153,20 +153,20 @@ const Sidebar = (props: any) => {
            </li>
          </ul>
          {/* Trying to make the logout justify to the bottom of the nav bar but a
-         scroll bar keeps appearing ? */} {/*
-         <div className="group">
+         scroll bar keeps appearing ?  */}
+         {/* <div className="group">
            <Link
              href="#"
              className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 no-underline"
            >
              <FontAwesomeIcon
-               icon="{faRightFromBracket}"
+               icon={faRightFromBracket}
                className="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
              />
              <span className="flex-1 ml-3 whitespace-nowrap">Log out</span>
            </Link>
-         </div>
-         */}
+         </div> */}
+        
        </div>
  
      </div>

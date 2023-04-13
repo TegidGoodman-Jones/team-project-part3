@@ -37,7 +37,7 @@ export default function Chat() {
         <link rel="icon" href="/transparent_logo.png" />
       </Head>
 
-    <div className="flex divide-x ">
+    <div className="flex divide-x h-screen">
        < Sidebar />
       <div className="flex shrink-0 basis-1/4 h-screen dark:bg-gray-800 bg-gray-200 sm:ml-64">
         <ViewChats />
