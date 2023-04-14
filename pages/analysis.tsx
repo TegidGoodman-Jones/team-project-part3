@@ -1,3 +1,6 @@
+//I've made very small changes to make the main graphs visible at the identified div. I tried to play 
+//around with the CSS, however couldn't work out how to get the legends for either of the two graphs
+//to show correctly, or for the progress bar to show
 import {  Card, Title, DonutChart, Legend, BarChart, Flex, Text, ProgressBar } from "@tremor/react"
 import Sidebar from "@/components/Sidebar";
 import Head from "next/head";
@@ -10,22 +13,21 @@ export default function data(){
     const [userId, setUserId] = useState();
     const router = useRouter();
     useEffect(() => {
-      const token = String(localStorage.getItem("token"));
-      try {
-        // json parse and stringify to please typescript
-        let decoded = JSON.parse(
-          JSON.stringify(jwt.verify(token, "your_jwt_secret"))
-        );
-        // set userId to state
-        setUserId(decoded.userId);
-        // change theme to user selected theme
-        $("html").attr("data-theme", decoded.theme);
-      } catch (e) {
-        // if error with token send user to login page
-       
-        router.push("/login");
-      }
-
+        const token = String(localStorage.getItem("token"));
+        try {
+          // json parse and stringify to please typescript
+          let decoded = JSON.parse(
+            JSON.stringify(jwt.verify(token, "your_jwt_secret"))
+          );
+          // set userId to state
+          setUserId(decoded.userId);
+          // change theme to user selected theme
+          $("html").attr("data-theme", decoded.theme);
+        } catch (e) {
+          // if error with token send user to login page
+         
+          router.push("/login");
+        }  
         function ProjectChangeHandler (id : any, text : any) {
         console.log("ID: " + id + " Text: " + text);
         }
@@ -233,9 +235,9 @@ export default function data(){
                     <Text className="dark:text-white text-black ">Task allocation</Text>
 
                     <Legend className='p-4' categories={[ "Backlog", "To-Do", "In Progress", "Review", "Completed"]} colors={[ "rose", "orange", "amber", "lime", "indigo"]} />
-                    <div className='flex flex-row'>
+                    //changed the height of the div so that the graphs show. However still not ideal 
+                    <div className='h-40 flex flex-row '>
                         <DonutChart data={kanbanPieData} category="value" index="name" variant="pie" colors={[ "rose", "orange", "amber", "lime", "indigo"]} />
-
                         <BarChart layout='vertical' data={taskBarData} index="name" categories={[ "Emp 1", "Emp 2", "Emp 3", "Emp 4", "Emp 5"]} showAnimation={false} colors={[ "indigo", "fuchsia", "amber", "yellow", "teal", "emerald"]}/>
                     </div>
                 </div>
