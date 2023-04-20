@@ -1,10 +1,17 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient, Chat, User, ChatUser } from "@prisma/client";
+import { decode, JwtPayload } from "jsonwebtoken";
 const prisma = new PrismaClient();
 
 type ChatType = {
   id: number;
 };
+interface TokenType {
+  userId: number;
+  iat: number;
+  exp: number;
+  theme: string;
+}
 
 //need to add a promise and write function to get information
 async function getChats() {}
@@ -15,15 +22,44 @@ export default async function handler(
 ) {
   if (req.method == "GET") {
     // Get the list of all existing chats
-    var chats = await getChats();
-
-    // If there exists the ID of a specific chat
-    if (req.query.hasOwnProperty("chatID")) {
-      const { chatID } = req.query;
-      //   const chat = chats.find(
-      //     (chat: ChatType) => String(chat.id) === String(chatID)
-      //   );
-    }
+    let { token, chatId = "" } = req.query;
+    const userId: TokenType = JSON.parse(
+      JSON.stringify(decode(token as string))
+    ).userId;
+    const chat = await prisma.chat.findUnique({
+      where: {
+        id: parseInt(chatId as string),
+      },
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        messages: {
+          select: {
+            id: true,
+            text: true,
+            timestamp: true,
+            user: {
+              select: {
+                username: true,
+                id: true,
+              },
+            },
+          },
+        },
+        users: {
+          select: {
+            user: {
+              select: {
+                username: true,
+                id: true,
+              },
+            },
+          },
+        },
+      },
+    });
+    res.status(200).json({ success: true, data: chat });
   } else if (req.method == "POST") {
     // Create a new chat
   } else if (req.method == "PUT") {
