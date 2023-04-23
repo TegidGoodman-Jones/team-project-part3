@@ -6,11 +6,12 @@ import $ from 'jquery';
 import { AlertCircle } from "lucide-react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import Cookies from "universal-cookie";
 
 
 export default function Login() {
   const router = useRouter();
-
+  const cookies = new Cookies();
   // function to handle form submit
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -29,7 +30,7 @@ export default function Login() {
         const { token } = response.data;
         console.log(token);
         // set token in local storage
-        localStorage.setItem("token", token);
+        cookies.set("token", token, { path: "/" });
         // redirect to chat if login successful
         router.push("/chat");
       })

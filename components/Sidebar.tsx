@@ -64,7 +64,7 @@ const Sidebar = (props: any) => {
    >
      <div className="h-full px-3 py-4 bg-gray-50 overflow-auto dark:bg-gray-800">
        <div className="flex flex-row items-center justify-start mb-5 px-2">
-         <img className="w-10 h-10 max-h-10 mr-5" src="transparent_logo.png" />
+         <img className="w-10 h-10 max-h-10 mr-5" src="/transparent_logo.png" />
          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-400">Make
            It All</h1>
        </div>

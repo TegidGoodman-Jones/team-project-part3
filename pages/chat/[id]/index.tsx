@@ -10,29 +10,48 @@ import axios from "axios";
 import Cookies from "universal-cookie";
 
 type Chats = {
-  chats: {
-    chats: [
+  chats: [
+    {
+      chat: {
+        id: number;
+        name: string;
+        messages: [
+          {
+            text: string;
+            timestamp: string;
+            user: {
+              username: string;
+              id: number;
+            };
+          }
+        ];
+      };
+    }
+  ];
+};
+type Chat = {
+  chat: {
+    id: number;
+    name: string;
+    messages: [
       {
-        chat: {
+        text: string;
+        timestamp: string;
+        user: {
+          username: string;
           id: number;
-          name: string;
-          messages: [
-            {
-              text: string;
-              timestamp: string;
-              user: {
-                username: string;
-                id: number;
-              };
-            }
-          ];
         };
       }
     ];
   };
 };
 
-const Chat: FC<Chats> = ({ chats }) => {
+type ChatProps = {
+  chat: Chat;
+  chats: Chats;
+};
+
+const Chat: FC<ChatProps> = (props): JSX.Element => {
   const [userId, setUserId] = useState(0);
   const router = useRouter();
   const cookies = new Cookies();
@@ -67,10 +86,10 @@ const Chat: FC<Chats> = ({ chats }) => {
       <div className="flex divide-x h-screen">
         <Sidebar />
         <div className="flex shrink-0 basis-1/4 h-screen dark:bg-gray-800 bg-gray-200 sm:ml-64">
-          <ViewChats chats={chats} />
+          <ViewChats chats={props.chats} />
         </div>
         <div className="flex flex-col h-screen dark:bg-gray-700 bg-gray-300 flex-grow">
-          <DisplayChat chat={null} userId={userId} />
+          <DisplayChat chat={props.chat} userId={userId} />
         </div>
       </div>
     </>
@@ -80,19 +99,24 @@ const Chat: FC<Chats> = ({ chats }) => {
 export async function getServerSideProps(context: any) {
   const token = String(context.req.cookies.token);
   try {
-    // json parse and stringify to please typescript
     jwt.verify(token, "your_jwt_secret");
-    const res = await axios.get(`${process.env.HOST}/api/chats`, {
+    // get chats from database
+    let chat = await axios.get(`${process.env.HOST}/api/chat`, {
+      params: { token: token, chatId: context.params.id },
+    });
+    chat = chat.data.data.chats[0];
+    const chats = await axios.get(`${process.env.HOST}/api/chats`, {
       params: { token },
     });
+    // return chats to page
     return {
       props: {
-        chats: res.data.data,
+        chat,
+        chats: chats.data.data,
       },
     };
   } catch (e) {
     // if error with token send user to login page
-
     return {
       redirect: {
         destination: "/login",

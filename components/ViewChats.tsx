@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import ChatList from "./ChatList";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faComment, faMessage } from "@fortawesome/free-solid-svg-icons";
@@ -10,10 +10,31 @@ import $ from 'jquery';
 //need get search working - client side filter it
 //need to center everything
 //new chat opens up modal - but need to be able to click out of it - not working yet - need to set True/False the visibility
+type Chats = {
+  chats: {
+    chats: [
+      {
+        chat: {
+          id: number;
+          name: string;
+          messages: [
+            {
+              text: string;
+              timestamp: string;
+              user: {
+                username: string;
+                id: number;
+              };
+            }
+          ];
+        };
+      }
+    ];
+  };
+};
 
-const ViewChats = (props: any) => {
+const ViewChats: FC<Chats> = ({ chats }) => {
   const [modal, setModal] = useState(false);
-
   // should be loaded from the db via api call
   const employees = [ {name: "John Doe", id: 1}, {name: "Jane Doe", id: 2}, {name: "Joe Doe", id: 3}, {name: "Jill Doe", id: 4}];
 
@@ -78,7 +99,7 @@ const ViewChats = (props: any) => {
       </div>
     </form>
     <div>
-      <ChatList />
+      <ChatList chats={chats} />
     </div>
     <button id="newChatButton"
       className="btn w-full text-white dark:text-white  hover:bg-gray-400 bg-gray-300  dark:bg-gray-500 dark:border-gray-500 border-gray-300"
@@ -91,7 +112,7 @@ const ViewChats = (props: any) => {
     {/* Modal */}
     <NewChatModal modal={modal} setModal={setModal} />
   </div>
-</div>;
+</div>
 
     </>
   );

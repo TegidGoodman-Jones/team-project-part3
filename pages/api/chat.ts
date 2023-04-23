@@ -3,18 +3,12 @@ import { PrismaClient, Chat, User, ChatUser } from "@prisma/client";
 import { decode, JwtPayload } from "jsonwebtoken";
 const prisma = new PrismaClient();
 
-type ChatType = {
-  id: number;
-};
 interface TokenType {
   userId: number;
   iat: number;
   exp: number;
   theme: string;
 }
-
-//need to add a promise and write function to get information
-async function getChats() {}
 
 export default async function handler(
   req: NextApiRequest,
@@ -23,36 +17,35 @@ export default async function handler(
   if (req.method == "GET") {
     // Get the list of all existing chats
     let { token, chatId = "" } = req.query;
-    const userId: TokenType = JSON.parse(
+    const userId: number = JSON.parse(
       JSON.stringify(decode(token as string))
     ).userId;
-    const chat = await prisma.chat.findUnique({
+    const chat = await prisma.user.findUnique({
       where: {
-        id: parseInt(chatId as string),
+        id: userId,
       },
       select: {
-        id: true,
-        name: true,
-        description: true,
-        messages: {
-          select: {
-            id: true,
-            text: true,
-            timestamp: true,
-            user: {
-              select: {
-                username: true,
-                id: true,
-              },
-            },
+        chats: {
+          where: {
+            chatId: Number(chatId),
           },
-        },
-        users: {
           select: {
-            user: {
+            chat: {
               select: {
-                username: true,
                 id: true,
+                name: true,
+                messages: {
+                  select: {
+                    text: true,
+                    timestamp: true,
+                    user: {
+                      select: {
+                        username: true,
+                        id: true,
+                      },
+                    },
+                  },
+                },
               },
             },
           },
