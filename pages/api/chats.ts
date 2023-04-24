@@ -32,6 +32,7 @@ export default async function handler(
               select: {
                 id: true,
                 name: true,
+                description: true,
                 messages: {
                   take: 1,
                   orderBy: {

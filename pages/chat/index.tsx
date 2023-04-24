@@ -16,6 +16,7 @@ type Chats = {
         chat: {
           id: number;
           name: string;
+          description: string;
           messages: [
             {
               text: string;

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import axios from "axios";
 import { useRouter } from "next/router";
+import Cookies from "universal-cookie";
 
 type Employee = {
   id: number;
@@ -14,6 +15,7 @@ const NewChatButton = (props: any): JSX.Element => {
   const [suggestedEmployees, setSuggestedEmployees] = useState<Employee[]>([]);
   const [selectedEmployees, setSelectedEmployees] = useState<Employee[]>([]);
   const router = useRouter();
+  const cookies = new Cookies();
   useEffect(() => {
     if (employeeSearch.length > 1) {
       const res = axios
@@ -46,6 +48,7 @@ const NewChatButton = (props: any): JSX.Element => {
   const handleCreateChat = async () => {
     let users = [...selectedEmployees];
     const payload = {
+      token: cookies.get("token"),
       users: users,
       userId: props.userId,
     };

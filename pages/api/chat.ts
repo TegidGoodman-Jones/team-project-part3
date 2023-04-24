@@ -67,7 +67,7 @@ export default async function handler(
   } else if (req.method == "POST") {
     const { token, users, userId } = req.body;
     try {
-      console.log(token);
+      verify(token, "your_jwt_secret");
     } catch (error) {
       res.status(401).json({ success: false, message: "Invalid token" });
       return;
@@ -91,9 +91,45 @@ export default async function handler(
       res.status(400).json({ success: false, message: error });
     }
   } else if (req.method == "PUT") {
-    // To update the prisma of new created chat
+    const { token, chatId, name, description } = req.body;
+    try {
+      verify(token, "your_jwt_secret");
+    } catch (error) {
+      res.status(401).json({ success: false, message: "Invalid token" });
+      return;
+    }
+    try {
+      const chat = await prisma.chat.update({
+        where: {
+          id: Number(chatId),
+        },
+        data: {
+          name: name,
+          description: description,
+        },
+      });
+      res.status(200).json({ success: true, data: chat });
+    } catch (error) {
+      res.status(400).json({ success: false, message: error });
+    }
   } else if (req.method == "DELETE") {
-    // To delete chats
+    const { token, chatId } = req.body;
+    try {
+      verify(token, "your_jwt_secret");
+    } catch (error) {
+      res.status(401).json({ success: false, message: "Invalid token" });
+      return;
+    }
+    try {
+      const chat = await prisma.chat.delete({
+        where: {
+          id: Number(chatId),
+        },
+      });
+      res.status(200).json({ success: true, data: chat });
+    } catch (error) {
+      res.status(400).json({ success: false, message: error });
+    }
   } else {
     return res.status(400).json({ success: false, message: "invalid request" });
   }
