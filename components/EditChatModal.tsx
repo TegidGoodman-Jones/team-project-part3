@@ -51,17 +51,17 @@ const EditChatModal = (props: any) => {
             : "hidden"
         }
       >
-        <div className="modal-box flex flex-col space-y-2 bg-gray-300 text-black h-fit dark:text-white dark:bg-gray-800 justify-between">
+        <div className="modal-box flex flex-col space-y-2 justify-between bg-base-100">
           <div className="flex flex-col gap-4">
             <input
               type="text"
               placeholder="Chat Name"
-              className="input input-bordered w-full border-gray-600 bg-gray-600"
+              className="input input-bordered w-full"
               value={chatName}
               onChange={(e) => setChatName(e.target.value)}
             />
             <textarea
-              className="textarea textarea-bordered w-full border-gray-600 bg-gray-600"
+              className="textarea textarea-bordered w-full"
               placeholder="Description"
               value={chatDescription || ""}
               onChange={(e) => setChatDescription(e.target.value)}
@@ -70,14 +70,14 @@ const EditChatModal = (props: any) => {
           <div className="modal-action">
             <button
               id="createChatBtn"
-              className="btn btn-success h-4"
+              className="btn btn-primary h-4"
               onClick={saveChat}
             >
               Save
             </button>
             <button
               id="cancelBtn"
-              className="btn h-4  bg-gray-200 border-gray-200 text-black dark:text-white dark:border-gray-600 dark:bg-gray-600 dark:hover:bg-gray-600 hover:bg-gray-200 "
+              className="btn h-4 btn-secondary"
               onClick={() => props.setModal(false)}
             >
               Cancel

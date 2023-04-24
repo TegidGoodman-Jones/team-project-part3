@@ -86,10 +86,10 @@ const Chat: FC<ChatProps> = (props): JSX.Element => {
 
       <div className="flex divide-x h-screen">
         <Sidebar />
-        <div className="flex shrink-0 basis-1/4 h-screen dark:bg-gray-800 bg-gray-200 sm:ml-64">
+        <div className="flex shrink-0 basis-1/4 h-screen bg-base-100 sm:ml-64">
           <ViewChats chats={props.chats} userId={userId} />
         </div>
-        <div className="flex flex-col h-screen dark:bg-gray-700 bg-gray-300 flex-grow">
+        <div className="flex flex-col h-screen bg-base-100 flex-grow">
           <DisplayChat chat={props.chat} userId={userId} textInputStatus={true} />
         </div>
       </div>

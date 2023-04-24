@@ -69,20 +69,20 @@ const NewChatButton = (props: any): JSX.Element => {
             : "hidden"
         }
       >
-        <div className="modal-box flex flex-col space-y-2 bg-gray-300 text-black h-fit dark:text-white dark:bg-gray-800 justify-between">
+        <div className="modal-box flex flex-col space-y-2 justify-between bg-base-100">
           <div className="relative">
             <input
               type="text"
               id="employee-search"
               placeholder="Search employees..."
-              className="input input-bordered w-full border-gray-600 bg-gray-600"
+              className="input input-bordered w-full"
               onChange={(e) => {
                 setEmployeeSearch(e.target.value);
               }}
               value={employeeSearch}
             />
             <div
-              className={`relative bg-gray-600 rounded-b p-2 -mt-2 overflow-y-auto${
+              className={`relative border-x border-b rounded-b bg-base-100 -mt-2 overflow-y-auto${
                 suggestedEmployees.length > 0 ? "" : " hidden"
               }`}
             >
@@ -90,12 +90,12 @@ const NewChatButton = (props: any): JSX.Element => {
                 if (employee.id !== props.userId) {
                   return (
                     <div
-                      className="flex justify-between bg-gray-600 hover:brightness-110 rounded p-3"
+                      className="flex justify-between bg-base-100 hover:bg-base-300 rounded p-3 m-2"
                       key={employee.id}
                       onClick={() => handleEmployeeSelect(employee)}
                     >
                       <span>{employee.username}</span>
-                      <span className="text-gray-400">{employee.email}</span>
+                      <span className="text-accent">{employee.email}</span>
                     </div>
                   );
                 }
@@ -107,7 +107,7 @@ const NewChatButton = (props: any): JSX.Element => {
               {selectedEmployees.map((employee) => {
                 return (
                   <div
-                    className="flex items-center bg-gray-600 rounded p-2 mr-2 mb-2 cursor-pointer hover:brightness-110"
+                    className="flex items-center bg-accent text-neutral rounded p-2 mr-2 mb-2 cursor-pointer hover:brightness-110"
                     key={employee.id}
                     onClick={() => {
                       setSelectedEmployees(
@@ -122,12 +122,12 @@ const NewChatButton = (props: any): JSX.Element => {
               })}
             </div>
             <div className="modal-action">
-              <button id="createChatBtn" className="btn btn-success h-4" onClick={handleCreateChat}>
+              <button id="createChatBtn" className="btn btn-primary h-4" onClick={handleCreateChat}>
                 Create chat
               </button>
               <button
                 id="cancelBtn"
-                className="btn h-4  bg-gray-200 border-gray-200 text-black dark:text-white dark:border-gray-600 dark:bg-gray-600 dark:hover:bg-gray-600 hover:bg-gray-200 "
+                className="btn h-4 btn-secondary"
                 onClick={() => props.setModal(false)}
               >
                 Cancel

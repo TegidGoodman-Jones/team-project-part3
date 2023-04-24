@@ -25,16 +25,18 @@ type Chat = {
   };
 };
 
-type Messages = [
-  {
-    text: string;
-    timestamp: string;
-    user: {
-      username: string;
-      id: number;
-    };
-  }
-] | [];
+type Messages =
+  | [
+      {
+        text: string;
+        timestamp: string;
+        user: {
+          username: string;
+          id: number;
+        };
+      }
+    ]
+  | [];
 
 type DisplayChatProps = {
   chat: Chat | null;
@@ -49,7 +51,7 @@ const DisplayChat: FC<DisplayChatProps> = (props) => {
       setMessages(props.chat.chat.messages);
     }
   }, []);
-  
+
   return (
     <>
       <div className="flex flex-col justify-between min-h-screen">
@@ -62,7 +64,16 @@ const DisplayChat: FC<DisplayChatProps> = (props) => {
                   }`}
                   key={index}
                 >
-                  <div className="chat-bubble bg-gray-500 text-white">
+                  {props.userId != message.user.id && (
+                    <div className="chat-header opacity-60 mb-0.5">{message.user.username}</div>
+                  )}
+                  <div
+                    className={`chat-bubble ${
+                      props.userId == message.user.id
+                        ? "chat-bubble-primary"
+                        : "chat-bubble-secondary"
+                    }`}
+                  >
                     {message.text}
                   </div>
                   <div className="chat-footer opacity-50 my-1">

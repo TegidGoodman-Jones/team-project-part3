@@ -46,32 +46,30 @@ const ChatList: FC<Chats> = ({ chats }) => {
   return (
     <div className="flex flex-col gap-2 py-2">
       {chats.chats.map((chat) => (
-        <div className="flex justify-between">
+        <div className="flex justify-between border border-neutral rounded mx-2">
           <Link
             href={`/chat/${chat.chat.id}`}
             key={chat.chat.id}
-            className="flex-grow"
+            className="flex-grow no-underline"
           >
-            <div className="flex items-center justify-start gap-4 py-2 rounded-md cursor-pointer text-gray-900 hover:text-white dark:text-white hover:bg-gray-800 dark:hover:bg-gray-700 flex-grow">
-              <div className="w-8 h-12 ml-2 rounded-full flex items-center justify-start">
+            <div className="flex items-center justify-start gap-4 m-1 rounded cursor-pointer  hover:text-primary hover:bg-base-200">
+              <div className="w-8 h-12 mx-2 my-1 rounded-full flex items-center justify-start">
                 <FontAwesomeIcon
                   icon={faComments}
                   size="lg"
-                  className="text-white"
+                  className="text-neutral"
                 />
               </div>
               <div>
                 <h2 className="text-lg font-medium">{chat.chat.name}</h2>
                 {chat.chat.messages.length > 0 && (
-                  <p className="dark:text-gray-500 text-gray-400">
-                    {chat.chat.messages[0].text}
-                  </p>
+                  <p className="text-accent">{chat.chat.messages[0].text}</p>
                 )}
               </div>
             </div>
           </Link>
           <div
-            className="flex py-2 px-4 items-center rounded-md cursor-pointer text-gray-900 hover:text-white dark:text-white hover:bg-gray-800 dark:hover:bg-gray-700"
+            className="flex m-1 py-2 px-4 items-center rounded cursor-pointer text-neutral hover:text-primary hover:bg-base-200"
             onClick={() => {
               setModal(true);
               setEditChat({

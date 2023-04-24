@@ -59,9 +59,8 @@ const ViewChats: FC<ViewChatsProps> = ({ chats, userId }) => {
               <input
                 type="search"
                 id="default-search"
-                className="input py-3 px-4 dark:text-black appearance-none w-full block pl-10 bg-gray-100 text-black dark:bg-gray-600 "
-                placeholder="January Statements "
-                required
+                className="input input-bordered py-3 px-4 appearance-none w-full block pl-10"
+                placeholder="Search Chats"
               />
             </div>
           </form>
@@ -70,7 +69,7 @@ const ViewChats: FC<ViewChatsProps> = ({ chats, userId }) => {
           </div>
           <button
             id="newChatButton"
-            className="btn w-full text-white dark:text-white  hover:bg-gray-400 bg-gray-300  dark:bg-gray-500 dark:border-gray-500 border-gray-300"
+            className="btn w-full btn-primary"
             onClick={() => setModal(true)}
           >
             <FontAwesomeIcon
