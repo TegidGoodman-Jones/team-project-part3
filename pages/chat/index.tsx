@@ -67,10 +67,10 @@ const Chat: FC<Chats> = ({ chats }) => {
       <div className="flex divide-x h-screen">
         <Sidebar />
         <div className="flex shrink-0 basis-1/4 h-screen dark:bg-gray-800 bg-gray-200 sm:ml-64">
-          <ViewChats chats={chats} />
+          <ViewChats chats={chats} userId={userId} />
         </div>
         <div className="flex flex-col h-screen dark:bg-gray-700 bg-gray-300 flex-grow">
-          <DisplayChat chat={null} userId={userId} />
+          <DisplayChat chat={null} userId={userId} textInputStatus={false} />
         </div>
       </div>
     </>

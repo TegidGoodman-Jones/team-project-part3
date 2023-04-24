@@ -1,9 +1,10 @@
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import TextInput from "./TextInput";
 import Cookies from "universal-cookie";
 import jwt from "jsonwebtoken";
+import axios from "axios";
 
 //static - need to change it so that it opens depending on what user chat is clicked
 
@@ -24,18 +25,37 @@ type Chat = {
   };
 };
 
+type Messages = [
+  {
+    text: string;
+    timestamp: string;
+    user: {
+      username: string;
+      id: number;
+    };
+  }
+] | [];
+
 type DisplayChatProps = {
   chat: Chat | null;
   userId: number;
+  textInputStatus: boolean;
 };
 
 const DisplayChat: FC<DisplayChatProps> = (props) => {
+  const [messages, setMessages] = useState<Messages>([]);
+  useEffect(() => {
+    if (props.chat && messages.length == 0) {
+      setMessages(props.chat.chat.messages);
+    }
+  }, []);
+  
   return (
     <>
       <div className="flex flex-col justify-between min-h-screen">
         <div className="flex-grow p-5">
-          {props.chat
-            ? props.chat.chat.messages.map((message, index) => (
+          {messages
+            ? messages.map((message, index) => (
                 <div
                   className={`chat ${
                     props.userId == message.user.id ? "chat-end" : "chat-start"
@@ -53,13 +73,18 @@ const DisplayChat: FC<DisplayChatProps> = (props) => {
             : null}
         </div>
         <div className="mt-auto p-10">
-          <TextInput />
+          <TextInput
+            textInputStatus={props.textInputStatus}
+            userId={props.userId}
+            chatId={props.chat ? props.chat.chat.id : null}
+            setMessages={setMessages}
+            messages={messages}
+          />
         </div>
       </div>
     </>
   );
 };
-
 
 const formatDate = (timestamp: string): string => {
   const date = new Date(timestamp);

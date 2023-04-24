@@ -1,117 +1,61 @@
 import { useEffect, useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faComments } from "@fortawesome/free-solid-svg-icons";
-import $ from "jquery";
-import ReactDOM from "react-dom";
+import { X } from "lucide-react";
+import axios from "axios";
+import { useRouter } from "next/router";
 
-//need to edit modal to open to what the figure design shows
+type Employee = {
+  id: number;
+  username: string;
+  email: string;
+};
 
 const NewChatButton = (props: any): JSX.Element => {
-  function createChat(employeeIds: string[]) {
-    // will need to link with db to create chat and know which user is logged in
-    console.log("Create chat with employees: " + employeeIds);
-  }
-
-  function createEmpBadge(name: any, id: any) {
-    // create badge for employee
-    const badgeLabel = "employee-badge-" + id;
-
-    return (
-      <div id={badgeLabel} className="badge dark:bg-gray-700 dark:text-white">
-        {name}
-      </div>
-    );
-  }
-
+  const [employeeSearch, setEmployeeSearch] = useState("");
+  const [suggestedEmployees, setSuggestedEmployees] = useState<Employee[]>([]);
+  const [selectedEmployees, setSelectedEmployees] = useState<Employee[]>([]);
+  const router = useRouter();
   useEffect(() => {
-    // use effect as it can only run once component is mounted
-
-    // event listeners for buttons in modal
-    const addEmployeeBtn = $("#addEmployeeBtn");
-    addEmployeeBtn.on("click", () => {
-      $("#error-message").addClass("hidden");
-      addEmployee();
-    });
-
-    const createChatBtn = $("#createChatBtn");
-    createChatBtn.on("click", () => {
-      const added = $("#addedEmployees").children();
-      const employeeIds: string[] = [];
-
-      if (added.length > 0) {
-        // if there are badge divs within the addedEmployees div, then carry on with creating the chat
-
-        added.each((index, element) => {
-          // the way the badges are added to the addedEmployees div is by react rendering surrounding div
-          // so we have to get the first child of thi surrounding div
-          let badge = $(element).children()[0];
-
-          // the id of the badge is in the format "employee-badge-<id>"
-          const id = badge.id.split("-")[2];
-          employeeIds.push(id);
+    if (employeeSearch.length > 1) {
+      const res = axios
+        .get(
+          `${process.env.NEXT_PUBLIC_HOST}/api/users/search/${employeeSearch}`
+        )
+        .then((res) => {
+          let tempSuggestedEmployees = res.data.data;
+          tempSuggestedEmployees = tempSuggestedEmployees.filter(
+            (employee: any) => employee.id !== props.userId
+          );
+          setSuggestedEmployees(tempSuggestedEmployees);
         });
-
-        createChat(employeeIds);
-        props.setModal(false);
-      } else {
-        const error = $("#error-message");
-        $("#errorText").text("Please add at least one employee.");
-        error.removeClass("hidden");
-      }
-    });
-
-    const cancelChatBtn = $("#cancelBtn");
-    cancelChatBtn.on("click", () => {
-      props.setModal(false);
-    });
-  }, []);
-
-  function addEmployee() {
-    const employeeToAdd = $("#employeeToAdd").val();
-    const employeeName = $("#employeeToAdd option:selected").text();
-    const employeeId = $("#employeeToAdd option:selected").val();
-
-    if (employeeId !== "placeholder" && employeeName !== "") {
-      // if the employee name of the option is not empty (I.E not the empty option),
-      // then create the badge and add it to the addedEmployees div
-      const containerDiv = $("<div/>");
-      // VS seems to not like the way I am using the createEmpBadge function, but it works fine
-      ReactDOM.render(
-        createEmpBadge(employeeName, employeeId),
-        containerDiv.get(0)
-      );
-      $("#addedEmployees").append(containerDiv);
-
-      // remove the employee from the select option
-      $("#employeeToAdd option:selected").remove();
-
-      // add event listener to badge to remove it from the addedEmployees div if clicked and add it back to the select
-      $("#employee-badge-" + employeeId).on("click", (e) => {
-        // we have to get the parent of the badge as the badge is inside a div that is rendered by react remember
-        $("#employee-badge-" + employeeId)
-          .parent()
-          .remove();
-
-        $("#employeeToAdd").append(
-          "<option value=" + employeeId + ">" + employeeName + "</option>"
-        );
-
-        // re-enable the add employee button and select as there will now be at least one employee to add
-        // , might be enabled already but just in case
-        $("#employeeToAdd").prop("disabled", false);
-        $("#addEmployeeBtn").prop("disabled", false);
-        $("#error-message").addClass("hidden");
-      });
-    } 
-    if ($("#employeeToAdd").children().length === 1) {
-      // if only the placeholder is left (so 1 option), then disable the add employee button and select as no more employees can be added
-      $("#employeeToAdd").prop("disabled", true);
-      $("#addEmployeeBtn").prop("disabled", true);
-
-      $("#errorText").text("No more employees to add.");
-      $("#error-message").removeClass("hidden");
+    } else {
+      setSuggestedEmployees([]);
     }
-  }
+  }, [employeeSearch]);
+
+  const handleEmployeeSelect = (employee: any) => {
+    const alreadySelected = selectedEmployees.find(
+      (selectedEmployee) => selectedEmployee.id === employee.id
+    );
+    if (!alreadySelected) {
+      setSelectedEmployees([...selectedEmployees, employee]);
+    }
+    setEmployeeSearch("");
+    setSuggestedEmployees([]);
+  };
+
+  const handleCreateChat = async () => {
+    let users = [...selectedEmployees];
+    const payload = {
+      users: users,
+      userId: props.userId,
+    };
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_HOST}/api/chat`,
+      payload
+    );
+    props.setModal(false);
+    router.push(`/chat/${res.data.data.id}`);
+  };
 
   return (
     <>
@@ -122,50 +66,70 @@ const NewChatButton = (props: any): JSX.Element => {
             : "hidden"
         }
       >
-        <div className="modal-box flex flex-col space-y-2 bg-gray-300 text-black  dark:text-white dark:bg-gray-800">
-          <select
-            id="employeeToAdd"
-            className="select bg-gray-200 border-gray-200 text-black dark:text-white dark:border-gray-600 dark:bg-gray-600 "
-          >
-            <option value="placeholder" disabled selected>
-              Employee select
-            </option>
-          </select>
-          <button id="addEmployeeBtn" className="btn bg-gray-200 border-gray-200 text-black dark:text-white dark:border-gray-600 dark:bg-gray-600  dark:hover:bg-gray-600 hover:bg-gray-200">
-            Add
-          </button>
-          <div
-            id="addedEmployees"
-            className="flex flex-row flex-wrap mt-10"
-          ></div>
-          <div className="modal-action">
+        <div className="modal-box flex flex-col space-y-2 bg-gray-300 text-black h-fit dark:text-white dark:bg-gray-800 justify-between">
+          <div className="relative">
+            <input
+              type="text"
+              id="employee-search"
+              placeholder="Search employees..."
+              className="input input-bordered w-full border-gray-600 bg-gray-600"
+              onChange={(e) => {
+                setEmployeeSearch(e.target.value);
+              }}
+              value={employeeSearch}
+            />
             <div
-              id="error-message"
-              className="hidden alert alert-error shadow-lg"
+              className={`relative bg-gray-600 rounded-b p-2 -mt-2 overflow-y-auto${
+                suggestedEmployees.length > 0 ? "" : " hidden"
+              }`}
             >
-              <div className="h-4">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="stroke-current flex-shrink-0 h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-                <span id="errorText">No employee selected.</span>
-              </div>
+              {suggestedEmployees.map((employee: any) => {
+                if (employee.id !== props.userId) {
+                  return (
+                    <div
+                      className="flex justify-between bg-gray-600 hover:brightness-110 rounded p-3"
+                      key={employee.id}
+                      onClick={() => handleEmployeeSelect(employee)}
+                    >
+                      <span>{employee.username}</span>
+                      <span className="text-gray-400">{employee.email}</span>
+                    </div>
+                  );
+                }
+              })}
             </div>
-            <button id="createChatBtn" className="btn btn-success h-4">
-              Create chat
-            </button>
-            <button id="cancelBtn" className="btn h-4  bg-gray-200 border-gray-200 text-black dark:text-white dark:border-gray-600 dark:bg-gray-600 dark:hover:bg-gray-600 hover:bg-gray-200 ">
-              Cancel
-            </button>
+          </div>
+          <div>
+            <div id="addedEmployees" className="flex flex-row flex-wrap mt-2">
+              {selectedEmployees.map((employee) => {
+                return (
+                  <div
+                    className="flex items-center bg-gray-600 rounded p-2 mr-2 mb-2 cursor-pointer hover:brightness-110"
+                    key={employee.id}
+                    onClick={() => {
+                      setSelectedEmployees(
+                        selectedEmployees.filter((e) => e.id !== employee.id)
+                      );
+                    }}
+                  >
+                    <span className="mr-1">{employee.username}</span>
+                    <X size={18} />
+                  </div>
+                );
+              })}
+            </div>
+            <div className="modal-action">
+              <button id="createChatBtn" className="btn btn-success h-4" onClick={handleCreateChat}>
+                Create chat
+              </button>
+              <button
+                id="cancelBtn"
+                className="btn h-4  bg-gray-200 border-gray-200 text-black dark:text-white dark:border-gray-600 dark:bg-gray-600 dark:hover:bg-gray-600 hover:bg-gray-200 "
+                onClick={() => props.setModal(false)}
+              >
+                Cancel
+              </button>
+            </div>
           </div>
         </div>
       </div>

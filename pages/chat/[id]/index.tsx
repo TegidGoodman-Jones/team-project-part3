@@ -86,10 +86,10 @@ const Chat: FC<ChatProps> = (props): JSX.Element => {
       <div className="flex divide-x h-screen">
         <Sidebar />
         <div className="flex shrink-0 basis-1/4 h-screen dark:bg-gray-800 bg-gray-200 sm:ml-64">
-          <ViewChats chats={props.chats} />
+          <ViewChats chats={props.chats} userId={userId} />
         </div>
         <div className="flex flex-col h-screen dark:bg-gray-700 bg-gray-300 flex-grow">
-          <DisplayChat chat={props.chat} userId={userId} />
+          <DisplayChat chat={props.chat} userId={userId} textInputStatus={true} />
         </div>
       </div>
     </>
@@ -99,7 +99,16 @@ const Chat: FC<ChatProps> = (props): JSX.Element => {
 export async function getServerSideProps(context: any) {
   const token = String(context.req.cookies.token);
   try {
-    jwt.verify(token, "your_jwt_secret");
+    try {
+      jwt.verify(token, "your_jwt_secret");
+    } catch (e) {
+      return {
+        redirect: {
+          destination: "/login",
+          permanent: false,
+        },
+      };
+    }
     // get chats from database
     let chat = await axios.get(`${process.env.HOST}/api/chat`, {
       params: { token: token, chatId: context.params.id },
@@ -116,12 +125,9 @@ export async function getServerSideProps(context: any) {
       },
     };
   } catch (e) {
-    // if error with token send user to login page
+    // if error with request send user to 404 page
     return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
+      notFound: true,
     };
   }
 }

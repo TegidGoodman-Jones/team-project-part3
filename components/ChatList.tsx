@@ -31,7 +31,6 @@ type Chats = {
 //need to make it so that when chat is clicked it opens that chat page
 
 const ChatList: FC<Chats> = ({ chats }) => {
-  console.log(chats);
   return (
     <div className="flex flex-col  gap-2 py-2">
       {chats.chats.map((chat) => (
@@ -46,9 +45,11 @@ const ChatList: FC<Chats> = ({ chats }) => {
             </div>
             <div>
               <h2 className="text-lg font-medium">{chat.chat.name}</h2>
-              <p className="dark:text-gray-500 text-gray-400">
-                {chat.chat.messages[0].text}
-              </p>
+              {chat.chat.messages.length > 0 && (
+                <p className="dark:text-gray-500 text-gray-400">
+                  {chat.chat.messages[0].text}
+                </p>
+              )}
             </div>
           </div>
         </Link>

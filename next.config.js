@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
+  env: {
+    NEXT_PUBLIC_HOST: "http://localhost:3000",
+  },
   async redirects() {
     return [
       {
