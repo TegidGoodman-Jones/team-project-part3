@@ -2,14 +2,14 @@ import { useEffect } from "react";
 import $ from "jquery";
 import { decode, sign, verify } from "jsonwebtoken";
 import {
-  faCalendar,
-  faBook,
-  faChartPie,
-  faComments,
-  faRightFromBracket,
-  faPalette,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+  LayoutDashboard,
+  CalendarClock,
+  Book,
+  PieChart,
+  MessageCircle,
+  Palette,
+  LogOut
+} from "lucide-react";
 import Link from "next/link";
 import Cookies from "universal-cookie";
 
@@ -20,24 +20,132 @@ const Sidebar = (props: any) => {
     window.location.href = "/login";
   };
 
-  const handleThemeChange = () => {
-    let theme = $("html").attr("data-theme");
+  const handleThemeChange = (selectedTheme: string) => {
     let token = cookies.get("token");
     let decoded: any = decode(token);
-    
-    if (theme === "dark") {
-      $("html").attr("data-theme", "light");
-      decoded.theme = "light";
-    } else {
-      $("html").attr("data-theme", "dark");
-      decoded.theme = "dark";
-    }
+
+    decoded.theme = selectedTheme;
+    $("html").attr("data-theme", selectedTheme);
     token = sign(decoded, "your_jwt_secret");
     cookies.set("token", token);
   };
   return (
     <div className="h-full max-h-full">
-      <button
+      <div className="drawer drawer-mobile">
+        <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
+        <div className="drawer-content">{props.children}</div>
+        <div className="drawer-side">
+          <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
+
+          <ul className="menu p-4 w-80 bg-base-200 text-base-content h-full">
+            <div className="flex flex-row items-center justify-start px-2">
+              <img
+                className="w-10 h-10 max-h-10 mr-5"
+                src="/transparent_logo.png"
+              />
+              <h1 className="text-2xl font-bold text-primary">Make It All</h1>
+            </div>
+            <div className="my-6 flex flex-col justify-between flex-grow">
+              <ul>
+                <li className="group">
+                  <Link href={"/dashboard"} className="no-underline">
+                    <LayoutDashboard
+                      size={24}
+                      className="group-hover:text-primary"
+                    />
+                    <span>Dashboard</span>
+                  </Link>
+                </li>
+                <li className="group">
+                  <Link href={"#"} className="no-underline">
+                    <CalendarClock
+                      size={24}
+                      className="group-hover:text-primary"
+                    />
+                    <span>Productivity</span>
+                  </Link>
+                </li>
+                <li className="group">
+                  <Link href={"#"} className="no-underline">
+                    <Book size={24} className="group-hover:text-primary" />
+                    <span>Knowledge</span>
+                  </Link>
+                </li>
+                <li className="group">
+                  <Link href={"/analysis"} className="no-underline">
+                    <PieChart size={24} className="group-hover:text-primary" />
+                    <span>Analysis</span>
+                  </Link>
+                </li>
+                <li className="group">
+                  <Link href={"/chat"} className="no-underline">
+                    <MessageCircle
+                      size={24}
+                      className="group-hover:text-primary"
+                    />
+                    <span>Chat</span>
+                  </Link>
+                </li>
+              </ul>
+              <ul>
+                <div className="dropdown dropdown-top w-full">
+                  <li className="group">
+                    <Link href={"#"} className="no-underline">
+                      <Palette size={24} className="group-hover:text-primary" />
+                      <span>Theme</span>
+                    </Link>
+                  </li>
+                  <ul
+                    tabIndex={0}
+                    className="dropdown-content menu p-2 shadow bg-base-200 rounded w-52"
+                  >
+                    <li>
+                      <a
+                        className="no-underline"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleThemeChange("light");
+                        }}
+                      >
+                        Light
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        className="no-underline"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleThemeChange("dark");
+                        }}
+                      >
+                        Dark
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <li className="group">
+                  <Link href={"#"} className="no-underline">
+                    <LogOut
+                      size={24}
+                      className="group-hover:text-primary"
+                      onClick={handleLogout}
+                    />
+                    <span>Log Out</span>
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </ul>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Sidebar;
+
+/* 
+<button
         data-drawer-target="default-sidebar"
         data-drawer-toggle="default-sidebar"
         aria-controls="default-sidebar"
@@ -65,7 +173,7 @@ const Sidebar = (props: any) => {
         className="fixed top-0 left-0 z-40 w-64 h-full transition-transform -translate-x-full sm:translate-x-0"
         aria-label="Sidebar"
       >
-        <div className="h-full px-3 py-4 overflow-auto bg-base-100">
+        <div className="flex flex-col h-full px-3 py-4 overflow-auto bg-base-100">
           <div className="flex flex-row items-center justify-start mb-5 px-2">
             <img
               className="w-10 h-10 max-h-10 mr-5"
@@ -73,8 +181,8 @@ const Sidebar = (props: any) => {
             />
             <h1 className="text-2xl font-bold text-primary">Make It All</h1>
           </div>
-          <div className="flex flex-col justify-between h-max max-h-full">
-            <ul className="space-y-2 font-medium min-h-full">
+          <div className="flex flex-col justify-between flex-grow">
+            <ul className="space-y-2 font-medium">
               <li className="group">
                 <Link
                   href="/dashboard"
@@ -144,18 +252,57 @@ const Sidebar = (props: any) => {
                   <span className="flex-1 ml-3 whitespace-nowrap">Chat</span>
                 </Link>
               </li>
-              <li
-                className="group flex items-center p-2 text-base-content rounded hover:bg-base-200 no-underline cursor-pointer"
-                onClick={handleThemeChange}
-              >
+            </ul>
+            <ul className="space-y-2 font-medium">
+              <div className="dropdown dropdown-top w-full">
+                <label
+                  className="group flex items-center p-2 text-base-content rounded hover:bg-base-200 no-underline cursor-pointer"
+                  tabIndex={0}
+                >
+                  <FontAwesomeIcon
+                    icon={faPalette}
+                    className="w-6 h-6 text-base-content transition duration-75 group-hover:text-primary"
+                  />
+                  <span className="flex-1 ml-3 whitespace-nowrap">Theme</span>
+                </label>
+                <ul
+                  tabIndex={0}
+                  className="dropdown-content menu p-2 shadow bg-base-200 rounded w-52"
+                >
+                  <li>
+                    <a
+                      className="no-underline"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleThemeChange("light");
+                      }}
+                    >
+                      <FontAwesomeIcon icon={faSun} className="w-6 h-6" />
+                      Light
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      className="no-underline"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleThemeChange("dark");
+                      }}
+                    >
+                      <FontAwesomeIcon icon={faMoon} className="w-6 h-6" />
+                      Dark
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <li className="group flex items-center p-2 text-base-content rounded hover:bg-base-200 no-underline">
                 <FontAwesomeIcon
-                  icon={faPalette}
+                  icon={faUser}
                   className="w-6 h-6 text-base-content transition duration-75 group-hover:text-primary"
                 />
-                <span className="flex-1 ml-3 whitespace-nowrap">
-                  Switch Theme
-                </span>
+                <span className="flex-1 ml-3 whitespace-nowrap">Account</span>
               </li>
+
               <li
                 className="group flex items-center p-2 text-base-content rounded hover:bg-base-200 no-underline"
                 onClick={handleLogout}
@@ -167,25 +314,21 @@ const Sidebar = (props: any) => {
                 <span className="flex-1 ml-3 whitespace-nowrap">Log out</span>
               </li>
             </ul>
-            {/* Trying to make the logout justify to the bottom of the nav bar but a
-         scroll bar keeps appearing ?  */}
-            {/* <div className="group">
-           <Link
-             href="#"
-             className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 no-underline"
-           >
-             <FontAwesomeIcon
-               icon={faRightFromBracket}
-               className="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-             />
-             <span className="flex-1 ml-3 whitespace-nowrap">Log out</span>
-           </Link>
-         </div> */}
+        //     Trying to make the logout justify to the bottom of the nav bar but a
+        //  scroll bar keeps appearing ?
+        //     <div className="group">
+        //    <Link
+        //      href="#"
+        //      className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 no-underline"
+        //    >
+        //      <FontAwesomeIcon
+        //        icon={faRightFromBracket}
+        //        className="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+        //      />
+        //      <span className="flex-1 ml-3 whitespace-nowrap">Log out</span>
+        //    </Link>
+        //  </div>
           </div>
         </div>
       </aside>
-    </div>
-  );
-};
-
-export default Sidebar;
+*/

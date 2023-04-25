@@ -5,6 +5,7 @@ import $ from "jquery";
 import DisplayChat from "@/components/DisplayChat";
 import ViewChats from "@/components/ViewChats";
 import Sidebar from "@/components/Sidebar";
+import SidebarButton from "@/components/SidebarButton";
 import Head from "next/head";
 import axios from "axios";
 import Cookies from "universal-cookie";
@@ -83,16 +84,24 @@ const Chat: FC<ChatProps> = (props): JSX.Element => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/transparent_logo.png" />
       </Head>
-
-      <div className="flex divide-x h-screen">
-        <Sidebar />
-        <div className="flex shrink-0 basis-1/4 h-screen bg-base-100 sm:ml-64">
-          <ViewChats chats={props.chats} userId={userId} />
+      <Sidebar>
+        <div className="flex h-screen">
+          <div className="flex lg:hidden flex-grow-0 h-full p-2">
+            <SidebarButton />
+          </div>
+          <div className="flex shrink-0 basis-1/2 md:basis-1/3 lg:basis-1/2 xl:basis-1/3 2xl:basis-1/4 h-screen bg-base-100 border-r">
+            <ViewChats chats={props.chats} userId={userId} />
+          </div>
+          <div className="flex flex-col h-screen bg-base-100 flex-grow">
+            <DisplayChat
+              chat={props.chat}
+              userId={userId}
+              textInputStatus={true}
+            />
+          </div>
         </div>
-        <div className="flex flex-col h-screen bg-base-100 flex-grow">
-          <DisplayChat chat={props.chat} userId={userId} textInputStatus={true} />
-        </div>
-      </div>
+      </Sidebar>
+      
     </>
   );
 };

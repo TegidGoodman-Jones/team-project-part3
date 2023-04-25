@@ -13,6 +13,14 @@ type Chats = {
           id: number;
           name: string;
           description: string;
+          users: [
+            {
+              user: {
+                id: number;
+                username: string;
+              };
+            }
+          ];
           messages: [
             {
               text: string;
@@ -33,6 +41,14 @@ type Chat = {
     id: number;
     name: string;
     description: string;
+    users: [
+      {
+        user: {
+          id: number;
+          username: string;
+        };
+      }
+    ];
   };
 };
 
@@ -46,7 +62,7 @@ const ChatList: FC<Chats> = ({ chats }) => {
   return (
     <div className="flex flex-col gap-2 py-2">
       {chats.chats.map((chat) => (
-        <div className="flex justify-between border border-neutral rounded mx-2">
+        <div className="flex justify-between rounded shadow">
           <Link
             href={`/chat/${chat.chat.id}`}
             key={chat.chat.id}
@@ -77,6 +93,7 @@ const ChatList: FC<Chats> = ({ chats }) => {
                   id: chat.chat.id,
                   name: chat.chat.name,
                   description: chat.chat.description,
+                  users: chat.chat.users,
                 },
               });
             }}

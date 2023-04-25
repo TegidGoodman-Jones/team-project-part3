@@ -21,6 +21,14 @@ type Chats = {
         id: number;
         name: string;
         description: string;
+        users: [
+          {
+            user: {
+              id: number;
+              username: string;
+            };
+          }
+        ];
         messages: [
           {
             text: string;

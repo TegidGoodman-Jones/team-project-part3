@@ -33,6 +33,16 @@ export default async function handler(
                 id: true,
                 name: true,
                 description: true,
+                users: {
+                  select: {
+                    user: {
+                      select: {
+                        username: true,
+                        id: true,
+                      },
+                    },
+                  },
+                },
                 messages: {
                   take: 1,
                   orderBy: {

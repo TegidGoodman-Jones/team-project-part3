@@ -2,16 +2,19 @@ import { useEffect, useState } from "react";
 import Cookies from "universal-cookie";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { User } from "lucide-react";
 
 const EditChatModal = (props: any) => {
   const [chatName, setChatName] = useState("");
   const [chatDescription, setChatDescription] = useState("");
+  const [chatUsers, setChatUsers] = useState([]);
   const cookies = new Cookies();
   const router = useRouter();
   useEffect(() => {
     if (props.chat) {
       setChatName(props.chat.chat.name);
       setChatDescription(props.chat.chat.description);
+      setChatUsers(props.chat.chat.users);
     }
   }, [props.modal]);
 
@@ -41,6 +44,7 @@ const EditChatModal = (props: any) => {
     props.setModal(false);
     router.push("/chat");
   };
+  console.log(props.chat);
 
   return (
     <>
@@ -66,6 +70,16 @@ const EditChatModal = (props: any) => {
               value={chatDescription || ""}
               onChange={(e) => setChatDescription(e.target.value)}
             ></textarea>
+            <div className="flex gap-4 flex-wrap">
+              {chatUsers.map((user: any) => {
+                  return (
+                    <div key={user.user.id} className="flex flex-shrink-0 items-center gap-1 bg-accent rounded py-1 px-2">
+                      <User size={20} />
+                      <span>{user.user.username}</span>
+                    </div>
+                  );
+                })}
+            </div>
           </div>
           <div className="modal-action">
             <button
