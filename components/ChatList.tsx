@@ -63,7 +63,7 @@ const ChatList: FC<Chats> = ({ chats }) => {
     <div className="flex flex-col gap-2 py-2">
       {chats.chats.map((chat) => (
         <div className="flex justify-between rounded shadow">
-          <Link
+          <a
             href={`/chat/${chat.chat.id}`}
             key={chat.chat.id}
             className="flex-grow no-underline"
@@ -83,7 +83,7 @@ const ChatList: FC<Chats> = ({ chats }) => {
                 )}
               </div>
             </div>
-          </Link>
+          </a>
           <div
             className="flex m-1 py-2 px-4 items-center rounded cursor-pointer text-neutral hover:text-primary hover:bg-base-200"
             onClick={() => {

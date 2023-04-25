@@ -17,6 +17,14 @@ type Chats = {
         id: number;
         name: string;
         description: string;
+        users: [
+          {
+            user: {
+              id: number;
+              username: string;
+            };
+          }
+        ];
         messages: [
           {
             text: string;
@@ -51,6 +59,7 @@ type Chat = {
 type ChatProps = {
   chat: Chat;
   chats: Chats;
+  chatId: number;
 };
 
 const Chat: FC<ChatProps> = (props): JSX.Element => {
@@ -132,6 +141,7 @@ export async function getServerSideProps(context: any) {
       props: {
         chat,
         chats: chats.data.data,
+        chatId: context.params.id,
       },
     };
   } catch (e) {

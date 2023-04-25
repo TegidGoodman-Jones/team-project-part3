@@ -59,7 +59,7 @@ const Sidebar = (props: any) => {
                   </Link>
                 </li>
                 <li className="group">
-                  <Link href={"#"} className="no-underline">
+                  <Link href={"/productivity"} className="no-underline">
                     <CalendarClock
                       size={24}
                       className="group-hover:text-primary"
@@ -68,7 +68,7 @@ const Sidebar = (props: any) => {
                   </Link>
                 </li>
                 <li className="group">
-                  <Link href={"#"} className="no-underline">
+                  <Link href={"/knowledge"} className="no-underline">
                     <Book size={24} className="group-hover:text-primary" />
                     <span>Knowledge</span>
                   </Link>

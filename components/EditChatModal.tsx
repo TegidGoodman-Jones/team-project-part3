@@ -44,7 +44,6 @@ const EditChatModal = (props: any) => {
     props.setModal(false);
     router.push("/chat");
   };
-  console.log(props.chat);
 
   return (
     <>
