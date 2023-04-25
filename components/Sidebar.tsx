@@ -8,16 +8,18 @@ import {
   PieChart,
   MessageCircle,
   Palette,
-  LogOut
+  LogOut,
 } from "lucide-react";
 import Link from "next/link";
 import Cookies from "universal-cookie";
+import { useRouter } from "next/router";
 
 const Sidebar = (props: any) => {
   const cookies = new Cookies();
+  const router = useRouter();
   const handleLogout = () => {
     cookies.remove("token");
-    window.location.href = "/login";
+    router.push("/login");
   };
 
   const handleThemeChange = (selectedTheme: string) => {
@@ -124,12 +126,12 @@ const Sidebar = (props: any) => {
                   </ul>
                 </div>
                 <li className="group">
-                  <Link href={"#"} className="no-underline">
-                    <LogOut
-                      size={24}
-                      className="group-hover:text-primary"
-                      onClick={handleLogout}
-                    />
+                  <Link
+                    href={"#"}
+                    className="no-underline"
+                    onClick={handleLogout}
+                  >
+                    <LogOut size={24} className="group-hover:text-primary" />
                     <span>Log Out</span>
                   </Link>
                 </li>
