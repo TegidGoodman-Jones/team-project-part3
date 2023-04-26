@@ -9,6 +9,7 @@ import {
   MessageCircle,
   Palette,
   LogOut,
+  User,
 } from "lucide-react";
 import Link from "next/link";
 import Cookies from "universal-cookie";
@@ -125,6 +126,15 @@ const Sidebar = (props: any) => {
                     </li>
                   </ul>
                 </div>
+                <li className="group">
+                  <Link
+                    href={"/account"}
+                    className="no-underline"
+                  >
+                    <User size={24} className="group-hover:text-primary" />
+                    <span>Account</span>
+                  </Link>
+                </li>
                 <li className="group">
                   <Link
                     href={"#"}

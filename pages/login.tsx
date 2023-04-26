@@ -30,7 +30,7 @@ export default function Login() {
         const { token } = response.data;
         console.log(token);
         // set token in local storage
-        cookies.set("token", token, { path: "/" });
+        cookies.set("token", token);
         // redirect to chat if login successful
         router.push("/chat");
       })

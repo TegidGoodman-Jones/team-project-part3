@@ -80,7 +80,7 @@ const Chat: FC<ChatProps> = (props): JSX.Element => {
       $("html").attr("data-theme", decoded.theme);
     } catch (e) {
       // if error with token send user to login page
-
+      console.log(e)
       router.push("/login");
     }
   }, []);
