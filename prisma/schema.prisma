@@ -18,6 +18,8 @@ model User {
   theme    String     @default("light")
   chats    ChatUser[]
   messages Message[]
+  Project  Project[]
+  Task     Task[]
 }
 
 model Chat {
@@ -45,4 +47,23 @@ model ChatUser {
   chatId Int
 
   @@id([userId, chatId])
+}
+
+model Project {
+  id          Int     @id @default(autoincrement())
+  name        String
+  description String?
+  leaderId    Int
+  leader      User    @relation(fields: [leaderId], references: [id])
+  Task        Task[]
+}
+
+model Task {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  projectId   Int
+  employeeId  Int?
+  project     Project? @relation(fields: [projectId], references: [id])
+  employee    User?    @relation(fields: [employeeId], references: [id])
 }
