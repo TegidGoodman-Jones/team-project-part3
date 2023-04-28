@@ -5,15 +5,14 @@ import $ from "jquery";
 import SidebarButton from "@/components/SidebarButton";
 import Sidebar from "@/components/Sidebar";
 import Head from "next/head";
-import Link from "next/link";
-import Cookies from "universal-cookie";
+import { useCookies } from "react-cookie";
 
 export default function Knowledge() {
   const [userId, setUserId] = useState();
+  const [cookies, setCookie] = useCookies(["token"]);
   const router = useRouter();
-  const cookies = new Cookies();
   useEffect(() => {
-    const token = String(cookies.get("token"));
+    const token = String(cookies.token);
     try {
       // json parse and stringify to please typescript
       let decoded = JSON.parse(

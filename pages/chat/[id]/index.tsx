@@ -8,8 +8,7 @@ import Sidebar from "@/components/Sidebar";
 import SidebarButton from "@/components/SidebarButton";
 import Head from "next/head";
 import axios from "axios";
-import Cookies from "universal-cookie";
-
+import { useCookies } from "react-cookie";
 type Chats = {
   chats: [
     {
@@ -64,10 +63,10 @@ type ChatProps = {
 
 const Chat: FC<ChatProps> = (props): JSX.Element => {
   const [userId, setUserId] = useState(0);
+  const [cookies, setCookie] = useCookies(["token"]);
   const router = useRouter();
-  const cookies = new Cookies();
   useEffect(() => {
-    const token = String(cookies.get("token"));
+    const token = String(cookies.token);
     try {
       // json parse and stringify to please typescript
       let decoded = JSON.parse(
@@ -80,7 +79,6 @@ const Chat: FC<ChatProps> = (props): JSX.Element => {
       $("html").attr("data-theme", decoded.theme);
     } catch (e) {
       // if error with token send user to login page
-      console.log(e)
       router.push("/login");
     }
   }, []);
@@ -110,7 +108,6 @@ const Chat: FC<ChatProps> = (props): JSX.Element => {
           </div>
         </div>
       </Sidebar>
-      
     </>
   );
 };
@@ -129,9 +126,12 @@ export async function getServerSideProps(context: any) {
       };
     }
     // get chats from database
-    let chat = await axios.get(`${process.env.HOST}/api/chat`, {
-      params: { token: token, chatId: context.params.id },
-    });
+    let chat = await axios.get(
+      `${process.env.HOST}/api/chats/${context.params.id}`,
+      {
+        data: { token },
+      }
+    );
     chat = chat.data.data.chats[0];
     const chats = await axios.get(`${process.env.HOST}/api/chats`, {
       params: { token },

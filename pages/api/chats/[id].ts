@@ -17,7 +17,8 @@ export default async function handler(
   if (req.method == "GET") {
     try {
       // Get the list of all existing chats
-      let { token, chatId = "" } = req.query;
+      const { id } = req.query;
+      const { token } = req.body;
       const userId: number = JSON.parse(
         JSON.stringify(decode(token as string))
       ).userId;
@@ -28,7 +29,7 @@ export default async function handler(
         select: {
           chats: {
             where: {
-              chatId: Number(chatId),
+              chatId: Number(id),
             },
             select: {
               chat: {
@@ -64,34 +65,9 @@ export default async function handler(
     } catch (error) {
       res.status(400).json({ success: false, message: error });
     }
-  } else if (req.method == "POST") {
-    const { token, users, userId } = req.body;
-    try {
-      verify(token, "your_jwt_secret");
-    } catch (error) {
-      res.status(401).json({ success: false, message: "Invalid token" });
-      return;
-    }
-    try {
-      const chat = await prisma.chat.create({
-        data: {
-          name: "New Chat",
-          users: {
-            create: [
-              ...users.map((user: any) => ({
-                userId: user.id,
-              })),
-              { userId: Number(userId) },
-            ],
-          },
-        },
-      });
-      res.status(200).json({ success: true, data: chat });
-    } catch (error) {
-      res.status(400).json({ success: false, message: error });
-    }
-  } else if (req.method == "PUT") {
-    const { token, chatId, name, description } = req.body;
+  }  else if (req.method == "PUT") {
+    const { id } = req.query;
+    const { token, name, description } = req.body;
     try {
       verify(token, "your_jwt_secret");
     } catch (error) {
@@ -101,7 +77,7 @@ export default async function handler(
     try {
       const chat = await prisma.chat.update({
         where: {
-          id: Number(chatId),
+          id: Number(id),
         },
         data: {
           name: name,
@@ -113,7 +89,8 @@ export default async function handler(
       res.status(400).json({ success: false, message: error });
     }
   } else if (req.method == "DELETE") {
-    const { token, chatId } = req.body;
+    const { id } = req.query;
+    const { token } = req.body;
     try {
       verify(token, "your_jwt_secret");
     } catch (error) {
@@ -123,7 +100,7 @@ export default async function handler(
     try {
       const chat = await prisma.chat.delete({
         where: {
-          id: Number(chatId),
+          id: Number(id),
         },
       });
       res.status(200).json({ success: true, data: chat });

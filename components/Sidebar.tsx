@@ -12,25 +12,25 @@ import {
   User,
 } from "lucide-react";
 import Link from "next/link";
-import Cookies from "universal-cookie";
 import { useRouter } from "next/router";
+import { useCookies } from "react-cookie";
 
 const Sidebar = (props: any) => {
-  const cookies = new Cookies();
+  const [cookies, setCookie, removeCookie] = useCookies(["token"]);
   const router = useRouter();
   const handleLogout = () => {
-    cookies.remove("token");
+    removeCookie("token", { path: "/" });
     router.push("/login");
   };
 
   const handleThemeChange = (selectedTheme: string) => {
-    let token = cookies.get("token");
+    let token = cookies.token;
     let decoded: any = decode(token);
 
     decoded.theme = selectedTheme;
     $("html").attr("data-theme", selectedTheme);
     token = sign(decoded, "your_jwt_secret");
-    cookies.set("token", token);
+    setCookie("token", token, { path: "/" });
   };
   return (
     <div className="h-full max-h-full">
@@ -127,10 +127,7 @@ const Sidebar = (props: any) => {
                   </ul>
                 </div>
                 <li className="group">
-                  <Link
-                    href={"/account"}
-                    className="no-underline"
-                  >
+                  <Link href={"/account"} className="no-underline">
                     <User size={24} className="group-hover:text-primary" />
                     <span>Account</span>
                   </Link>

@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient, Chat, User, ChatUser } from "@prisma/client";
-import { decode, JwtPayload } from "jsonwebtoken";
-import { verify } from "crypto";
+import { decode, JwtPayload, verify } from "jsonwebtoken";
+
 const prisma = new PrismaClient();
 
 interface TokenType {
@@ -68,7 +68,31 @@ export default async function handler(
 
     res.status(200).json({ success: true, data: chats });
   } else if (req.method == "POST") {
-    // Create a new chat
+    const { token, users, userId } = req.body;
+    try {
+      verify(token, "your_jwt_secret");
+    } catch (error) {
+      res.status(401).json({ success: false, message: "Invalid token" });
+      return;
+    }
+    try {
+      const chat = await prisma.chat.create({
+        data: {
+          name: "New Chat",
+          users: {
+            create: [
+              ...users.map((user: any) => ({
+                userId: user.id,
+              })),
+              { userId: Number(userId) },
+            ],
+          },
+        },
+      });
+      res.status(200).json({ success: true, data: chat });
+    } catch (error) {
+      res.status(400).json({ success: false, message: error });
+    }
   } else if (req.method == "PUT") {
     // To update the prisma of new created chat
   } else if (req.method == "DELETE") {

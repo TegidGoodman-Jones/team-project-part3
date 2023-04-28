@@ -53,7 +53,7 @@ const NewChatButton = (props: any): JSX.Element => {
       userId: props.userId,
     };
     const res = await axios.post(
-      `${process.env.NEXT_PUBLIC_HOST}/api/chat`,
+      `${process.env.NEXT_PUBLIC_HOST}/api/chats`,
       payload
     );
     props.setModal(false);

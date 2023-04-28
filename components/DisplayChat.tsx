@@ -1,10 +1,6 @@
-import { faUser } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import { FC, useEffect, useState } from "react";
 import TextInput from "./TextInput";
-import Cookies from "universal-cookie";
-import jwt from "jsonwebtoken";
-import axios from "axios";
 
 //static - need to change it so that it opens depending on what user chat is clicked
 
@@ -71,7 +67,7 @@ const DisplayChat: FC<DisplayChatProps> = (props) => {
                     className={`chat-bubble ${
                       props.userId == message.user.id
                         ? "chat-bubble-primary"
-                        : "chat-bubble-secondary"
+                        : "chat-bubble-accent"
                     }`}
                   >
                     {message.text}

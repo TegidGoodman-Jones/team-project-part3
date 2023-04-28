@@ -17,15 +17,15 @@ import jwt from "jsonwebtoken";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import $ from "jquery";
-import Cookies from "universal-cookie";
 import SidebarButton from "@/components/SidebarButton";
+import { useCookies } from "react-cookie";
 
 export default function data() {
   const [userId, setUserId] = useState();
+  const [cookies, setCookie] = useCookies(["token"]);
   const router = useRouter();
-  const cookies = new Cookies();
   useEffect(() => {
-    const token = String(cookies.get("token"));
+    const token = String(cookies.token);
     try {
       // json parse and stringify to please typescript
       let decoded = JSON.parse(

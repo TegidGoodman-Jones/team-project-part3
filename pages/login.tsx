@@ -1,17 +1,18 @@
 import Head from "next/head";
 import Image from "next/image";
 import logo from "../public/transparent_logo.png";
-import axios from 'axios';
-import $ from 'jquery';
+import axios from "axios";
+import $ from "jquery";
 import { AlertCircle } from "lucide-react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import Cookies from "universal-cookie";
-
+import { useEffect } from "react";
+import { verify } from "jsonwebtoken";
+import { useCookies } from "react-cookie";
 
 export default function Login() {
+  const [cookies, setCookie] = useCookies(["token"]);
   const router = useRouter();
-  const cookies = new Cookies();
   // function to handle form submit
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -28,9 +29,8 @@ export default function Login() {
       .then((response) => {
         // handle success
         const { token } = response.data;
-        console.log(token);
         // set token in local storage
-        cookies.set("token", token);
+        setCookie("token", token, { path: "/" });
         // redirect to chat if login successful
         router.push("/chat");
       })
@@ -43,7 +43,17 @@ export default function Login() {
           $(".alert").removeClass("hidden");
         }
       });
-  }
+  };
+
+  useEffect(() => {
+    try {
+      const token = String(cookies.token);
+      verify(token, "your_jwt_secret");
+      router.push("/chat");
+    } catch (e) {
+      console.log(e);
+    }
+  });
   return (
     <>
       <Head>

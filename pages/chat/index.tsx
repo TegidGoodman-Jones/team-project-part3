@@ -7,7 +7,7 @@ import ViewChats from "@/components/ViewChats";
 import Sidebar from "@/components/Sidebar";
 import Head from "next/head";
 import axios from "axios";
-import Cookies from "universal-cookie";
+import { useCookies } from "react-cookie";
 import SidebarButton from "@/components/SidebarButton";
 
 type Chats = {
@@ -44,16 +44,15 @@ type Chats = {
 
 const Chat: FC<Chats> = ({ chats }) => {
   const [userId, setUserId] = useState(0);
+  const [cookies, setCookie] = useCookies(["token"]);
   const router = useRouter();
-  const cookies = new Cookies();
   useEffect(() => {
-    const token = String(cookies.get("token"));
+    const token = String(cookies.token);
     try {
       // json parse and stringify to please typescript
       let decoded = JSON.parse(
         JSON.stringify(jwt.verify(token, "your_jwt_secret"))
       );
-      console.log(token);
       // set userId to state
       setUserId(decoded.userId);
       // change theme to user selected theme
@@ -92,6 +91,7 @@ const Chat: FC<Chats> = ({ chats }) => {
 
 export async function getServerSideProps(context: any) {
   const token = String(context.req.cookies.token);
+  console.log(token);
   try {
     // json parse and stringify to please typescript
     jwt.verify(token, "your_jwt_secret");
@@ -105,13 +105,14 @@ export async function getServerSideProps(context: any) {
     };
   } catch (e) {
     // if error with token send user to login page
-
+    console.log(e);
     return {
       redirect: {
         destination: "/login",
         permanent: false,
       },
     };
+    
   }
 }
 

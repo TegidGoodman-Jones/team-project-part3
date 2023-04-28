@@ -21,12 +21,11 @@ const EditChatModal = (props: any) => {
   const saveChat = async () => {
     const payload = {
       token: cookies.get("token"),
-      chatId: props.chat.chat.id,
       name: chatName,
       description: chatDescription,
     };
     const res = await axios.put(
-      `${process.env.NEXT_PUBLIC_HOST}/api/chat`,
+      `${process.env.NEXT_PUBLIC_HOST}/api/chats/${props.chat.chat.id}`,
       payload
     );
     props.setModal(false);
@@ -36,11 +35,14 @@ const EditChatModal = (props: any) => {
   const handleDelete = async () => {
     const payload = {
       token: cookies.get("token"),
-      chatId: props.chat.chat.id,
     };
-    const res = await axios.delete(`${process.env.NEXT_PUBLIC_HOST}/api/chat`, {
-      data: payload,
-    });
+
+    const res = await axios.delete(
+      `${process.env.NEXT_PUBLIC_HOST}/api/chats/${props.chat.chat.id}`,
+      {
+        data: payload,
+      }
+    );
     props.setModal(false);
     router.push("/chat");
   };
@@ -71,13 +73,16 @@ const EditChatModal = (props: any) => {
             ></textarea>
             <div className="flex gap-4 flex-wrap">
               {chatUsers.map((user: any) => {
-                  return (
-                    <div key={user.user.id} className="flex flex-shrink-0 items-center gap-1 bg-accent rounded py-1 px-2">
-                      <User size={20} />
-                      <span>{user.user.username}</span>
-                    </div>
-                  );
-                })}
+                return (
+                  <div
+                    key={user.user.id}
+                    className="flex flex-shrink-0 items-center gap-1 bg-accent text-base-100 rounded py-1 px-2"
+                  >
+                    <User size={20} />
+                    <span>{user.user.username}</span>
+                  </div>
+                );
+              })}
             </div>
           </div>
           <div className="modal-action">

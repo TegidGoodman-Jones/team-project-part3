@@ -6,9 +6,11 @@ import axios from "axios";
 import $ from "jquery";
 import { Info } from "lucide-react";
 import { useRouter } from "next/router";
+import { useCookies } from "react-cookie";
 
 export default function SignUp() {
   const router = useRouter();
+  const [cookies, setCookie] = useCookies(["token"]);
 
   // function to handle form submit
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -70,7 +72,7 @@ export default function SignUp() {
         const { token } = response.data;
         console.log(token);
         // set token in local storage
-        localStorage.setItem("token", token);
+        setCookie("token", token, { path: "/" });
         // redirect to chat
         router.push("/chat");
       })

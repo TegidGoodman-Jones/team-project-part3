@@ -45,12 +45,12 @@ const TextInput: FC<TextInputProps> = (props) => {
           <div className="flex  h-full items-center justify-center rounded p-2">
             <button
               id="send-button"
-              className=" text-white font-bold rounded-md m-2 active:group opacity-50"
+              className="font-bold rounded-md m-2 active:group text-secondary"
               onClick={handleSend}
             >
               <FontAwesomeIcon
                 icon={faPaperPlane}
-                className="w-5 text-neutral"
+                className="w-5"
               />
             </button>
           </div>

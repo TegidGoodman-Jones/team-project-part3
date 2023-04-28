@@ -6,15 +6,15 @@ import SidebarButton from "@/components/SidebarButton";
 import Sidebar from "@/components/Sidebar";
 import Head from "next/head";
 import axios from "axios";
-import Cookies from "universal-cookie";
 import { XCircle, CheckCircle, X } from "lucide-react";
+import { useCookies } from "react-cookie";
 
 export default function Account(props: any) {
   const [userId, setUserId] = useState();
+  const [cookies, setCookie] = useCookies(["token"]);
   const router = useRouter();
-  const cookies = new Cookies();
   useEffect(() => {
-    const token = String(cookies.get("token"));
+    const token = String(cookies.token);
     try {
       // json parse and stringify to please typescript
       let decoded = JSON.parse(
@@ -34,12 +34,16 @@ export default function Account(props: any) {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     const username = e.target[0].value;
-    const theme = e.target[1].value;
-    const token = String(cookies.get("token"));
+    const theme = e.target[2].value;
+    const token = String(cookies.token);
     const res = await axios.put(
       `${process.env.NEXT_PUBLIC_HOST}/api/users/${userId}`,
       { username, theme, token }
     );
+    let decoded = JSON.parse(JSON.stringify(jwt.decode(token)));
+    decoded.theme = theme;
+    const newToken = jwt.sign(decoded, "your_jwt_secret");
+    setCookie("token", newToken, { path: "/" });
     if (res.status === 200) {
       $("#success-alert").removeClass("hidden");
     } else {
