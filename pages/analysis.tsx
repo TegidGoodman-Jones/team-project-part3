@@ -25,6 +25,7 @@ export default function data() {
   const [cookies, setCookie] = useCookies(["token"]);
   const router = useRouter();
   useEffect(() => {
+    /*
     const token = String(cookies.token);
     try {
       // json parse and stringify to please typescript
@@ -39,7 +40,9 @@ export default function data() {
       // if error with token send user to login page
 
       router.push("/login");
+      
     }
+    */
     function ProjectChangeHandler(id: any, text: any) {
       console.log("ID: " + id + " Text: " + text);
     }
@@ -162,17 +165,6 @@ export default function data() {
                   <option value="2">Bart Chart</option>
                   <option value="3">Lisa Felecia</option>
                   <option value="4">Maggie Camie</option>
-                </select>
-                <select
-                  id="statisticSelect"
-                  className="select w-1/3 bg-gray-300 text-black dark:text-white dark:bg-gray-800 "
-                >
-                  <option value="placeholder" disabled selected>
-                    Statistic select
-                  </option>
-                  <option value="project-stats">Project statistics</option>
-                  <option value="task-stats">Task statistics</option>
-                  <option value="training-stats">Training statistics</option>
                 </select>
               </div>
             </div>
