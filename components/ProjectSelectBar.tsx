@@ -1,6 +1,10 @@
-import { getSampleProjectData, getSampleTaskData, getSampleEmployeeData } from "@/pages/analysisCopy";
+import { getSampleProjectData, getSampleTaskData, getSampleEmployeeData } from "@/pages/analysis";
 
+//OVERVIEW: Creates top bar containing two drop down menus to select employees and projects
+//Note: I think having an 'All Projects' option could turn out to be more trouble than it's worth.
 
+//Creates drop down menus
+//takes: an array of project names, an array of employee names
 export function ProjectSelectBar(props: any){
 
   const projectOptions = props.projects.map((project: String) => 
@@ -39,6 +43,7 @@ export function ProjectSelectBar(props: any){
   )
 }
 
+//Fetches and maps data to the correct format to be passed as props
 export default function ProjectSelectBarTile(){
  
 const sampleProjectData = getSampleProjectData();

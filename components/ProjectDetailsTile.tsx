@@ -1,5 +1,10 @@
-import { getSampleEmployeeData, getSampleProjectData } from "@/pages/analysisCopy";
+import { getSampleEmployeeData, getSampleProjectData } from "@/pages/analysis";
 import { Title } from "@tremor/react";
+
+//OVERVIEW: Creates card containing all information of the currently selected project
+    //name, description, deadline, project leader
+
+//note: deadline (string) not currently stored in the prisma schema
 
 type taskType = {
     id: number;
@@ -18,6 +23,8 @@ type projectType = {
     tasks: taskType[]
 };
 
+//Creates the card containing the information
+//takes: (one) project object
 export function ProjectDetailsTile(props: projectType){
     return (
         <div
@@ -56,12 +63,14 @@ export function ProjectDetailsTile(props: projectType){
     )
 }
 
+//Fetches project data and selects the appropriate project + project leader
 export default function ProjectDetailsProjectTile() {
     const sampleProjectDataFull = getSampleProjectData();
     //Sample data only contains one project so this will work for now
     let sampleProjectData = sampleProjectDataFull[0];
 
-    let projectLeader = "Team Lead";
+    //if no project leader is assigned, will display 'Team Led'
+    let projectLeader = "Team Led";
     const sampleEmployeeData = getSampleEmployeeData();
     for (let i=0; i<=sampleEmployeeData.length -1; i++){
         if (sampleProjectData.leaderId == sampleEmployeeData[i].id){

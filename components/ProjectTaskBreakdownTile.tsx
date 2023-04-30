@@ -1,6 +1,15 @@
-import { getSampleEmployeeData, getSampleProjectData, getSampleTaskData } from "@/pages/analysisCopy";
+import { getSampleEmployeeData, getSampleProjectData, getSampleTaskData } from "@/pages/analysis";
 
+//OVERVIEW: Creates scrollable list of employees with each of their designated tasks 
 
+/*
+Possible To-Dos:
+ - Card only displayed if the employee is assigned to project selected in drop down / employee is selected in drop down
+ - Make tick boxes work (or just remove them completely?)
+ */
+
+//Creates and displays the container with a card for each employee
+//takes: array of employee objects, array of task objects
 export function ProjectTaskBreakdownTile(props: any){
     let employeeList = props.employeeList;
     const taskList = props.taskList;
@@ -14,7 +23,6 @@ export function ProjectTaskBreakdownTile(props: any){
             }
         }
     }
-
     
     const allTaskBreakdown = props.employeeList.map((employeeBreakdown: any) =>
     <div
@@ -62,6 +70,7 @@ export function ProjectTaskBreakdownTile(props: any){
     )
 }
 
+//Fetches data and passes into component
 export default function ProjectTaskBreakdown(){
 
     const employeeList = getSampleEmployeeData();

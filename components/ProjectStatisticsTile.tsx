@@ -1,3 +1,4 @@
+import { getSampleEmployeeData, getSampleTaskData } from "@/pages/analysis";
 import {
     Card,
     Title,
@@ -9,7 +10,10 @@ import {
     ProgressBar,
   } from "@tremor/react";
 
+//OVERVIEW: Calculates data for and creates the card containing a pie chart and bar graph
 
+//Draws the elements to the screen
+//Takes: data for the progress bar, pie chart and bar chart as input
 export function ProjectStats(props: any){
 
     return (
@@ -19,7 +23,7 @@ export function ProjectStats(props: any){
         </Title>
         <hr />
         <br />
-
+        
         <Flex>
             <Text className="dark:text-white text-black">
             Tasks Complete &bull; {props.progressBarData}%
@@ -46,8 +50,8 @@ export function ProjectStats(props: any){
                 <BarChart
                 layout="vertical"
                 data={props.taskBarData}
-                index="name"
-                categories={["Emp 1", "Emp 2", "Emp 3", "Emp 4", "Emp 5"]}
+                index="employee"
+                categories={["tasks"]}
                 showAnimation={false}
                 showLegend={false}
                 colors={[
@@ -63,47 +67,86 @@ export function ProjectStats(props: any){
         </div>
     )}
 
+    //Gathers and formats data used to display the graphs on the card then creates the component
     export default function ProjectStatisticsTile() {
-        const progressBarData = 60
+
+      const taskList = getSampleTaskData();
+      const employeeList = getSampleEmployeeData();
+
+      let backlogTaskCount = 0,
+        toDoTaskCount = 0,
+        inProgTaskCount = 0,
+        reviewTaskCount = 0,
+        completedTaskCount = 0;
+
+      for (let i=0; i<= taskList.length -1; i++){
+        switch(taskList[i].status){
+          case "Backlog":
+            backlogTaskCount ++;
+            break;
+          case "To-Do":
+            toDoTaskCount ++;
+            break;
+          case "In Progress":
+            inProgTaskCount ++;
+            break;
+          case "Review":
+            reviewTaskCount ++;
+            break;
+          case "Completed":
+            completedTaskCount ++;
+            break;
+        }
+      }
+
+        const progressBarData = (completedTaskCount / taskList.length) * 100
 
         const kanbanPieData = [
             {
               name: "Backlog",
-              value: 17,
+              value: backlogTaskCount,
             },
             {
               name: "To-Do",
-              value: 24,
+              value: toDoTaskCount,
             },
             {
               name: "In Progress",
-              value: 32,
+              value: inProgTaskCount,
             },
             {
               name: "Review",
-              value: 11,
+              value: reviewTaskCount,
             },
             {
               name: "Completed",
-              value: 21,
+              value: completedTaskCount,
             },
           ];
-        
-          const taskBarData = [
-            {
-              topic: "Task Assignment",
-              "Emp 1": 3,
-              "Emp 2": 5,
-              "Emp 3": 2,
-              "Emp 4": 4,
-              "Emp 5": 6,
-            },
-          ];
+
+          let barChartData = []
+          let employeeNames = []
+          for (let i=0; i<=employeeList.length -1; i++){
+            barChartData.push({
+              employee: employeeList[i].name,
+              tasks: 0
+          });
+            employeeNames.push(employeeList[i].name)
+      
+            for (let j=0; j<=taskList.length -1; j++){
+              if (employeeList[i].id == taskList[j].employeeId){
+                barChartData[i].tasks ++;
+                console.log(barChartData[i]);
+              }
+            }
+          }
+  
 
           return(
             <ProjectStats 
             progressBarData={progressBarData}
             kanbanPieData={kanbanPieData}
-            taskBarData={taskBarData}/>
+            taskBarData={barChartData}
+            taskBarCategories={employeeNames}/>
           )
     }
