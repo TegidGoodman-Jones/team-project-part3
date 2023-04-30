@@ -14,7 +14,7 @@ type projectType = {
     name: string;
     description: string;
     deadline: string;
-    leaderId: number;
+    leader: String;
     tasks: taskType[]
 };
 
@@ -48,10 +48,10 @@ export function ProjectDetailsTile(props: projectType){
                     <p id="project-card-desc mt-0 ">
                     {props.description}
                     </p>
-                    <span className="label-text text-black dark:text-white mt-2 mb-0">
+                    <span className="label-text text-black dark:text-gray-400 mt-2 mb-0">
                     Leader
                     </span>
-                    <p id="project-card-leader mt-0">{props.leaderId}</p>
+                    <p id="project-card-leader mt-0">{props.leader}</p>
         </div>
     )
 }
@@ -61,13 +61,21 @@ export default function ProjectDetailsProjectTile() {
     //Sample data only contains one project so this will work for now
     let sampleProjectData = sampleProjectDataFull[0];
 
+    let projectLeader = "Team Lead";
+    const sampleEmployeeData = getSampleEmployeeData();
+    for (let i=0; i<=sampleEmployeeData.length -1; i++){
+        if (sampleProjectData.leaderId == sampleEmployeeData[i].id){
+            projectLeader = sampleEmployeeData[i].name;
+        }
+    }
+
     return (
         <ProjectDetailsTile 
             id={sampleProjectData.id}
             name={sampleProjectData.name}
             description={sampleProjectData.description}
             deadline={sampleProjectData.deadline}
-            leaderId={sampleProjectData.leaderId}
+            leader={projectLeader}
             tasks={sampleProjectData.tasks}/>
     )
 }
