@@ -64,10 +64,17 @@ export function ProjectDetailsTile(props: projectType){
 }
 
 //Fetches project data and selects the appropriate project + project leader
-export default function ProjectDetailsProjectTile() {
+export default function ProjectDetailsProjectTile(props: any) {
+
     const sampleProjectDataFull = getSampleProjectData();
-    //Sample data only contains one project so this will work for now
+    console.log(props.currentProject);
+
     let sampleProjectData = sampleProjectDataFull[0];
+    for (let i=0; i<=sampleProjectDataFull.length -1; i++){
+        if (props.currentProject == sampleProjectDataFull[i].name){
+            sampleProjectData = sampleProjectDataFull[i];
+        }
+    }
 
     //if no project leader is assigned, will display 'Team Led'
     let projectLeader = "Team Led";
@@ -77,6 +84,7 @@ export default function ProjectDetailsProjectTile() {
             projectLeader = sampleEmployeeData[i].name;
         }
     }
+    
 
     return (
         <ProjectDetailsTile 

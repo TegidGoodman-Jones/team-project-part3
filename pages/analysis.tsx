@@ -26,6 +26,10 @@ export default function data() {
   const [userId, setUserId] = useState();
   const [cookies, setCookie] = useCookies(["token"]);
   const router = useRouter();
+
+  const sampleProjectDataFull = getSampleProjectData();
+  const [currentProject, setCurrent] = useState(sampleProjectDataFull[0].name);
+
   useEffect(() => {
     /*
     const token = String(cookies.token);
@@ -45,23 +49,24 @@ export default function data() {
       
     }
     */
+   /*
     function ProjectChangeHandler(id: any, text: any) {
       console.log("ID: " + id + " Text: " + text);
     }
+    */
+
+    const projectSelect = $("#projectSelect");
+        projectSelect.on("change", function () {
+          // handle project change
+          const selectedProject = $(this).val();
+          setCurrent(
+            $(this).find("option:selected").text()
+          );
+        });
 
     function EmployeeChangeHandler(id: any, text: any) {
       console.log("ID: " + id + " Text: " + text);
     }
-
-    const projectSelect = $("#projectSelect");
-    projectSelect.on("change", function () {
-      // handle project change
-      const selectedProject = $(this).val();
-      ProjectChangeHandler(
-        selectedProject,
-        $(this).find("option:selected").text()
-      );
-    });
 
     const employeeSelect = $("#employeeSelect");
     employeeSelect.on("change", function () {
@@ -95,7 +100,8 @@ export default function data() {
             <div className=" w-full h-full">
               <div className=" w-full  max-h-72 flex flex-row">
                 
-                <ProjectDetailsProjectTile />
+                <ProjectDetailsProjectTile 
+                currentProject={currentProject}/>
 
                 <ProjectTaskBreakdownTile />
               </div>
@@ -169,6 +175,14 @@ export default function data() {
           leaderId: 2,
           tasks: taskArray
 
+        },
+        {
+          id: 2,
+          name: "Stay Hydrated",
+          description: "Don't Die-drate, Hydrate!",
+          deadline: "01/05/2023",
+          leaderId: 3,
+          tasks: taskArray
         }
       ]
     )
