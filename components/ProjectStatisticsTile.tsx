@@ -1,4 +1,4 @@
-import { getSampleEmployeeData, getSampleTaskData } from "@/pages/analysis";
+import { getSampleEmployeeData, getSampleTaskData, getSampleProjectData } from "@/pages/analysis";
 import {
     Card,
     Title,
@@ -31,7 +31,7 @@ export function ProjectStats(props: any){
         
         </Flex>
         <ProgressBar
-            className="w-full h-1/2"
+            className="w-full"
             percentageValue={props.progressBarData}
             color="blue"
         />
@@ -68,10 +68,45 @@ export function ProjectStats(props: any){
     )}
 
     //Gathers and formats data used to display the graphs on the card then creates the component
-    export default function ProjectStatisticsTile() {
+    export default function ProjectStatisticsTile(props: any) {
 
       const taskList = getSampleTaskData();
       const employeeList = getSampleEmployeeData();
+      const projectList = getSampleProjectData();
+
+
+    const currentEmployee = props.currentEmployee;
+    const currentProjectName = props.currentProject;
+
+    //Gets the ID of the project
+    let currentProjectId;
+    for (let i=0; i<=projectList.length -1; i++){
+        if (projectList[i].name == currentProjectName){
+            currentProjectId = projectList[i].id
+        }
+    }
+    //Gets the ID and complete object of the employee
+    let currentEmployeeId = -1;
+    let filteredEmployeeList = employeeList
+    for (let i=0; i<=employeeList.length -1; i++){
+        if (employeeList[i].name == currentEmployee){
+            currentEmployeeId = employeeList[i].id
+            filteredEmployeeList = [employeeList[i]]
+        }
+    }
+
+    let filteredTaskList = []
+    if (currentProjectName == "All"){
+      filteredTaskList = taskList
+    }else{
+      for (let i=0; i<=taskList.length -1; i++){
+          if (taskList[i].projectId == currentProjectId){
+              if (taskList[i].employeeId == currentEmployeeId || currentEmployeeId == -1){
+                  filteredTaskList.push(taskList[i])
+              }
+          }
+      }
+    }
 
       let backlogTaskCount = 0,
         toDoTaskCount = 0,
@@ -79,8 +114,8 @@ export function ProjectStats(props: any){
         reviewTaskCount = 0,
         completedTaskCount = 0;
 
-      for (let i=0; i<= taskList.length -1; i++){
-        switch(taskList[i].status){
+      for (let i=0; i<= filteredTaskList.length -1; i++){
+        switch(filteredTaskList[i].status){
           case "Backlog":
             backlogTaskCount ++;
             break;
@@ -126,15 +161,15 @@ export function ProjectStats(props: any){
 
           let barChartData = []
           let employeeNames = []
-          for (let i=0; i<=employeeList.length -1; i++){
+          for (let i=0; i<=filteredEmployeeList.length -1; i++){
             barChartData.push({
-              employee: employeeList[i].name,
+              employee: filteredEmployeeList[i].name,
               tasks: 0
           });
-            employeeNames.push(employeeList[i].name)
+            employeeNames.push(filteredEmployeeList[i].name)
       
-            for (let j=0; j<=taskList.length -1; j++){
-              if (employeeList[i].id == taskList[j].employeeId){
+            for (let j=0; j<=filteredTaskList.length -1; j++){
+              if (filteredEmployeeList[i].id == filteredTaskList[j].employeeId){
                 barChartData[i].tasks ++;
                 console.log(barChartData[i]);
               }

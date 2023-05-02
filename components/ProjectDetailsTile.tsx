@@ -44,21 +44,21 @@ export function ProjectDetailsTile(props: projectType){
                     className="inline-flex flex-row justify-between mb-2"
                     >
                     {" "}
-                    {props.name}{" "}
+                        {props.name}{" "}
                     <span className="text-emerald-400">{props.deadline}</span>
                 </Title>
-                    <hr />
-                    <br />
-                    <span className="label-text  dark:text-gray-400 text-black mt-2 mb-0">
-                    Description
-                    </span>
-                    <p id="project-card-desc mt-0 ">
-                    {props.description}
-                    </p>
-                    <span className="label-text text-black dark:text-gray-400 mt-2 mb-0">
-                    Leader
-                    </span>
-                    <p id="project-card-leader mt-0">{props.leader}</p>
+            <hr />
+            <br />
+            <span className="label-text  dark:text-gray-400 text-black mt-2 mb-0">
+                Description
+            </span>
+            <p id="project-card-desc mt-0 ">
+                {props.description}
+            </p>
+            <span className="label-text text-black dark:text-gray-400 mt-2 mb-0">
+                Leader
+            </span>
+            <p id="project-card-leader mt-0">{props.leader}</p>
         </div>
     )
 }
@@ -67,7 +67,6 @@ export function ProjectDetailsTile(props: projectType){
 export default function ProjectDetailsProjectTile(props: any) {
 
     const sampleProjectDataFull = getSampleProjectData();
-    console.log(props.currentProject);
 
     let sampleProjectData = sampleProjectDataFull[0];
     for (let i=0; i<=sampleProjectDataFull.length -1; i++){

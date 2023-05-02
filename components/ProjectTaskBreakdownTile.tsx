@@ -2,12 +2,6 @@ import { getSampleEmployeeData, getSampleProjectData, getSampleTaskData } from "
 
 //OVERVIEW: Creates scrollable list of employees with each of their designated tasks 
 
-/*
-Possible To-Dos:
- - Card only displayed if the employee is assigned to project selected in drop down / employee is selected in drop down
- - Make tick boxes work (or just remove them completely?)
- */
-
 //Creates and displays the container with a card for each employee
 //takes: array of employee objects, array of task objects
 export function ProjectTaskBreakdownTile(props: any){
@@ -71,15 +65,52 @@ export function ProjectTaskBreakdownTile(props: any){
 }
 
 //Fetches data and passes into component
-export default function ProjectTaskBreakdown(){
+export default function ProjectTaskBreakdown(props: any){
 
+    const projectList = getSampleProjectData();
+    console.log(projectList);
     const employeeList = getSampleEmployeeData();
     const taskList = getSampleTaskData();
+
+    const currentEmployee = props.currentEmployee;
+    const currentProjectName = props.currentProject;
+
+    //Gets the ID of the project
+    let currentProjectId;
+    for (let i=0; i<=projectList.length -1; i++){
+        if (projectList[i].name == currentProjectName){
+            currentProjectId = projectList[i].id
+        }
+    }
+    //Gets the ID and complete object of the employee
+    let currentEmployeeId = -1;
+    let filteredEmployeeList = employeeList
+    for (let i=0; i<=employeeList.length -1; i++){
+        if (employeeList[i].name == currentEmployee){
+            currentEmployeeId = employeeList[i].id
+            filteredEmployeeList = [employeeList[i]]
+        }
+    }
+
+    let filteredTaskList = []
+    if (currentProjectName == "All"){
+        filteredTaskList = taskList
+    }else{
+        for (let i=0; i<=taskList.length -1; i++){
+            if (taskList[i].projectId == currentProjectId){
+                if (taskList[i].employeeId == currentEmployeeId || currentEmployeeId == -1){
+                    filteredTaskList.push(taskList[i])
+                }
+            }
+        }
+    }
+
+
     
 
     return (
         <ProjectTaskBreakdownTile 
-            employeeList={employeeList}
-            taskList={taskList}/>
+            employeeList={filteredEmployeeList}
+            taskList={filteredTaskList}/>
     )
 }

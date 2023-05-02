@@ -24,6 +24,7 @@ export function ProjectSelectBar(props: any){
         <option value="placeholder" disabled selected>
           Project select
         </option>
+        <option value="all">All</option>
         {projectOptions}
 
       </select>

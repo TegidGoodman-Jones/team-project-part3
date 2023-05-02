@@ -28,7 +28,9 @@ export default function data() {
   const router = useRouter();
 
   const sampleProjectDataFull = getSampleProjectData();
-  const [currentProject, setCurrent] = useState(sampleProjectDataFull[0].name);
+  const [currentProject, setCurrentProject] = useState("All");
+
+  const [currentEmployee, setCurrentEmployee] = useState("All");
 
   useEffect(() => {
     /*
@@ -59,21 +61,16 @@ export default function data() {
         projectSelect.on("change", function () {
           // handle project change
           const selectedProject = $(this).val();
-          setCurrent(
+          setCurrentProject(
             $(this).find("option:selected").text()
           );
         });
-
-    function EmployeeChangeHandler(id: any, text: any) {
-      console.log("ID: " + id + " Text: " + text);
-    }
 
     const employeeSelect = $("#employeeSelect");
     employeeSelect.on("change", function () {
       // handle employee change
       const selectedEmployee = $(this).val();
-      EmployeeChangeHandler(
-        selectedEmployee,
+      setCurrentEmployee(
         $(this).find("option:selected").text()
       );
     });
@@ -103,9 +100,13 @@ export default function data() {
                 <ProjectDetailsProjectTile 
                 currentProject={currentProject}/>
 
-                <ProjectTaskBreakdownTile />
+                <ProjectTaskBreakdownTile 
+                currentProject={currentProject}
+                currentEmployee={currentEmployee}/>
               </div>
-              <ProjectStatisticsTile/>
+              <ProjectStatisticsTile
+              currentProject={currentProject}
+              currentEmployee={currentEmployee}/>
             </div>
           </div>
         </div>
@@ -121,43 +122,75 @@ export default function data() {
       [
         {
           id: 1,
-          name: "General Crime",
-          description: "Nothing too illegal, just the obvious stuff.",
+          name: "Design Chat",
+          description: "Appearance of Chat Bot",
           status: "Completed",
           projectId: 1,
           employeeId: 1
         },
         {
           id: 2,
-          name: "Rob a Bank",
-          description: "Spread the money through the streets",
-          status: "In Progress",
+          name: "Gauge Interest",
+          description: "Will affect how the bot responds",
+          status: "Completed",
+          projectId: 1,
+          employeeId: 3
+        },
+        {
+          id: 3,
+          name: "Write Welcome Messages",
+          description: "Friendly and inviting",
+          status: "Review",
           projectId: 1,
           employeeId: 1
         },
         {
-          id: 3,
-          name: "Cybercrime",
-          description: "My personal favourite",
-          status: "Review",
+          id: 4,
+          name: "Design Conversation Flow",
+          description: "Flow and dialogue for the chatbot",
+          status: "In-Progress",
           projectId: 1,
           employeeId: 2
         },
         {
-          id: 4,
-          name: "Kidnapping",
-          description: "Okay this got a little dark.",
+          id: 5,
+          name: "Publish User Guide",
+          description: "Guide to using the chatbot",
           status: "Backlog",
           projectId: 1,
           employeeId: 3
         },
         {
-          id: 5,
-          name: "Cover Up",
-          description: "Someone's got to do it",
-          status: "In Progress",
-          projectId: 1,
+          id: 6,
+          name: "Create Accounts",
+          description: "Social Media Accounts",
+          status: "Completed",
+          projectId: 2,
           employeeId: 2
+        },
+        {
+          id: 7,
+          name: "Schedule Posts",
+          description: "Release in orderly fashion",
+          status: "In Progress",
+          projectId: 2,
+          employeeId: 1
+        },
+        {
+          id: 8,
+          name: "Don't Get Cancelled",
+          description: "Stay away from Twitter.com",
+          status: "To-Do",
+          projectId: 2,
+          employeeId: 3,
+        },
+        {
+          id: 9,
+          name: "Engage with Followers",
+          description: "If we have any",
+          status: "Backlog",
+          projectId: 2,
+          employeeId: 3
         }
       ]
     )
@@ -169,19 +202,18 @@ export default function data() {
       [
         {
           id: 1,
-          name: "Launder Money",
-          description: "Launder all of Make-it-all's revenue because clearly the company is incompetent.",
-          deadline: "06/05/2023",
-          leaderId: 2,
+          name: 'Chat Bot',
+          description: 'Developing a chatbot for customer support',
+          deadline: '30/06/2023',
+          leaderId: 1,
           tasks: taskArray
-
         },
         {
           id: 2,
-          name: "Stay Hydrated",
-          description: "Don't Die-drate, Hydrate!",
-          deadline: "01/05/2023",
-          leaderId: 3,
+          name: 'Social Media Management',
+          description: 'Develop Make-It-Alls brand using social media',
+          deadline: '15/09/2023',
+          leaderId: 2,
           tasks: taskArray
         }
       ]
@@ -193,15 +225,15 @@ export function getSampleEmployeeData() {
     [
       {
         id: 1,
-        name: "Edward Hall"
+        name: "Suzanne Collins"
       },
       {
         id: 2,
-        name: "Benjamin Evans"
+        name: "Wilfred Owen"
       },
       {
         id: 3,
-        name: "William Afton"
+        name: "Jordan Peele"
       }
     ]
   )
