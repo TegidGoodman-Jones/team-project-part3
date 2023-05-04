@@ -21,7 +21,6 @@ export default async function handler(
       try {
         
         let { id } = req.query;
-        console.log("Iddddddd: " + id);
         const { token } = req.body;
 
 

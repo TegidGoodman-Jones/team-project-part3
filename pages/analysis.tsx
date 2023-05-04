@@ -120,35 +120,37 @@ export default function data() {
   //Note: task data must be defined before project data so that task array can be included in project
 
 // API CALL FUNCTIONS
-//  async function getTasksByApi() {
-//   return await axios.get(`http://localhost:3000/api/tasks/}`)
-//  }
+ async function getTasksByApi() {
+  // return await axios.get(`http://localhost:3000/api/tasks/}`)
+  const res = await axios.get(`/api/tasks/`);
+  return res.data;
+ }
 
 // async function getTasksByApi() {
-//   return await axios.get(`${process.env.HOST}/api/tasks/`)
+//   return await axios.get(`/api/tasks/`)
 // }
 
   // async function getProjectsByApi() {
-  //   return await axios.get(`${process.env.HOST}/api/projects/`)
+  //   return await axios.get(`/api/projects/`)
   // }
 
 //   async function getEmployeesByApi() {
-//     return await axios.get(`${process.env.HOST}/api/employees/`)
+//     return await axios.get(`/api/employees/`)
 //   }
 
 //   async function getProjectByApi(projectId: string) {
-//     return await axios.get(`${process.env.HOST}/api/projects/` + projectId)
+//     return await axios.get(`/api/projects/` + projectId)
 //   }
 
 // async function getEmployeeTasksByApi(userId: string) {
-//     return await axios.get(`${process.env.HOST}/api/tasks/` + userId)
+//     return await axios.get(`/api/tasks/` + userId)
 //   }
 
 
 
 
   export function getSampleTaskData() {
-    // console.log("TEST API CALL : " + getTasksByApi());
+    console.log("TEST API CALL : " + getTasksByApi());
     return (
       [
         {
