@@ -21,6 +21,7 @@ import ProjectDetailsProjectTile from "@/components/ProjectDetailsTile";
 import ProjectSelectBarTile from "@/components/ProjectSelectBar";
 import ProjectTaskBreakdownTile from "@/components/ProjectTaskBreakdownTile";
 import ProjectStatisticsTile from "@/components/ProjectStatisticsTile";
+import axios from "axios";
 
 export default function data() {
   const [userId, setUserId] = useState();
@@ -117,7 +118,37 @@ export default function data() {
 
 //SAMPLE DATA
   //Note: task data must be defined before project data so that task array can be included in project
+
+// API CALL FUNCTIONS
+//  async function getTasksByApi() {
+//   return await axios.get(`http://localhost:3000/api/tasks/}`)
+//  }
+
+// async function getTasksByApi() {
+//   return await axios.get(`${process.env.HOST}/api/tasks/`)
+// }
+
+  // async function getProjectsByApi() {
+  //   return await axios.get(`${process.env.HOST}/api/projects/`)
+  // }
+
+//   async function getEmployeesByApi() {
+//     return await axios.get(`${process.env.HOST}/api/employees/`)
+//   }
+
+//   async function getProjectByApi(projectId: string) {
+//     return await axios.get(`${process.env.HOST}/api/projects/` + projectId)
+//   }
+
+// async function getEmployeeTasksByApi(userId: string) {
+//     return await axios.get(`${process.env.HOST}/api/tasks/` + userId)
+//   }
+
+
+
+
   export function getSampleTaskData() {
+    console.log("TEST API CALL : " + getTasksByApi());
     return (
       [
         {

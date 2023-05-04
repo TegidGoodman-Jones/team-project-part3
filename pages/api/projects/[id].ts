@@ -4,13 +4,6 @@ import { PrismaClient, User, Task, Project } from "@prisma/client";
 import { decode, verify } from "jsonwebtoken";
 const prisma = new PrismaClient();
 
-interface TokenType {
-    userId: number;
-    iat: number;
-    exp: number;
-    theme: string;
-  }
-
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
@@ -41,15 +34,18 @@ export default async function handler(
         //     }
         //   },
 
-          const tasks = await prisma.task.findMany({
+          const projects = await prisma.project.findMany({
+            where: {
+              id: Number(id),
+            },
           });
 
           // specific project by id
-          // all projects - done
+          // all projects 
           // all users
-          // all tasks - done
+          // all tasks
           // a users task by id - done
-          // a projects by id - done
+          // a projects by id
           
           
 
@@ -87,7 +83,7 @@ export default async function handler(
         //     message: "Task not found",
         //   });
         // }
-        res.status(200).json({ success: true, data: tasks });
+        res.status(200).json({ success: true, data: projects });
       } catch (error) {
         console.log(error);
         res.status(400).json({ success: false, message: "Hellooo" });
