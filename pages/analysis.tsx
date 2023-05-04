@@ -148,7 +148,7 @@ export default function data() {
 
 
   export function getSampleTaskData() {
-    console.log("TEST API CALL : " + getTasksByApi());
+    // console.log("TEST API CALL : " + getTasksByApi());
     return (
       [
         {
