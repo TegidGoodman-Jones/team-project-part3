@@ -120,31 +120,36 @@ export default function data() {
   //Note: task data must be defined before project data so that task array can be included in project
 
 // API CALL FUNCTIONS
- async function getTasksByApi() {
+ //async function getTasksByApi() {
   // return await axios.get(`http://localhost:3000/api/tasks/}`)
-  const res = await axios.get(`/api/tasks/`);
-  return res.data;
+  //const res = await axios.get(`/api/tasks/`);
+  //return res.data;
+ //}
+
+ //Gets all tasks
+ export async function getTasksByApi() {
+  return (await axios.get(`/api/tasks/`));
  }
 
-// async function getTasksByApi() {
-//   return await axios.get(`/api/tasks/`)
-// }
+//Gets all projects
+   export async function getProjectsByApi() {
+     return (await axios.get(`/api/projects/`));
+   }
 
-  // async function getProjectsByApi() {
-  //   return await axios.get(`/api/projects/`)
-  // }
+  //Gets all employees
+   export async function getEmployeesByApi() {
+     return (await axios.get(`/api/employees/`));
+   }
 
-//   async function getEmployeesByApi() {
-//     return await axios.get(`/api/employees/`)
-//   }
+//Gets project by projectId
+   export async function getProjectByApi(projectId: string) {
+     return (await axios.get(`/api/projects/` + projectId));
+   }
 
-//   async function getProjectByApi(projectId: string) {
-//     return await axios.get(`/api/projects/` + projectId)
-//   }
-
-// async function getEmployeeTasksByApi(userId: string) {
-//     return await axios.get(`/api/tasks/` + userId)
-//   }
+//Gets employee by employeeId
+ export async function getEmployeeTasksByApi(userId: string) {
+     return (await axios.get(`/api/tasks/` + userId));
+   }
 
 
 

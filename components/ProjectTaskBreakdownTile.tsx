@@ -68,7 +68,6 @@ export function ProjectTaskBreakdownTile(props: any){
 export default function ProjectTaskBreakdown(props: any){
 
     const projectList = getSampleProjectData();
-    console.log(projectList);
     const employeeList = getSampleEmployeeData();
     const taskList = getSampleTaskData();
 

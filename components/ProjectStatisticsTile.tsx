@@ -171,7 +171,6 @@ export function ProjectStats(props: any){
             for (let j=0; j<=filteredTaskList.length -1; j++){
               if (filteredEmployeeList[i].id == filteredTaskList[j].employeeId){
                 barChartData[i].tasks ++;
-                console.log(barChartData[i]);
               }
             }
           }

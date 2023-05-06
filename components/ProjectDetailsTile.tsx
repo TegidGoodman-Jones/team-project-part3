@@ -1,10 +1,8 @@
-import { getSampleEmployeeData, getSampleProjectData } from "@/pages/analysis";
+import { getProjectByApi, getEmployeesByApi } from "@/pages/analysis";
 import { Title } from "@tremor/react";
 
 //OVERVIEW: Creates card containing all information of the currently selected project
     //name, description, deadline, project leader
-
-//note: deadline (string) not currently stored in the prisma schema
 
 type taskType = {
     id: number;
@@ -64,34 +62,30 @@ export function ProjectDetailsTile(props: projectType){
 }
 
 //Fetches project data and selects the appropriate project + project leader
-export default function ProjectDetailsProjectTile(props: any) {
+export default async function ProjectDetailsProjectTile(props: any) {
 
-    const sampleProjectDataFull = getSampleProjectData();
-
-    let sampleProjectData = sampleProjectDataFull[0];
-    for (let i=0; i<=sampleProjectDataFull.length -1; i++){
-        if (props.currentProject == sampleProjectDataFull[i].name){
-            sampleProjectData = sampleProjectDataFull[i];
-        }
-    }
+    //Name of project in drop down
+    const currentProject = props.currentProject;
+    //Returns project
+    const projectData = await getProjectByApi(currentProject)
+    const allEmployeeData = await getEmployeesByApi()
 
     //if no project leader is assigned, will display 'Team Led'
     let projectLeader = "Team Led";
-    const sampleEmployeeData = getSampleEmployeeData();
-    for (let i=0; i<=sampleEmployeeData.length -1; i++){
-        if (sampleProjectData.leaderId == sampleEmployeeData[i].id){
-            projectLeader = sampleEmployeeData[i].name;
+    for (let i=0; i<=allEmployeeData.data.length -1; i++){
+        if (projectData.data.leaderId == allEmployeeData.data[i].id){
+            projectLeader = allEmployeeData.data[i].name;
         }
     }
     
 
     return (
         <ProjectDetailsTile 
-            id={sampleProjectData.id}
-            name={sampleProjectData.name}
-            description={sampleProjectData.description}
-            deadline={sampleProjectData.deadline}
+            id={projectData.data.id}
+            name={projectData.data.name}
+            description={projectData.data.description}
+            deadline={projectData.data.deadline}
             leader={projectLeader}
-            tasks={sampleProjectData.tasks}/>
+            tasks={projectData.data.tasks}/>
     )
 }
