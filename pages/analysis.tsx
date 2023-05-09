@@ -19,63 +19,72 @@ import { useCookies } from "react-cookie";
 
 import ProjectDetailsProjectTile from "@/components/ProjectDetailsTile";
 import ProjectSelectBarTile from "@/components/ProjectSelectBar";
-import ProjectTaskBreakdownTile from "@/components/ProjectTaskBreakdownTile";
-import ProjectStatisticsTile from "@/components/ProjectStatisticsTile";
+import { ProjectTaskBreakdown } from "@/components/ProjectTaskBreakdownTile";
+import { ProjectStatisticsTile }  from "@/components/ProjectStatisticsTile";
 import axios from "axios";
+
+interface Project {
+  id: number;
+  name: string;
+  description: string;
+  deadline: string;
+  leaderId: number;
+  tasks: any[];
+}
 
 export default function data() {
   const [userId, setUserId] = useState();
   const [cookies, setCookie] = useCookies(["token"]);
   const router = useRouter();
 
-  const sampleProjectDataFull = getSampleProjectData();
-  const [currentProject, setCurrentProject] = useState("All");
+  const [sampleProjectDataFull, setSampleProjectDataFull] = useState<Project[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getSampleProjectData();
+      setSampleProjectDataFull(data);
+    };
+  
+    fetchData();
+  }, []);
+
+  const [currentProject, setCurrentProject] = useState(1);
 
   const [currentEmployee, setCurrentEmployee] = useState("All");
 
   useEffect(() => {
-    /*
-    const token = String(cookies.token);
-    try {
-      // json parse and stringify to please typescript
-      let decoded = JSON.parse(
-        JSON.stringify(jwt.verify(token, "your_jwt_secret"))
-      );
-      // set userId to state
-      setUserId(decoded.userId);
-      // change theme to user selected theme
-      $("html").attr("data-theme", decoded.theme);
-    } catch (e) {
-      // if error with token send user to login page
-
-      router.push("/login");
-      
-    }
-    */
-   /*
-    function ProjectChangeHandler(id: any, text: any) {
-      console.log("ID: " + id + " Text: " + text);
-    }
-    */
-
     const projectSelect = $("#projectSelect");
-        projectSelect.on("change", function () {
-          // handle project change
-          const selectedProject = $(this).val();
-          setCurrentProject(
-            $(this).find("option:selected").text()
-          );
-        });
-
+    projectSelect.on("change", function () {
+      // handle project change
+      console.log("Project changed");
+      console.log($(this).val());
+      const selectedProject = $(this).val(); 
+      if (selectedProject == undefined) {
+        setCurrentProject(selectedProject); //  id for placeholder project
+      } else {setCurrentProject(selectedProject);}
+      
+    });
+  
     const employeeSelect = $("#employeeSelect");
     employeeSelect.on("change", function () {
       // handle employee change
+      console.log("Emp changed");
+      console.log($(this).val());
       const selectedEmployee = $(this).val();
-      setCurrentEmployee(
-        $(this).find("option:selected").text()
-      );
+      if (selectedEmployee === undefined) {
+        setCurrentEmployee("All");
+      } else {setCurrentEmployee(selectedEmployee);}
     });
+
+    setCurrentEmployee("all");
+  
+    // Cleanup event listeners when component unmounts
+    return () => {
+      projectSelect.off("change");
+      employeeSelect.off("change");
+    };
   }, []);
+  
 
   
 
@@ -101,7 +110,7 @@ export default function data() {
                 <ProjectDetailsProjectTile 
                 currentProject={currentProject}/>
 
-                <ProjectTaskBreakdownTile 
+                <ProjectTaskBreakdown
                 currentProject={currentProject}
                 currentEmployee={currentEmployee}/>
               </div>
@@ -128,17 +137,22 @@ export default function data() {
 
  //Gets all tasks
  export async function getTasksByApi() {
-  return (await axios.get(`/api/tasks/`));
+  const res = await axios.get(`/api/tasks/`);
+  return res.data;
  }
 
 //Gets all projects
    export async function getProjectsByApi() {
+    const res = await axios.get(`/api/projects/`);
+    return res.data;
      return (await axios.get(`/api/projects/`));
    }
 
   //Gets all employees
    export async function getEmployeesByApi() {
-     return (await axios.get(`/api/employees/`));
+    const res = await axios.get(`/api/users/`);
+    return res.data;
+     return (await axios.get(`/api/users/`));
    }
 
 //Gets project by projectId
@@ -154,88 +168,89 @@ export default function data() {
 
 
 
-  export function getSampleTaskData() {
-    console.log("TEST API CALL : " + getTasksByApi());
-    return (
-      [
-        {
-          id: 1,
-          name: "Design Chat",
-          description: "Appearance of Chat Bot",
-          status: "Completed",
-          projectId: 1,
-          employeeId: 1
-        },
-        {
-          id: 2,
-          name: "Gauge Interest",
-          description: "Will affect how the bot responds",
-          status: "Completed",
-          projectId: 1,
-          employeeId: 3
-        },
-        {
-          id: 3,
-          name: "Write Welcome Messages",
-          description: "Friendly and inviting",
-          status: "Review",
-          projectId: 1,
-          employeeId: 1
-        },
-        {
-          id: 4,
-          name: "Design Conversation Flow",
-          description: "Flow and dialogue for the chatbot",
-          status: "In-Progress",
-          projectId: 1,
-          employeeId: 2
-        },
-        {
-          id: 5,
-          name: "Publish User Guide",
-          description: "Guide to using the chatbot",
-          status: "Backlog",
-          projectId: 1,
-          employeeId: 3
-        },
-        {
-          id: 6,
-          name: "Create Accounts",
-          description: "Social Media Accounts",
-          status: "Completed",
-          projectId: 2,
-          employeeId: 2
-        },
-        {
-          id: 7,
-          name: "Schedule Posts",
-          description: "Release in orderly fashion",
-          status: "In Progress",
-          projectId: 2,
-          employeeId: 1
-        },
-        {
-          id: 8,
-          name: "Don't Get Cancelled",
-          description: "Stay away from Twitter.com",
-          status: "To-Do",
-          projectId: 2,
-          employeeId: 3,
-        },
-        {
-          id: 9,
-          name: "Engage with Followers",
-          description: "If we have any",
-          status: "Backlog",
-          projectId: 2,
-          employeeId: 3
-        }
-      ]
-    )
+  export async function getSampleTaskData() {
+    const sampleTaskData = await getTasksByApi();
+    return getTasksByApi();
+    // return (
+    //   [
+    //     {
+    //       id: 1,
+    //       name: "Design Chat",
+    //       description: "Appearance of Chat Bot",
+    //       status: "Completed",
+    //       projectId: 1,
+    //       employeeId: 1
+    //     },
+    //     {
+    //       id: 2,
+    //       name: "Gauge Interest",
+    //       description: "Will affect how the bot responds",
+    //       status: "Completed",
+    //       projectId: 1,
+    //       employeeId: 3
+    //     },
+    //     {
+    //       id: 3,
+    //       name: "Write Welcome Messages",
+    //       description: "Friendly and inviting",
+    //       status: "Review",
+    //       projectId: 1,
+    //       employeeId: 1
+    //     },
+    //     {
+    //       id: 4,
+    //       name: "Design Conversation Flow",
+    //       description: "Flow and dialogue for the chatbot",
+    //       status: "In-Progress",
+    //       projectId: 1,
+    //       employeeId: 2
+    //     },
+    //     {
+    //       id: 5,
+    //       name: "Publish User Guide",
+    //       description: "Guide to using the chatbot",
+    //       status: "Backlog",
+    //       projectId: 1,
+    //       employeeId: 3
+    //     },
+    //     {
+    //       id: 6,
+    //       name: "Create Accounts",
+    //       description: "Social Media Accounts",
+    //       status: "Completed",
+    //       projectId: 2,
+    //       employeeId: 2
+    //     },
+    //     {
+    //       id: 7,
+    //       name: "Schedule Posts",
+    //       description: "Release in orderly fashion",
+    //       status: "In Progress",
+    //       projectId: 2,
+    //       employeeId: 1
+    //     },
+    //     {
+    //       id: 8,
+    //       name: "Don't Get Cancelled",
+    //       description: "Stay away from Twitter.com",
+    //       status: "To-Do",
+    //       projectId: 2,
+    //       employeeId: 3,
+    //     },
+    //     {
+    //       id: 9,
+    //       name: "Engage with Followers",
+    //       description: "If we have any",
+    //       status: "Backlog",
+    //       projectId: 2,
+    //       employeeId: 3
+    //     }
+    //   ]
+    // )
   }
 
-  export function getSampleProjectData() {
-    const taskArray = getSampleTaskData()
+  export async function getSampleProjectData() {
+    const taskArray = await getSampleTaskData()
     return (
       [
         {
@@ -263,7 +278,7 @@ export function getSampleEmployeeData() {
     [
       {
         id: 1,
-        name: "Suzanne Collins"
+        name: "Isaac"
       },
       {
         id: 2,
