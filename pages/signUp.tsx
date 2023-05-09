@@ -182,7 +182,7 @@ export default function SignUp() {
                 />
                 <label className="label hidden" id="confirm-password-feedback">
                   <span className="label-text-alt text-red-700">
-                    Passwords don't match
+                    Passwords don&apos;t match
                   </span>
                 </label>
               </div>

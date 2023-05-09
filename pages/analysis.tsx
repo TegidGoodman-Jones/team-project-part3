@@ -20,8 +20,7 @@ import $ from "jquery";
 import SidebarButton from "@/components/SidebarButton";
 import { useCookies } from "react-cookie";
 
-export default function data() {
-  const [userId, setUserId] = useState();
+export default function Analysis() {
   const [cookies, setCookie] = useCookies(["token"]);
   const router = useRouter();
   useEffect(() => {
@@ -32,7 +31,6 @@ export default function data() {
         JSON.stringify(jwt.verify(token, "your_jwt_secret"))
       );
       // set userId to state
-      setUserId(decoded.userId);
       // change theme to user selected theme
       $("html").attr("data-theme", decoded.theme);
     } catch (e) {
@@ -204,8 +202,8 @@ export default function data() {
                     Description
                   </span>
                   <p id="project-card-desc mt-0 ">
-                    Launder all make-it-alls money, it's impossible to make it
-                    all so needs must.
+                    Launder all make-it-alls money, it&apos;s impossible to make
+                    it all so needs must.
                   </p>
                   <span className="label-text text-black dark:text-white mt-2 mb-0">
                     Leader
@@ -386,8 +384,6 @@ export default function data() {
                     ]}
                     colors={["rose", "orange", "amber", "lime", "indigo"]}
                   />
-                  //changed the height of the div so that the graphs show.
-                  However still not ideal
                   <div className="h-40 flex flex-row ">
                     <DonutChart
                       data={kanbanPieData}
