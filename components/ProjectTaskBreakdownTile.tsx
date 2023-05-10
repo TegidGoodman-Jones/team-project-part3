@@ -27,16 +27,16 @@ export function ProjectTaskBreakdownTile(props: any) {
   const allTaskBreakdown = props.employeeList.map((employeeBreakdown: any) => (
     <div
       id="employee-id"
-      className="shadow-md rounded-md p-4 bg-gray-200 dark:bg-gray-500"
+      className="card shadow-md p-4 bg-base-200"
     >
-      <h1 id="employee-name" className="mb-2">
+      <h1 id="employee-name" className="mb-2 text-base-content">
         {employeeBreakdown.username}
       </h1>
       <hr />
       <div id="employee-training" className="form-control space-y-2 mt-2">
         {employeeBreakdown.tasks.map((task: String) => (
           <label className="label cursor-pointer p-0">
-            <span className="label-text text-black dark:text-gray-400">
+            <span className="label-text text-base-content">
               {task}
             </span>
             <input
@@ -51,7 +51,7 @@ export function ProjectTaskBreakdownTile(props: any) {
   ));
 
   return (
-    <div className="dark:text-white flex flex-col shadow-md rounded-md overflow-auto p-4 mx-4 w-1/2 bg-gray-300 text-black dark:bg-gray-700">
+    <div className="card flex flex-col shadow-md overflow-auto p-4 mx-4 w-1/2 bg-base-300 text-base-content">
       <div className="overflow-auto p-2 space-y-5">{allTaskBreakdown}</div>
     </div>
   );

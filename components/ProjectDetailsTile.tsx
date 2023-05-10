@@ -23,21 +23,21 @@ export function ProjectDetailsTile(props: projectType) {
   return (
     <div
       id="project-card"
-      className="dark:text-white flex flex-col shadow-md rounded-md p-4 mx-4 w-1/2 bg-base-200 text-base-content text-primary"
+      className="card flex flex-col shadow-md p-4 mx-4 w-1/2 bg-base-300 text-base-content"
     >
       <div className="flex flex-row justify-between">
-        <span className="label-text dark:text-gray-400 text-black  mb-0">Title</span>
-        <span className="label-text text-black dark:text-gray-400 mb-0">Deadline</span>
+        <span className="label-text text-base-content mb-0">Title</span>
+        <span className="label-text text-base-content mb-0">Deadline</span>
       </div>
       <Title id="project-card-title" className="inline-flex flex-row justify-between mb-2">
         {props.name}
-        <span className="text-emerald-400">{props.deadline}</span>
+        <span className="text-success">{props.deadline}</span>
       </Title>
       <hr />
       <br />
-      <span className="label-text  dark:text-gray-400 text-black mt-2 mb-0">Description</span>
+      <span className="label-text text-base-content mt-2 mb-0">Description</span>
       <p id="project-card-desc mt-0 ">{props.description}</p>
-      <span className="label-text text-black dark:text-gray-400 mt-2 mb-0">Leader</span>
+      <span className="label-text text-base-content mt-2 mb-0">Leader</span>
       <p id="project-card-leader mt-0">{props.leader}</p>
     </div>
   );

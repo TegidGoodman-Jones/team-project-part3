@@ -14,7 +14,7 @@ export function ProjectSelectBar(props: any) {
   const selected_project = props.projects[0];
 
   let projectOptions = projects ? projects.map((project: any) => (
-    <option value={project.id} key={project.id}>
+    <option className="bg-base-200 text-base-content" value={project.id} key={project.id}>
       {project.name}
     </option>
   )) : [];
@@ -23,7 +23,7 @@ export function ProjectSelectBar(props: any) {
   // map works fine if empty but adding the default one wont.
   if (props.projects.length != 0) {
     projectOptions = [
-      <option value={selected_project.id} key={selected_project.id} selected>
+      <option className="bg-base-200 text-base-content" value={selected_project.id} key={selected_project.id} selected>
         {selected_project.name}
       </option>,
       ...projectOptions
@@ -31,7 +31,7 @@ export function ProjectSelectBar(props: any) {
   }
   
   const employeeOptions = props.employees ? props.employees.map((employee: any) => (
-    <option value={employee.id} key={employee.id}>
+    <option className="bg-base-200 text-base-content" value={employee.id} key={employee.id}>
       {employee.username}
     </option>
   )) : [];
@@ -39,27 +39,25 @@ export function ProjectSelectBar(props: any) {
 
   return (
     <div className="w-full h-16 flex flex-row">
-      <div className="flex flex-row items-center p-2 rounded-md space-x-2 m-2 w-full">
-        <select
-        
+      <div className="flex flex-row items-center justify-between p-2 rounded-md bg-base-200 space-x-2 m-4 w-full ">
+        <select   
           id="projectSelect"
-          className="select w-64 bg-gray-300 text-black dark:text-white dark:bg-gray-800 hover:border-emerald-400 hover:border-2"
+          className="select w-64 bg-base-300 text-base-content hover:border-success hover:border-2"
         >
-          <option value="placeholder" disabled >
+          <option className="bg-base-200 text-base-content" value="placeholder" disabled >
             Select project
           </option>
           {/* <option value="all">All</option> */}
           {projectOptions}
         </select>
         <select
-        
           id="employeeSelect"
-          className="select w-64 bg-gray-300 text-black dark:text-white dark:bg-gray-800 hover:border-emerald-400 hover:border-2"
+          className="select w-64 bg-base-300 text-base content hover:border-success hover:border-2"
         >
-          <option value="placeholder" disabled >
+          <option className="bg-base-200 text-base-content" value="placeholder" disabled >
             Select employee
           </option>
-          <option value="all">All</option>
+          <option className="bg-base-200 text-base-content" value="all">All</option>
           {employeeOptions}
         </select>
       </div>

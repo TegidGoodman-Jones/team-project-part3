@@ -198,13 +198,12 @@ import { useEffect, useState } from "react";
 // Takes: data for the progress bar, pie chart and bar chart as input
 export function ProjectStats(props: any) {
   return (
-    <div className="flex flex-col shadow-md rounded-md dark:text-white bg-gray-300 dark:bg-gray-700 p-4 m-4 w-90% h-1/2">
-      <Title className="mb-2 dark:text-white text-black">Statistics</Title>
+    <div className="card flex flex-col shadow-md text-base-content bg-base-300  p-4 m-4 w-90% h-75%">
+      <Title className="mb-2 text-base-content">Statistics</Title>
       <hr />
       <br />
-
       <Flex>
-        <Text className="dark:text-white text-black">
+        <Text className="text-base-content">
           Tasks Complete &bull; {props.progressBarData}%
         </Text>
       </Flex>
@@ -214,7 +213,7 @@ export function ProjectStats(props: any) {
         color="blue"
       />
 
-      <Title className="dark:text-white text-black">Task allocation</Title>
+      <Title className="text-base-context">Task allocation</Title>
       <div className="h-full flex flex-row">
         <DonutChart
           data={props.kanbanPieData}
