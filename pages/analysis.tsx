@@ -135,6 +135,21 @@ export default function data() {
   //return res.data;
  //}
 
+
+
+
+ /* 
+  NOTE FROM TEGID:
+  You guys should probably look into using getServerSideProps() instead of useEffect() to fetch data from the API.
+  Its generally just easier to use and you don't have to worry about useEffect() cuz it runs on the server.
+  Here's the docs: https://nextjs.org/docs/pages/building-your-application/data-fetching/get-server-side-props
+  If you want any help lmk
+ */
+
+
+
+
+  
  //Gets all tasks
  export async function getTasksByApi() {
   const res = await axios.get(`/api/tasks/`);
