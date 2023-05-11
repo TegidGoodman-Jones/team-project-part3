@@ -14,6 +14,7 @@ export function ProjectTaskBreakdownTile(props: any) {
   let employeeList = props.employeeList;
   const taskList = props.taskList;
 
+
   for (let i = 0; i <= employeeList.length - 1; i++) {
     employeeList[i].tasks = [];
 
@@ -25,23 +26,21 @@ export function ProjectTaskBreakdownTile(props: any) {
   }
 
   const allTaskBreakdown = props.employeeList.map((employeeBreakdown: any) => (
-    <div
-      id="employee-id"
-      className="card shadow-md p-4 bg-base-200"
-    >
+    <div id={`employee-${employeeBreakdown.id}`} className="card shadow-md p-4 bg-base-200" key={employeeBreakdown.id}>
       <h1 id="employee-name" className="mb-2 text-base-content">
         {employeeBreakdown.username}
       </h1>
       <hr />
       <div id="employee-training" className="form-control space-y-2 mt-2">
-        {employeeBreakdown.tasks.map((task: String) => (
-          <label className="label cursor-pointer p-0">
+        {employeeBreakdown.tasks.map((task: String, index: number) => (
+          <label className="label cursor-pointer p-0" key={index}>
             <span className="label-text text-base-content">
               {task}
             </span>
             <input
               type="checkbox"
               checked
+              readOnly
               className="checkbox checkbox-sm"
             />
           </label>
@@ -49,6 +48,7 @@ export function ProjectTaskBreakdownTile(props: any) {
       </div>
     </div>
   ));
+  
 
   return (
     <div className="card flex flex-col shadow-md overflow-auto p-4 mx-4 w-1/2 bg-base-300 text-base-content">

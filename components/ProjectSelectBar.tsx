@@ -13,57 +13,69 @@ export function ProjectSelectBar(props: any) {
   const projects = props.projects.slice(1, props.projects.length);
   const selected_project = props.projects[0];
 
-  let projectOptions = projects ? projects.map((project: any) => (
-    <option className="bg-base-200 text-base-content" value={project.id} key={project.id}>
-      {project.name}
-    </option>
-  )) : [];
+  let projectOptions = projects
+    ? projects.map((project: any) => (
+        <option className="bg-base-200 text-base-content" value={project.id} key={project.id}>
+          {project.name}
+        </option>
+      ))
+    : [];
 
-  // it gets called at the start before api calls work so we need to check if projects is empty
-  // map works fine if empty but adding the default one wont.
-  if (props.projects.length != 0) {
+  const defaultValue = selected_project ? selected_project.id : '';
+
+  if (props.projects.length !== 0) {
     projectOptions = [
-      <option className="bg-base-200 text-base-content" value={selected_project.id} key={selected_project.id} selected>
-        {selected_project.name}
+      <option
+        className="bg-base-200 text-base-content"
+        value={defaultValue}
+        key={defaultValue}
+      >
+        {selected_project ? selected_project.name : 'Select project'}
       </option>,
-      ...projectOptions
+      ...projectOptions,
     ];
   }
-  
-  const employeeOptions = props.employees ? props.employees.map((employee: any) => (
-    <option className="bg-base-200 text-base-content" value={employee.id} key={employee.id}>
-      {employee.username}
-    </option>
-  )) : [];
-  
+
+  const employeeOptions = props.employees
+    ? props.employees.map((employee: any) => (
+        <option className="bg-base-200 text-base-content" value={employee.id} key={employee.id}>
+          {employee.username}
+        </option>
+      ))
+    : [];
 
   return (
     <div className="w-full h-16 flex flex-row">
-      <div className="flex flex-row items-center justify-between p-2 rounded-md bg-base-200 space-x-2 m-4 w-full ">
-        <select   
+      <div className="flex flex-row items-center justify-between p-2 rounded-md space-x-2 m-2 w-full ">
+        <select
           id="projectSelect"
           className="select w-64 bg-base-300 text-base-content hover:border-success hover:border-2"
+          defaultValue={defaultValue}
         >
-          <option className="bg-base-200 text-base-content" value="placeholder" disabled >
-            Select project
+          <option className="bg-base-200 text-base-content" value="" disabled>
+            {projects.length ? 'Select project' : 'No projects available'}
           </option>
-          {/* <option value="all">All</option> */}
           {projectOptions}
         </select>
         <select
           id="employeeSelect"
           className="select w-64 bg-base-300 text-base content hover:border-success hover:border-2"
         >
-          <option className="bg-base-200 text-base-content" value="placeholder" disabled >
+          <option className="bg-base-200 text-base-content" value="" disabled>
             Select employee
           </option>
-          <option className="bg-base-200 text-base-content" value="all">All</option>
+          <option className="bg-base-200 text-base-content" value="all">
+            All
+          </option>
           {employeeOptions}
         </select>
       </div>
     </div>
   );
 }
+
+
+
 type projectType = {
   id: number;
   name: string;

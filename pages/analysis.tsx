@@ -56,8 +56,8 @@ export default function data() {
     const projectSelect = $("#projectSelect");
     projectSelect.on("change", function () {
       // handle project change
-      console.log("Project changed");
-      console.log($(this).val());
+      // console.log("Project changed");
+      // console.log($(this).val());
       const selectedProject = $(this).val(); 
       if (selectedProject == undefined) {
         setCurrentProject(selectedProject); //  id for placeholder project
@@ -68,8 +68,8 @@ export default function data() {
     const employeeSelect = $("#employeeSelect");
     employeeSelect.on("change", function () {
       // handle employee change
-      console.log("Emp changed");
-      console.log($(this).val());
+      // console.log("Emp changed");
+      // console.log($(this).val());
       const selectedEmployee = $(this).val();
       if (selectedEmployee === undefined) {
         setCurrentEmployee("All");
