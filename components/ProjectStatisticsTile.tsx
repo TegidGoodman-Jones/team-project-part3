@@ -199,12 +199,6 @@ import { getTasksByApi, getEmployeesByApi, getProjectsByApi } from "@/pages/anal
 // Takes: data for the progress bar, pie chart and bar chart as input
 
 export function ProjectStats(props: any) {
-  const progressBarStyle = {
-    width: `${props.progressBarData}%`,
-  };
-
-  console.log(props.taskBarData);
-  
 
   return (
     <div className="card flex flex-col shadow-md text-base-content bg-base-300 p-4 m-4 w-90% h-1/2">
