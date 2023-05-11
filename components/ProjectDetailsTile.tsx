@@ -25,6 +25,8 @@ export function ProjectDetailsTile(props: projectType) {
       id="project-card"
       className="card flex flex-col shadow-md p-4 mx-4 w-1/2 bg-base-300 text-base-content"
     >
+            <Title className="mb-2 text-2xl text-base-content">Project details</Title>
+
       <div className="flex flex-row justify-between">
         <span className="label-text text-base-content mb-0">Title</span>
         <span className="label-text text-base-content mb-0">Deadline</span>

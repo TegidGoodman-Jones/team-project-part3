@@ -189,7 +189,7 @@
 //     }
 
 // import { getSampleEmployeeData, getSampleTaskData, getSampleProjectData } from "@/pages/analysis";
-import { Card, Title, DonutChart, Legend, BarChart, Flex, Text, ProgressBar } from "@tremor/react";
+import { Card, Title, DonutChart, Legend, BarChart,Color , Flex, Text, ProgressBar } from "@tremor/react";
 import { useEffect, useState } from "react";
 import { getTasksByApi, getEmployeesByApi, getProjectsByApi } from "@/pages/analysis";
 
@@ -197,52 +197,54 @@ import { getTasksByApi, getEmployeesByApi, getProjectsByApi } from "@/pages/anal
 
 // Draws the elements to the screen
 // Takes: data for the progress bar, pie chart and bar chart as input
-export function ProjectStats(props: any) {
-  return (
-    <div className="card flex flex-col shadow-md text-base-content bg-base-300  p-4 m-4 w-90% h-1/2">
-      <Title className="mb-2  text-base-content">Statistics</Title>
-      <hr />
-      <br />
-      <Flex>
-        <Text className="text-base-content">
-          Tasks Complete &bull; {props.progressBarData}%
-        </Text>
-      </Flex>
-      <ProgressBar
-        className="w-full"
-        percentageValue={props.progressBarData}
-        color="blue"
-      />
 
-      <Title className="text-base-context">Task allocation</Title>
-      <div className="h-full flex flex-row">
-        <DonutChart
-          data={props.kanbanPieData}
-          category="value"
-          index="name"
-          variant="pie"
-          colors={["rose", "orange", "amber", "lime", "indigo"]}
-        />
-        <BarChart
-          layout="vertical"
-          data={props.taskBarData}
-          index="employee"
-          categories={["tasks"]}
-          showAnimation={false}
-          showLegend={false}
-          colors={[
-            "indigo",
-            "fuchsia",
-            "amber",
-            "yellow",
-            "teal",
-            "emerald",
-          ]}
-        />
+export function ProjectStats(props: any) {
+  const progressBarStyle = {
+    width: `${props.progressBarData}%`,
+  };
+
+  console.log(props.taskBarData);
+  
+
+  return (
+    <div className="card flex flex-col shadow-md text-base-content bg-base-300 p-4 m-4 w-90% h-1/2">
+      <Title className="mb-2 text-2xl text-base-content">Statistics</Title>
+
+      <progress className="mb-2 progress progress-success" value={props.progressBarData} max="100"></progress>
+
+      <div className="flex flex-row">
+        <div className="w-1/2">
+          <Title className=" mb-2 text-xl text-base-content">Task data:</Title>
+          <DonutChart
+            data={props.kanbanPieData}
+            category="value"
+            index="name"
+            variant="pie"
+            colors={['rose', 'orange', 'amber', 'lime', 'indigo']}
+            style={{ height: '300px' }} // Adjust the height as needed
+          />
+        </div>
+        <div className="w-1/2">
+          <Title className=" mb-2 text-xl text-base-content">Employee data:</Title>
+
+          <BarChart
+            layout="horizontal"
+            data={props.taskBarData}
+            index="employee"
+            categories={['tasks']}
+            showAnimation={true}
+            showLegend={false}
+            colors={['indigo', 'fuchsia', 'amber', 'yellow', 'teal', 'emerald']}
+            style={{ height: '300px' }} // Adjust the height as needed
+          />
+        </div>
       </div>
     </div>
   );
 }
+
+
+
 
 
 

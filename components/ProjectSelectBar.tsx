@@ -59,7 +59,7 @@ export function ProjectSelectBar(props: any) {
         </select>
         <select
           id="employeeSelect"
-          className="select w-64 bg-base-300 text-base content hover:border-success hover:border-2"
+          className="select w-64 bg-base-300 text-base-content hover:border-success hover:border-2"
         >
           <option className="bg-base-200 text-base-content" value="" disabled>
             Select employee
