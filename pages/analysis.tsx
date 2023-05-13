@@ -1,6 +1,3 @@
-//I've made very small changes to make the main graphs visible at the identified div. I tried to play
-//around with the CSS, however couldn't work out how to get the legends for either of the two graphs
-//to show correctly, or for the progress bar to show
 import {
   Card,
   Title,
@@ -20,102 +17,76 @@ import $ from "jquery";
 import SidebarButton from "@/components/SidebarButton";
 import { useCookies } from "react-cookie";
 
-export default function Analysis() {
+import ProjectDetailsProjectTile from "@/components/ProjectDetailsTile";
+import ProjectSelectBarTile from "@/components/ProjectSelectBar";
+import { ProjectTaskBreakdown } from "@/components/ProjectTaskBreakdownTile";
+import { ProjectStatisticsTile }  from "@/components/ProjectStatisticsTile";
+import axios from "axios";
+
+interface Project {
+  id: number;
+  name: string;
+  description: string;
+  deadline: string;
+  leaderId: number;
+  tasks: any[];
+}
+
+export default function data() {
+  const [userId, setUserId] = useState();
   const [cookies, setCookie] = useCookies(["token"]);
   const router = useRouter();
+
+  const [sampleProjectDataFull, setSampleProjectDataFull] = useState<Project[]>([]);
+
   useEffect(() => {
-    const token = String(cookies.token);
-    try {
-      // json parse and stringify to please typescript
-      let decoded = JSON.parse(
-        JSON.stringify(jwt.verify(token, "your_jwt_secret"))
-      );
-      // set userId to state
-      // change theme to user selected theme
-      $("html").attr("data-theme", decoded.theme);
-    } catch (e) {
-      // if error with token send user to login page
+    const fetchData = async () => {
+      const data = await getSampleProjectData();
+      setSampleProjectDataFull(data);
+    };
+  
+    fetchData();
+  }, []);
 
-      router.push("/login");
-    }
-    function ProjectChangeHandler(id: any, text: any) {
-      console.log("ID: " + id + " Text: " + text);
-    }
+  const [currentProject, setCurrentProject] = useState(1);
 
-    function EmployeeChangeHandler(id: any, text: any) {
-      console.log("ID: " + id + " Text: " + text);
-    }
+  const [currentEmployee, setCurrentEmployee] = useState("All");
 
-    function StatisticChangeHandler(id: any, text: any) {
-      console.log("ID: " + id + " Text: " + text);
-    }
-
+  useEffect(() => {
     const projectSelect = $("#projectSelect");
     projectSelect.on("change", function () {
       // handle project change
-      const selectedProject = $(this).val();
-      ProjectChangeHandler(
-        selectedProject,
-        $(this).find("option:selected").text()
-      );
+      // console.log("Project changed");
+      // console.log($(this).val());
+      const selectedProject = $(this).val(); 
+      if (selectedProject == undefined) {
+        setCurrentProject(selectedProject); //  id for placeholder project
+      } else {setCurrentProject(selectedProject);}
+      
     });
-
+  
     const employeeSelect = $("#employeeSelect");
     employeeSelect.on("change", function () {
       // handle employee change
+      // console.log("Emp changed");
+      // console.log($(this).val());
       const selectedEmployee = $(this).val();
-      EmployeeChangeHandler(
-        selectedEmployee,
-        $(this).find("option:selected").text()
-      );
+      if (selectedEmployee === undefined) {
+        setCurrentEmployee("All");
+      } else {setCurrentEmployee(selectedEmployee);}
     });
 
-    const statisticSelect = $("#statisticSelect");
-    statisticSelect.on("change", function () {
-      // handle statistic change
-      const selectedStatistic = $(this).val();
-      StatisticChangeHandler(
-        selectedStatistic,
-        $(this).find("option:selected").text()
-      );
-    });
+    setCurrentEmployee("all");
+  
+    // Cleanup event listeners when component unmounts
+    return () => {
+      projectSelect.off("change");
+      employeeSelect.off("change");
+    };
   }, []);
+  
 
-  const ProgressBarData = 65;
-
-  const kanbanPieData = [
-    {
-      name: "Backlog",
-      value: 12,
-    },
-    {
-      name: "To-Do",
-      value: 31,
-    },
-    {
-      name: "In Progress",
-      value: 25,
-    },
-    {
-      name: "Review",
-      value: 8,
-    },
-    {
-      name: "Completed",
-      value: 40,
-    },
-  ];
-
-  const taskBarData = [
-    {
-      topic: "Task Assignment",
-      "Emp 1": 3,
-      "Emp 2": 5,
-      "Emp 3": 2,
-      "Emp 4": 4,
-      "Emp 5": 6,
-    },
-  ];
+  
 
   return (
     <>
@@ -130,290 +101,208 @@ export default function Analysis() {
           <div className="flex lg:hidden flex-grow-0 h-full p-2">
             <SidebarButton />
           </div>
+
           <div className="flex flex-col w-full h-full bg-base-100">
-            <div className=" w-full h-16 flex flex-row ">
-              <div className="flex flex-row items-center justify-center p-2 rounded-md bg-slate-100 dark:bg-gray-600 space-x-2 m-4 w-full ">
-                <select
-                  id="projectSelect"
-                  className="select w-1/3 bg-gray-300 text-black dark:text-white dark:bg-gray-800 "
-                >
-                  <option value="placeholder" disabled selected>
-                    Project select
-                  </option>
-                  <option value="all">All</option>
-                  <option value="0">Roofing - 5th Mane Street</option>
-                  <option value="1">Parking lot - 4th South Street</option>
-                  <option value="2">Conservatory - 3rd Dover Avenue</option>
-                  <option value="3">Lounge Quote - Appt 1b Tall Appts</option>
-                  <option value="4">Garden Remodel - Barclays Town Hall</option>
-                </select>
-                <select
-                  id="employeeSelect"
-                  className="select w-1/3 bg-gray-300 text-black dark:text-white dark:bg-gray-800 "
-                >
-                  <option value="placeholder" disabled selected>
-                    Employee select
-                  </option>
-                  <option value="all">All</option>
-                  <option value="0">Homer Ranger</option>
-                  <option value="1">Marge Sarge</option>
-                  <option value="2">Bart Chart</option>
-                  <option value="3">Lisa Felecia</option>
-                  <option value="4">Maggie Camie</option>
-                </select>
-                <select
-                  id="statisticSelect"
-                  className="select w-1/3 bg-gray-300 text-black dark:text-white dark:bg-gray-800 "
-                >
-                  <option value="placeholder" disabled selected>
-                    Statistic select
-                  </option>
-                  <option value="project-stats">Project statistics</option>
-                  <option value="task-stats">Task statistics</option>
-                  <option value="training-stats">Training statistics</option>
-                </select>
-              </div>
-            </div>
+              <ProjectSelectBarTile/>
             <div className=" w-full h-full">
               <div className=" w-full  max-h-72 flex flex-row">
-                <div
-                  id="project-card"
-                  className="dark:text-white flex flex-col shadow-md rounded-md  p-4 mx-4 w-1/2 bg-gray-300 text-black dark:bg-gray-700"
-                >
-                  <div className="flex flex-row justify-between">
-                    <span className="label-text dark:text-gray-400 text-black  mb-0">
-                      Title
-                    </span>
-                    <span className="label-text text-black dark:text-gray-400 mb-0">
-                      Deadline
-                    </span>
-                  </div>
-                  <Title
-                    id="project-card-title"
-                    className="inline-flex flex-row justify-between mb-2"
-                  >
-                    {" "}
-                    Launder money{" "}
-                    <span className="text-emerald-400">24/11/2023</span>
-                  </Title>
-                  <hr />
-                  <br />
-                  <span className="label-text  dark:text-gray-400 text-black mt-2 mb-0">
-                    Description
-                  </span>
-                  <p id="project-card-desc mt-0 ">
-                    Launder all make-it-alls money, it&apos;s impossible to make
-                    it all so needs must.
-                  </p>
-                  <span className="label-text text-black dark:text-white mt-2 mb-0">
-                    Leader
-                  </span>
-                  <p id="project-card-leader mt-0">Project Leader</p>
-                  <span className="label-text text-black dark:text-gray-400 mt-2 mb-0">
-                    Team
-                  </span>
-                  <p id="project-card-team mt-0">Project Team</p>
-                </div>
+                
+                <ProjectDetailsProjectTile 
+                currentProject={currentProject}/>
 
-                <div
-                  id="employee-training-cards"
-                  className="dark:text-white flex flex-col shadow-md rounded-md overflow-auto   p-4 mx-4 w-1/2 bg-gray-300 text-black dark:bg-gray-700"
-                >
-                  <div className="overflow-auto p-2 space-y-5 ">
-                    <div
-                      id="employee-id"
-                      className="shadow-md rounded-md p-4 bg-gray-200 dark:bg-gray-500"
-                    >
-                      <h1 id="employee-name" className="mb-2">
-                        Homer Ranger
-                      </h1>
-                      <hr />
-                      <div
-                        id="employee-training"
-                        className="form-control space-y-2 mt-2"
-                      >
-                        <label className="label cursor-pointer p-0">
-                          <span className="label-text text-black dark:text-gray-400">
-                            Roofing
-                          </span>
-                          <input
-                            type="checkbox"
-                            checked
-                            className="checkbox checkbox-sm"
-                          />
-                        </label>
-                        <label className="label cursor-pointer p-0">
-                          <span className="label-text text-black dark:text-gray-400">
-                            Chainsaw
-                          </span>
-                          <input
-                            type="checkbox"
-                            checked
-                            className="checkbox checkbox-sm"
-                          />
-                        </label>
-                        <label className="label cursor-pointer p-0">
-                          <span className="label-text text-black dark:text-gray-400">
-                            Van driving
-                          </span>
-                          <input
-                            type="checkbox"
-                            className="checkbox checkbox-sm"
-                          />
-                        </label>
-                      </div>
-                    </div>
-                    <div
-                      id="employee-id"
-                      className="shadow-md rounded-md p-4 bg-gray-200 dark:bg-gray-500"
-                    >
-                      <h1 id="employee-name" className="mb-2">
-                        Marge Sarge
-                      </h1>
-                      <hr />
-                      <div
-                        id="employee-training"
-                        className="form-control space-y-2 mt-2"
-                      >
-                        <label className="label cursor-pointer p-0">
-                          <span className="label-text text-black dark:text-gray-400">
-                            Roofing
-                          </span>
-                          <input
-                            type="checkbox"
-                            checked
-                            className="checkbox checkbox-sm"
-                          />
-                        </label>
-                        <label className="label cursor-pointer p-0">
-                          <span className="label-text text-black dark:text-gray-400">
-                            Chainsaw
-                          </span>
-                          <input
-                            type="checkbox"
-                            checked
-                            className="checkbox checkbox-sm"
-                          />
-                        </label>
-                        <label className="label cursor-pointer p-0">
-                          <span className="label-text text-black dark:text-gray-400">
-                            Van driving
-                          </span>
-                          <input
-                            type="checkbox"
-                            className="checkbox checkbox-sm"
-                          />
-                        </label>
-                      </div>
-                    </div>
-
-                    <div
-                      id="employee-id"
-                      className="shadow-md rounded-md p-4  bg-gray-200 dark:bg-gray-500"
-                    >
-                      <h1 id="employee-name" className="mb-2">
-                        Lisa Felecia
-                      </h1>
-                      <hr />
-                      <div
-                        id="employee-training"
-                        className="form-control space-y-2 mt-2"
-                      >
-                        <label className="label cursor-pointer p-0">
-                          <span className="label-text text-black dark:text-gray-400">
-                            Roofing
-                          </span>
-                          <input
-                            type="checkbox"
-                            checked
-                            className="checkbox checkbox-sm"
-                          />
-                        </label>
-                        <label className="label cursor-pointer p-0">
-                          <span className="label-text text-black dark:text-gray-400">
-                            Chainsaw
-                          </span>
-                          <input
-                            type="checkbox"
-                            checked
-                            className="checkbox checkbox-sm"
-                          />
-                        </label>
-                        <label className="label cursor-pointer p-0">
-                          <span className="label-text text-black dark:text-gray-400">
-                            Van driving
-                          </span>
-                          <input
-                            type="checkbox"
-                            className="checkbox checkbox-sm"
-                          />
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <ProjectTaskBreakdown
+                currentProject={currentProject}
+                currentEmployee={currentEmployee}/>
               </div>
-              <div className="flex flex-col shadow-md rounded-md dark:text-white bg-gray-300 dark:bg-gray-700 p-4 m-4 w-90%">
-                <div>
-                  <Title className=" mb-2 dark:text-white text-black">
-                    Statistics
-                  </Title>
-                  <hr />
-                  <br />
-                  <Flex>
-                    <Text className="dark:text-white text-black">
-                      Tasks Complete &bull; {ProgressBarData}%
-                    </Text>
-                  </Flex>
-                  <ProgressBar
-                    className="p-4 w-1/2"
-                    percentageValue={ProgressBarData}
-                    color="blue"
-                  />
-                  <Text className="dark:text-white text-black ">
-                    Task allocation
-                  </Text>
-                  <Legend
-                    className="p-4"
-                    categories={[
-                      "Backlog",
-                      "To-Do",
-                      "In Progress",
-                      "Review",
-                      "Completed",
-                    ]}
-                    colors={["rose", "orange", "amber", "lime", "indigo"]}
-                  />
-                  <div className="h-40 flex flex-row ">
-                    <DonutChart
-                      data={kanbanPieData}
-                      category="value"
-                      index="name"
-                      variant="pie"
-                      colors={["rose", "orange", "amber", "lime", "indigo"]}
-                    />
-                    <BarChart
-                      layout="vertical"
-                      data={taskBarData}
-                      index="name"
-                      categories={["Emp 1", "Emp 2", "Emp 3", "Emp 4", "Emp 5"]}
-                      showAnimation={false}
-                      colors={[
-                        "indigo",
-                        "fuchsia",
-                        "amber",
-                        "yellow",
-                        "teal",
-                        "emerald",
-                      ]}
-                    />
-                  </div>
-                </div>
-              </div>
+              <ProjectStatisticsTile
+              currentProject={currentProject}
+              currentEmployee={currentEmployee}/>
             </div>
           </div>
         </div>
       </Sidebar>
     </>
   );
+}
+
+//SAMPLE DATA
+  //Note: task data must be defined before project data so that task array can be included in project
+
+// API CALL FUNCTIONS
+ //async function getTasksByApi() {
+  // return await axios.get(`http://localhost:3000/api/tasks/}`)
+  //const res = await axios.get(`/api/tasks/`);
+  //return res.data;
+ //}
+
+
+
+
+ /* 
+  NOTE FROM TEGID:
+  You guys should probably look into using getServerSideProps() instead of useEffect() to fetch data from the API.
+  Its generally just easier to use and you don't have to worry about useEffect() cuz it runs on the server.
+  Here's the docs: https://nextjs.org/docs/pages/building-your-application/data-fetching/get-server-side-props
+  If you want any help lmk
+ */
+
+
+
+
+  
+ //Gets all tasks
+ export async function getTasksByApi() {
+  const res = await axios.get(`/api/tasks/`);
+  return res.data;
+ }
+
+//Gets all projects
+   export async function getProjectsByApi() {
+    const res = await axios.get(`/api/projects/`);
+    return res.data;
+     return (await axios.get(`/api/projects/`));
+   }
+
+  //Gets all employees
+   export async function getEmployeesByApi() {
+    const res = await axios.get(`/api/users/`);
+    return res.data;
+     return (await axios.get(`/api/users/`));
+   }
+
+//Gets project by projectId
+   export async function getProjectByApi(projectId: string) {
+     return (await axios.get(`/api/projects/` + projectId));
+   }
+
+//Gets employee by employeeId
+ export async function getEmployeeTasksByApi(userId: string) {
+     return (await axios.get(`/api/tasks/` + userId));
+   }
+
+
+
+
+  export async function getSampleTaskData() {
+    const sampleTaskData = await getTasksByApi();
+    return getTasksByApi();
+    // return (
+    //   [
+    //     {
+    //       id: 1,
+    //       name: "Design Chat",
+    //       description: "Appearance of Chat Bot",
+    //       status: "Completed",
+    //       projectId: 1,
+    //       employeeId: 1
+    //     },
+    //     {
+    //       id: 2,
+    //       name: "Gauge Interest",
+    //       description: "Will affect how the bot responds",
+    //       status: "Completed",
+    //       projectId: 1,
+    //       employeeId: 3
+    //     },
+    //     {
+    //       id: 3,
+    //       name: "Write Welcome Messages",
+    //       description: "Friendly and inviting",
+    //       status: "Review",
+    //       projectId: 1,
+    //       employeeId: 1
+    //     },
+    //     {
+    //       id: 4,
+    //       name: "Design Conversation Flow",
+    //       description: "Flow and dialogue for the chatbot",
+    //       status: "In-Progress",
+    //       projectId: 1,
+    //       employeeId: 2
+    //     },
+    //     {
+    //       id: 5,
+    //       name: "Publish User Guide",
+    //       description: "Guide to using the chatbot",
+    //       status: "Backlog",
+    //       projectId: 1,
+    //       employeeId: 3
+    //     },
+    //     {
+    //       id: 6,
+    //       name: "Create Accounts",
+    //       description: "Social Media Accounts",
+    //       status: "Completed",
+    //       projectId: 2,
+    //       employeeId: 2
+    //     },
+    //     {
+    //       id: 7,
+    //       name: "Schedule Posts",
+    //       description: "Release in orderly fashion",
+    //       status: "In Progress",
+    //       projectId: 2,
+    //       employeeId: 1
+    //     },
+    //     {
+    //       id: 8,
+    //       name: "Don't Get Cancelled",
+    //       description: "Stay away from Twitter.com",
+    //       status: "To-Do",
+    //       projectId: 2,
+    //       employeeId: 3,
+    //     },
+    //     {
+    //       id: 9,
+    //       name: "Engage with Followers",
+    //       description: "If we have any",
+    //       status: "Backlog",
+    //       projectId: 2,
+    //       employeeId: 3
+    //     }
+    //   ]
+    // )
+  }
+
+  export async function getSampleProjectData() {
+    const taskArray = await getSampleTaskData()
+    return (
+      [
+        {
+          id: 1,
+          name: 'Chat Bot',
+          description: 'Developing a chatbot for customer support',
+          deadline: '30/06/2023',
+          leaderId: 1,
+          tasks: taskArray
+        },
+        {
+          id: 2,
+          name: 'Social Media Management',
+          description: 'Develop Make-It-Alls brand using social media',
+          deadline: '15/09/2023',
+          leaderId: 2,
+          tasks: taskArray
+        }
+      ]
+    )
+  }
+
+export function getSampleEmployeeData() {
+  return (
+    [
+      {
+        id: 1,
+        name: "Isaac"
+      },
+      {
+        id: 2,
+        name: "Wilfred Owen"
+      },
+      {
+        id: 3,
+        name: "Jordan Peele"
+      }
+    ]
+  )
 }
