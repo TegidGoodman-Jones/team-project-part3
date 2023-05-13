@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.getSampleEmployeeData = exports.getSampleProjectData = exports.getSampleTaskData = exports.getEmployeeTasksByApi = exports.getProjectByApi = exports.getEmployeesByApi = exports.getProjectsByApi = exports.getTasksByApi = void 0;
+exports.getEmployeeTasksByApi = exports.getProjectByApi = exports.getEmployeesByApi = exports.getProjectsByApi = exports.getTasksByApi = void 0;
 var Sidebar_1 = require("@/components/Sidebar");
 var head_1 = require("next/head");
 var router_1 = require("next/router");
@@ -50,29 +50,13 @@ var ProjectTaskBreakdownTile_1 = require("@/components/ProjectTaskBreakdownTile"
 var ProjectStatisticsTile_1 = require("@/components/ProjectStatisticsTile");
 var axios_1 = require("axios");
 function data() {
-    var _this = this;
     var _a = react_1.useState(), userId = _a[0], setUserId = _a[1];
     var _b = react_cookie_1.useCookies(["token"]), cookies = _b[0], setCookie = _b[1];
     var router = router_1.useRouter();
-    var _c = react_1.useState([]), sampleProjectDataFull = _c[0], setSampleProjectDataFull = _c[1];
+    var _c = react_1.useState(1), currentProject = _c[0], setCurrentProject = _c[1];
+    var _d = react_1.useState("All"), currentEmployee = _d[0], setCurrentEmployee = _d[1];
     react_1.useEffect(function () {
-        var fetchData = function () { return __awaiter(_this, void 0, void 0, function () {
-            var data;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, getSampleProjectData()];
-                    case 1:
-                        data = _a.sent();
-                        setSampleProjectDataFull(data);
-                        return [2 /*return*/];
-                }
-            });
-        }); };
-        fetchData();
-    }, []);
-    var _d = react_1.useState(1), currentProject = _d[0], setCurrentProject = _d[1];
-    var _e = react_1.useState("All"), currentEmployee = _e[0], setCurrentEmployee = _e[1];
-    react_1.useEffect(function () {
+        // all the components listen to the state changes that are brought about by the selects changing
         var projectSelect = jquery_1["default"]("#projectSelect");
         projectSelect.on("change", function () {
             // handle project change
@@ -125,14 +109,6 @@ function data() {
                         React.createElement(ProjectStatisticsTile_1.ProjectStatisticsTile, { currentProject: currentProject, currentEmployee: currentEmployee })))))));
 }
 exports["default"] = data;
-//SAMPLE DATA
-//Note: task data must be defined before project data so that task array can be included in project
-// API CALL FUNCTIONS
-//async function getTasksByApi() {
-// return await axios.get(`http://localhost:3000/api/tasks/}`)
-//const res = await axios.get(`/api/tasks/`);
-//return res.data;
-//}
 /*
  NOTE FROM TEGID:
  You guys should probably look into using getServerSideProps() instead of useEffect() to fetch data from the API.
@@ -211,65 +187,124 @@ function getEmployeeTasksByApi(userId) {
     });
 }
 exports.getEmployeeTasksByApi = getEmployeeTasksByApi;
-function getSampleTaskData() {
-    return __awaiter(this, void 0, void 0, function () {
-        var sampleTaskData;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, getTasksByApi()];
-                case 1:
-                    sampleTaskData = _a.sent();
-                    return [2 /*return*/, getTasksByApi()];
-            }
-        });
-    });
-}
-exports.getSampleTaskData = getSampleTaskData;
-function getSampleProjectData() {
-    return __awaiter(this, void 0, void 0, function () {
-        var taskArray;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, getSampleTaskData()];
-                case 1:
-                    taskArray = _a.sent();
-                    return [2 /*return*/, ([
-                            {
-                                id: 1,
-                                name: 'Chat Bot',
-                                description: 'Developing a chatbot for customer support',
-                                deadline: '30/06/2023',
-                                leaderId: 1,
-                                tasks: taskArray
-                            },
-                            {
-                                id: 2,
-                                name: 'Social Media Management',
-                                description: 'Develop Make-It-Alls brand using social media',
-                                deadline: '15/09/2023',
-                                leaderId: 2,
-                                tasks: taskArray
-                            }
-                        ])];
-            }
-        });
-    });
-}
-exports.getSampleProjectData = getSampleProjectData;
-function getSampleEmployeeData() {
-    return ([
-        {
-            id: 1,
-            name: "Isaac"
-        },
-        {
-            id: 2,
-            name: "Wilfred Owen"
-        },
-        {
-            id: 3,
-            name: "Jordan Peele"
-        }
-    ]);
-}
-exports.getSampleEmployeeData = getSampleEmployeeData;
+// export async function getSampleTaskData() {
+//   const sampleTaskData = await getTasksByApi();
+//   return getTasksByApi();
+//   // return (
+//   //   [
+//   //     {
+//   //       id: 1,
+//   //       name: "Design Chat",
+//   //       description: "Appearance of Chat Bot",
+//   //       status: "Completed",
+//   //       projectId: 1,
+//   //       employeeId: 1
+//   //     },
+//   //     {
+//   //       id: 2,
+//   //       name: "Gauge Interest",
+//   //       description: "Will affect how the bot responds",
+//   //       status: "Completed",
+//   //       projectId: 1,
+//   //       employeeId: 3
+//   //     },
+//   //     {
+//   //       id: 3,
+//   //       name: "Write Welcome Messages",
+//   //       description: "Friendly and inviting",
+//   //       status: "Review",
+//   //       projectId: 1,
+//   //       employeeId: 1
+//   //     },
+//   //     {
+//   //       id: 4,
+//   //       name: "Design Conversation Flow",
+//   //       description: "Flow and dialogue for the chatbot",
+//   //       status: "In-Progress",
+//   //       projectId: 1,
+//   //       employeeId: 2
+//   //     },
+//   //     {
+//   //       id: 5,
+//   //       name: "Publish User Guide",
+//   //       description: "Guide to using the chatbot",
+//   //       status: "Backlog",
+//   //       projectId: 1,
+//   //       employeeId: 3
+//   //     },
+//   //     {
+//   //       id: 6,
+//   //       name: "Create Accounts",
+//   //       description: "Social Media Accounts",
+//   //       status: "Completed",
+//   //       projectId: 2,
+//   //       employeeId: 2
+//   //     },
+//   //     {
+//   //       id: 7,
+//   //       name: "Schedule Posts",
+//   //       description: "Release in orderly fashion",
+//   //       status: "In Progress",
+//   //       projectId: 2,
+//   //       employeeId: 1
+//   //     },
+//   //     {
+//   //       id: 8,
+//   //       name: "Don't Get Cancelled",
+//   //       description: "Stay away from Twitter.com",
+//   //       status: "To-Do",
+//   //       projectId: 2,
+//   //       employeeId: 3,
+//   //     },
+//   //     {
+//   //       id: 9,
+//   //       name: "Engage with Followers",
+//   //       description: "If we have any",
+//   //       status: "Backlog",
+//   //       projectId: 2,
+//   //       employeeId: 3
+//   //     }
+//   //   ]
+//   // )
+// }
+// export async function getSampleProjectData() {
+//   const taskArray = await getSampleTaskData()
+//   return (
+//     [
+//       {
+//         id: 1,
+//         name: 'Chat Bot',
+//         description: 'Developing a chatbot for customer support',
+//         deadline: '30/06/2023',
+//         leaderId: 1,
+//         tasks: taskArray
+//       },
+//       {
+//         id: 2,
+//         name: 'Social Media Management',
+//         description: 'Develop Make-It-Alls brand using social media',
+//         deadline: '15/09/2023',
+//         leaderId: 2,
+//         tasks: taskArray
+//       }
+//     ]
+//   )
+// }
+// export function getSampleEmployeeData() {
+//   return (
+//     [
+//       {
+//         id: 1,
+//         name: "Isaac"
+//       },
+//       {
+//         id: 2,
+//         name: "Wilfred Owen"
+//       },
+//       {
+//         id: 3,
+//         name: "Jordan Peele"
+//       }
+//     ]
+//   )
+// }

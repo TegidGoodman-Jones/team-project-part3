@@ -1,4 +1,3 @@
-import { getSampleEmployeeData, getSampleProjectData, getSampleTaskData } from "@/pages/analysis";
 import { useEffect, useState } from "react";
 import { getTasksByApi, getProjectsByApi, getEmployeesByApi } from "@/pages/analysis";
 import { Title } from "@tremor/react";

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { getSampleProjectData, getSampleEmployeeData } from '@/pages/analysis';
 import { getProjectsByApi, getEmployeesByApi } from '@/pages/analysis';
 
 
