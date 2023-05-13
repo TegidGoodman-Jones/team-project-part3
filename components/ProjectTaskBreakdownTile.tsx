@@ -8,9 +8,9 @@ import { Title } from "@tremor/react";
 //Creates and displays the container with a card for each employee
 //takes: array of employee objects, array of task objects
 export function ProjectTaskBreakdownTile(props: any) {
-  if (props.employeeList == null) {
-    return <div>Loading...</div>;
-  }
+  // if (props.employeeList == null) {
+  //   return <div>Loading...</div>;
+  // }
 
   let employeeList = props.employeeList;
   const taskList = props.taskList;
@@ -108,9 +108,9 @@ export function ProjectTaskBreakdown(props: any) {
   const [filteredEmployeeList, setFilteredEmployeeList] = useState<any[]>([]);
   const [filteredTaskList, setFilteredTaskList] = useState<any[]>([]);
 
-  useEffect(() => {
-    fetchData();
-  }, [props.currentEmployee, props.currentProject]);
+  // useEffect(() => {
+  //   fetchData();
+  // }, [props.currentEmployee, props.currentProject]);
 
   async function fetchData() {
     if (props.currentProject === "Placeholder") {

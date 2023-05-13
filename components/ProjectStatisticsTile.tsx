@@ -257,9 +257,9 @@ export function ProjectStatisticsTile(props: any) {
   const [finalProgressBarData, setProgressBarData] = useState<number>();
   const [finalEmployeeNames, setEmployeeNames] = useState<any[]>([]);
 
-  useEffect(() => {
-    fetchData();
-  }, [props.currentEmployee, props.currentProject]);
+  // useEffect(() => {
+  //   fetchData();
+  // }, [props.currentEmployee, props.currentProject]);
 
   async function fetchData() {
     try {

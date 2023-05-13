@@ -5,21 +5,32 @@ import { decode, verify } from "jsonwebtoken";
 const prisma = new PrismaClient();
 
 export default async function handler(
-    req: NextApiRequest,
-    res: NextApiResponse
-  ) {
-    if (req.method != "GET"){ 
-        return res.status(400).json({ success: false, message: "invalid request" });
-    }else{
-      try {
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  if (req.method != "GET") {
+    return res.status(400).json({ success: false, message: "invalid request" });
+  } else {
+    try {
+      const projects = await prisma.project.findMany({
+        include: {
+          tasks: true,
+          users: {
+            select: {
+              user: {
+                select: {
+                  id: true,
+                  username: true,
+                },
+              },
+            },
+          },
+        },
+      });
 
-          const projects = await prisma.project.findMany({
-           
-          });
-
-        res.status(200).json({ success: true, data: projects });
-      } catch (error) {
-        res.status(400).json({ success: false, error: error });
-      }
+      res.status(200).json({ success: true, data: projects });
+    } catch (error) {
+      res.status(400).json({ success: false, error: error });
     }
   }
+}
