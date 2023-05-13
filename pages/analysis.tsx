@@ -1,13 +1,3 @@
-import {
-  Card,
-  Title,
-  DonutChart,
-  Legend,
-  BarChart,
-  Flex,
-  Text,
-  ProgressBar,
-} from "@tremor/react";
 import Sidebar from "@/components/Sidebar";
 import Head from "next/head";
 import jwt from "jsonwebtoken";

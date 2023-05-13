@@ -3,10 +3,10 @@ import { useEffect, useState } from "react";
 import { getTasksByApi, getProjectsByApi, getEmployeesByApi } from "@/pages/analysis";
 import { Title } from "@tremor/react";
 
-//OVERVIEW: Creates scrollable list of employees with each of their designated tasks 
+// OVERVIEW: Creates scrollable list of employees with each of their designated tasks 
 
-//Creates and displays the container with a card for each employee
-//takes: array of employee objects, array of task objects
+// Creates and displays the container with a card for each employee
+// Takes: array of employee objects, array of task objects
 export function ProjectTaskBreakdownTile(props: any) {
   if (props.employeeList == null) {
     return <div>Loading...</div>;
@@ -15,15 +15,11 @@ export function ProjectTaskBreakdownTile(props: any) {
   let employeeList = props.employeeList;
   const taskList = props.taskList;
 
-  for (let i = 0; i <= employeeList.length - 1; i++) {
-    employeeList[i].tasks = [];
-
-    for (let j = 0; j <= taskList.length - 1; j++) {
-      if (employeeList[i].id == taskList[j].employeeId) {
-        employeeList[i].tasks.push(taskList[j]);
-      }
-    }
-  }
+  // Adds a tasks property to each employee object
+  employeeList.forEach((employee : any) => {
+    employee.tasks = taskList.filter((task : any) => employee.id === task.employeeId);
+  });
+  
 
   const getStatusBadgeClass = (status: string) => {
     switch (status) {
@@ -73,35 +69,11 @@ export function ProjectTaskBreakdownTile(props: any) {
 
   return (
     <div className="card flex flex-col shadow-md overflow-auto p-4 mx-4 w-1/2 bg-base-300 text-base-content">
-                 <Title className="mb-2 text-2xl text-base-content">Task details</Title>
-
+      <Title className="mb-2 text-2xl text-base-content">Task details</Title>
       <div className="overflow-auto space-y-5">{allTaskBreakdown}</div>
     </div>
   );
 }
-
-
-
-type taskType = {
-    id: number;
-    name: string;
-    description: string;
-    projectId: number;
-    employeeId: number;
-    status: string;
-  };
-  
-  type projectType = {
-    id: number;
-    name: string;
-    description: string;
-    deadline: string;
-    leader: string;
-    tasks: taskType[];
-  };
-
-  
-//Fetches data and passes into component
 
 // Fetches data and passes into component
 export function ProjectTaskBreakdown(props: any) {
@@ -112,45 +84,38 @@ export function ProjectTaskBreakdown(props: any) {
     fetchData();
   }, [props.currentEmployee, props.currentProject]);
 
+  const currentEmployee = props.currentEmployee;
+  const currentProjectId = props.currentProject;
+
   async function fetchData() {
-    if (props.currentProject === "Placeholder") {
-      setFilteredEmployeeList([]);
-      setFilteredTaskList([]);
-      return;
-    }
 
-    try {
-      const [projectList, employeeList, taskList] = await Promise.all([
-        getProjectsByApi(),
-        getEmployeesByApi(),
-        getTasksByApi(),
-      ]);
+    const [projectList, employeeList, taskList] = await Promise.all([
+      getProjectsByApi(),
+      getEmployeesByApi(),
+      getTasksByApi(),
+    ]);
 
-      const currentEmployee = props.currentEmployee;
-      const currentProjectId = props.currentProject;
+    if (projectList != null && employeeList != null && taskList != null) {
 
+      let filteredEmployeeList = [];
+      let filteredTaskList = [];
 
-      if (projectList != null && employeeList != null && taskList != null) {
+      // filter employee list
+      if (currentEmployee == "all") {
+        filteredEmployeeList = employeeList.data;
+      } else {
+        filteredEmployeeList = employeeList.data.filter((employee: any) => employee.id == currentEmployee);
+      }
+      
+      // filter task list
+      filteredTaskList = taskList.data.filter(
+        (task: any) =>
+          task.projectId == currentProjectId && (task.employeeId == currentEmployee || currentEmployee == "all")
+      );
 
-        let filteredEmployeeList = [];
-        let filteredTaskList = [];
-
-        if ( currentEmployee == "all") {
-            filteredEmployeeList = employeeList.data;
-        } else {     filteredEmployeeList = employeeList.data.filter((employee: any) => employee.id == currentEmployee);
-        }
-
-        filteredTaskList = taskList.data.filter(
-            (task: any) =>
-              task.projectId == currentProjectId && (task.employeeId == currentEmployee || currentEmployee == "all")
-          );
+      // set states for data for component
       setFilteredEmployeeList(filteredEmployeeList);
       setFilteredTaskList(filteredTaskList);
-    } else {
-        console.log("Error: No data");
-    }
-    } catch (error) {
-      console.log(error);
     }
   }
 
