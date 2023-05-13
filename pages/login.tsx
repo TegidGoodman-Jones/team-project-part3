@@ -110,7 +110,7 @@ export default function Login() {
               </button>
             </form>
             <div className="mt-4 mx-auto flex justify-end">
-              Don't have an account?&nbsp;
+              Don&apos;t have an account?&nbsp;
               <Link href={"/signUp"} className="text-accent">
                 Sign-up
               </Link>
