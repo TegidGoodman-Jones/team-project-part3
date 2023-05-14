@@ -37,7 +37,7 @@ export default function Account(props: any) {
     const theme = e.target[2].value;
     const token = String(cookies.token);
     const res = await axios.put(
-      `${process.env.NEXT_PUBLIC_HOST}/api/users/${userId}`,
+      `/api/users/${userId}`,
       { username, theme, token }
     );
     let decoded = JSON.parse(JSON.stringify(jwt.decode(token)));
