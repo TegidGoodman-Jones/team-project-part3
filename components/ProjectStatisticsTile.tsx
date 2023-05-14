@@ -86,7 +86,7 @@ export function ProjectStats(props: any) {
 }
 
 // Gathers and formats data used to display the graphs on the card then creates the component
-export function ProjectStatisticsTile(props: any) {
+export default function ProjectStatisticsTile(props: any) {
   const [finalKanbanPieData, setKanbanPieData] = useState<any[]>([]);
   const [finalTaskBarData, setTaskBarData] = useState<any[]>([]);
   const [finalProgressBarData, setProgressBarData] = useState<number>();

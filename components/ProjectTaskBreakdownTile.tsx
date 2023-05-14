@@ -90,7 +90,7 @@ export function ProjectTaskBreakdownTile(props: any) {
 }
 
 // Fetches data and passes into component
-export function ProjectTaskBreakdown(props: any) {
+export default function ProjectTaskBreakdown(props: any) {
   const [filteredEmployeeList, setFilteredEmployeeList] = useState<any[]>([]);
   const [filteredTaskList, setFilteredTaskList] = useState<any[]>([]);
 

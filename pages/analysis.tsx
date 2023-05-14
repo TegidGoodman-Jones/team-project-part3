@@ -1,16 +1,14 @@
 import Sidebar from "@/components/Sidebar";
 import Head from "next/head";
-import jwt from "jsonwebtoken";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import $ from "jquery";
+import React from "react";
 import SidebarButton from "@/components/SidebarButton";
-import { useCookies } from "react-cookie";
 
 import ProjectDetailsProjectTile from "@/components/ProjectDetailsTile";
 import ProjectSelectBarTile from "@/components/ProjectSelectBar";
-import { ProjectTaskBreakdown } from "@/components/ProjectTaskBreakdownTile";
-import { ProjectStatisticsTile } from "@/components/ProjectStatisticsTile";
+import ProjectStatisticsTile from "@/components/ProjectStatisticsTile";
+import ProjectTaskBreakdown from "@/components/ProjectTaskBreakdownTile";
 import axios from "axios";
 
 interface Project {
@@ -22,11 +20,7 @@ interface Project {
   tasks: any[];
 }
 
-export default function data() {
-  const [userId, setUserId] = useState();
-  const [cookies, setCookie] = useCookies(["token"]);
-  const router = useRouter();
-
+export default function Analysis() {
   const [currentProject, setCurrentProject] = useState(0);
 
   const [currentEmployee, setCurrentEmployee] = useState("All");
@@ -40,9 +34,9 @@ export default function data() {
       // console.log($(this).val());
       const selectedProject = $(this).val();
       if (selectedProject == undefined) {
-        setCurrentProject(selectedProject); //  id for placeholder project
+        setCurrentProject(0); //  id for placeholder project
       } else {
-        setCurrentProject(selectedProject);
+        setCurrentProject(parseInt(selectedProject as string));
       }
     });
 
@@ -55,7 +49,7 @@ export default function data() {
       if (selectedEmployee === undefined) {
         setCurrentEmployee("All");
       } else {
-        setCurrentEmployee(selectedEmployee);
+        setCurrentEmployee(selectedEmployee as string);
       }
     });
 
