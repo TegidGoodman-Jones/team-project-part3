@@ -95,7 +95,7 @@ export async function getServerSideProps(context: any) {
   try {
     // json parse and stringify to please typescript
     jwt.verify(token, "your_jwt_secret");
-    const res = await axios.get(`/api/chats`, {
+    const res = await axios.get(`${process.env.HOST}/api/chats`, {
       params: { token },
     });
     return {
