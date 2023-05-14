@@ -20,7 +20,7 @@ const NewChatButton = (props: any): JSX.Element => {
     if (employeeSearch.length > 1) {
       const res = axios
         .get(
-          `${process.env.NEXT_PUBLIC_HOST}/api/users/search/${employeeSearch}`
+          `/api/users/search/${employeeSearch}`
         )
         .then((res) => {
           let tempSuggestedEmployees = res.data.data;
@@ -53,7 +53,7 @@ const NewChatButton = (props: any): JSX.Element => {
       userId: props.userId,
     };
     const res = await axios.post(
-      `${process.env.NEXT_PUBLIC_HOST}/api/chats`,
+      `/api/chats`,
       payload
     );
     props.setModal(false);

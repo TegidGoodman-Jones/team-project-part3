@@ -19,7 +19,7 @@ const TextInput: FC<TextInputProps> = (props) => {
   const handleSend = async () => {
     if (props.chatId) {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_HOST}/api/message`,
+        `/api/message`,
         {
           userId: props.userId,
           chatId: props.chatId,

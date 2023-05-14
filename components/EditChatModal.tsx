@@ -25,7 +25,7 @@ const EditChatModal = (props: any) => {
       description: chatDescription,
     };
     const res = await axios.put(
-      `${process.env.NEXT_PUBLIC_HOST}/api/chats/${props.chat.chat.id}`,
+      `/api/chats/${props.chat.chat.id}`,
       payload
     );
     props.setModal(false);
@@ -38,7 +38,7 @@ const EditChatModal = (props: any) => {
     };
 
     const res = await axios.delete(
-      `${process.env.NEXT_PUBLIC_HOST}/api/chats/${props.chat.chat.id}`,
+      `/api/chats/${props.chat.chat.id}`,
       {
         data: payload,
       }
