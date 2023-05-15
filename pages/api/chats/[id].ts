@@ -18,10 +18,8 @@ export default async function handler(
     try {
       // Get the list of all existing chats
       const { id } = req.query;
-      const { token } = req.body;
-      const userId: number = JSON.parse(
-        JSON.stringify(decode(token as string))
-      ).userId;
+      const { userId } = req.body;
+      
       const chat = await prisma.user.findUnique({
         where: {
           id: userId,
@@ -67,13 +65,7 @@ export default async function handler(
     }
   }  else if (req.method == "PUT") {
     const { id } = req.query;
-    const { token, name, description } = req.body;
-    try {
-      verify(token, "your_jwt_secret");
-    } catch (error) {
-      res.status(401).json({ success: false, message: "Invalid token" });
-      return;
-    }
+    const { name, description } = req.body;
     try {
       const chat = await prisma.chat.update({
         where: {
@@ -90,13 +82,6 @@ export default async function handler(
     }
   } else if (req.method == "DELETE") {
     const { id } = req.query;
-    const { token } = req.body;
-    try {
-      verify(token, "your_jwt_secret");
-    } catch (error) {
-      res.status(401).json({ success: false, message: "Invalid token" });
-      return;
-    }
     try {
       const chat = await prisma.chat.delete({
         where: {

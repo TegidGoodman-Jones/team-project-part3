@@ -20,29 +20,16 @@ const EditChatModal = (props: any) => {
 
   const saveChat = async () => {
     const payload = {
-      token: cookies.get("token"),
       name: chatName,
       description: chatDescription,
     };
-    const res = await axios.put(
-      `/api/chats/${props.chat.chat.id}`,
-      payload
-    );
+    const res = await axios.put(`/api/chats/${props.chat.chat.id}`, payload);
     props.setModal(false);
     router.push(`/chat/${props.chat.chat.id}`);
   };
 
   const handleDelete = async () => {
-    const payload = {
-      token: cookies.get("token"),
-    };
-
-    const res = await axios.delete(
-      `/api/chats/${props.chat.chat.id}`,
-      {
-        data: payload,
-      }
-    );
+    const res = await axios.delete(`/api/chats/${props.chat.chat.id}`);
     props.setModal(false);
     router.push("/chat");
   };

@@ -125,16 +125,17 @@ export async function getServerSideProps(context: any) {
         },
       };
     }
+    const userId: number = JSON.parse(JSON.stringify(jwt.decode(token))).userId;
     // get chats from database
     let chat = await axios.get(
       `${process.env.HOST}/api/chats/${context.params.id}`,
       {
-        data: { token },
+        data: { userId },
       }
     );
     chat = chat.data.data.chats[0];
     const chats = await axios.get(`${process.env.HOST}/api/chats`, {
-      params: { token },
+      params: { userId },
     });
     // return chats to page
     return {

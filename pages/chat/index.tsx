@@ -75,7 +75,7 @@ const Chat: FC<Chats> = ({ chats }) => {
       <Sidebar>
         <div className="flex h-screen">
           <div className="flex lg:hidden flex-grow-0 h-full p-2">
-            <SidebarButton/>
+            <SidebarButton />
           </div>
           <div className="flex shrink-0 basis-1/2 md:basis-1/3 lg:basis-1/2 xl:basis-1/3 2xl:basis-1/4 h-screen bg-base-100 border-r">
             <ViewChats chats={chats} userId={userId} />
@@ -95,8 +95,10 @@ export async function getServerSideProps(context: any) {
   try {
     // json parse and stringify to please typescript
     jwt.verify(token, "your_jwt_secret");
+    const userId: number = JSON.parse(JSON.stringify(jwt.decode(token))).userId;
+
     const res = await axios.get(`${process.env.HOST}/api/chats`, {
-      params: { token },
+      params: { userId },
     });
     return {
       props: {
@@ -112,7 +114,6 @@ export async function getServerSideProps(context: any) {
         permanent: false,
       },
     };
-    
   }
 }
 

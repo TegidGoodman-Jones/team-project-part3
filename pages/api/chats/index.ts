@@ -17,13 +17,11 @@ export default async function handler(
 ) {
   if (req.method == "GET") {
     // Get the list of all existing chats
-    let { token } = req.query;
-    const userId: number = JSON.parse(
-      JSON.stringify(decode(token as string))
-    ).userId;
+    let { userId } = req.query;
+
     const chats = await prisma.user.findUnique({
       where: {
-        id: userId,
+        id: parseInt(userId as string),
       },
       select: {
         chats: {
@@ -68,14 +66,8 @@ export default async function handler(
 
     res.status(200).json({ success: true, data: chats });
   } else if (req.method == "POST") {
-    const { token, users, userId } = req.body;
     try {
-      verify(token, "your_jwt_secret");
-    } catch (error) {
-      res.status(401).json({ success: false, message: "Invalid token" });
-      return;
-    }
-    try {
+      const { users, userId } = req.body;
       const chat = await prisma.chat.create({
         data: {
           name: "New Chat",

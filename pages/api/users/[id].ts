@@ -11,28 +11,23 @@ export default async function handler(
   if (req.method == "GET") {
     // Get User by ID
     try {
-        const { id } = req.query;
-        const { token } = req.body;
-        try {
-            verify(token, "your_jwt_secret");
-        } catch (error) {
-            res.status(401).json({ success: false, message: "Invalid token" });
-        }
-        const user = await prisma.user.findUnique({
-            where: {
-                id: Number(id),
-            },
-            select: {
-                id: true,
-                username: true,
-                email: true,
-                theme: true,
-            },
-        });
-        res.status(200).json({
-            success: true,
-            data: user,
-        });
+      const { id } = req.query;
+
+      const user = await prisma.user.findUnique({
+        where: {
+          id: Number(id),
+        },
+        select: {
+          id: true,
+          username: true,
+          email: true,
+          theme: true,
+        },
+      });
+      res.status(200).json({
+        success: true,
+        data: user,
+      });
     } catch (error) {
       res.status(400).json({
         success: false,
@@ -49,12 +44,8 @@ export default async function handler(
     // Update a user
     try {
       const { id } = req.query;
-      const { username, theme, token } = req.body;
-      try {
-        verify(token, "your_jwt_secret");
-      } catch (error) {
-        res.status(401).json({ success: false, message: "Invalid token" });
-      }
+      const { username, theme } = req.body;
+
       const user = await prisma.user.update({
         where: {
           id: Number(id),
@@ -76,10 +67,24 @@ export default async function handler(
     }
   } else if (req.method == "DELETE") {
     // Delete a user
-    res.status(400).json({
-      success: false,
-      message: "Invalid request method",
-    });
+    try {
+      const { id } = req.query;
+
+      const user = await prisma.user.delete({
+        where: {
+          id: Number(id),
+        },
+      });
+      res.status(200).json({
+        success: true,
+        data: user,
+      });
+    } catch (error) {
+      res.status(400).json({
+        success: false,
+        message: error,
+      });
+    }
   } else {
     res.status(400).json({
       success: false,
