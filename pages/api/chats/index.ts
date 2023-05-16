@@ -16,43 +16,45 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method == "GET") {
-    // Get the list of all existing chats
-    let { userId } = req.body;
+    try {
+      // Get the list of all existing chats
+      let { userId } = req.body;
 
-    const chats = await prisma.user.findUnique({
-      where: {
-        id: parseInt(userId as string),
-      },
-      select: {
-        chats: {
-          select: {
-            chat: {
-              select: {
-                id: true,
-                name: true,
-                description: true,
-                users: {
-                  select: {
-                    user: {
-                      select: {
-                        username: true,
-                        id: true,
+      const chats = await prisma.user.findUnique({
+        where: {
+          id: parseInt(userId as string),
+        },
+        select: {
+          chats: {
+            select: {
+              chat: {
+                select: {
+                  id: true,
+                  name: true,
+                  description: true,
+                  users: {
+                    select: {
+                      user: {
+                        select: {
+                          username: true,
+                          id: true,
+                        },
                       },
                     },
                   },
-                },
-                messages: {
-                  take: 1,
-                  orderBy: {
-                    timestamp: "desc",
-                  },
-                  select: {
-                    text: true,
-                    timestamp: true,
-                    user: {
-                      select: {
-                        username: true,
-                        id: true,
+                  messages: {
+                    take: 1,
+                    orderBy: {
+                      timestamp: "desc",
+                    },
+                    select: {
+                      text: true,
+                      timestamp: true,
+                      user: {
+                        select: {
+                          username: true,
+                          id: true,
+                        },
                       },
                     },
                   },
@@ -61,10 +63,12 @@ export default async function handler(
             },
           },
         },
-      },
-    });
+      });
 
-    res.status(200).json({ success: true, data: chats });
+      res.status(200).json({ success: true, data: chats });
+    } catch (e) {
+      res.status(400).json({ success: false, message: e });
+    }
   } else if (req.method == "POST") {
     try {
       const { users, userId } = req.body;

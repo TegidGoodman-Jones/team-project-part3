@@ -36,5 +36,7 @@ export default async function handler(
     } catch (error) {
       res.status(400).json({ success: false, message: error });
     }
+  } else {
+    res.status(400).json({ success: false, message: "invalid request" });
   }
 }
