@@ -98,7 +98,7 @@ export async function getServerSideProps(context: any) {
     const userId: number = JSON.parse(JSON.stringify(jwt.decode(token))).userId;
 
     const res = await axios.get(`${process.env.HOST}/api/chats`, {
-      params: { userId },
+      data: { userId },
     });
     return {
       props: {

@@ -135,7 +135,7 @@ export async function getServerSideProps(context: any) {
     );
     chat = chat.data.data.chats[0];
     const chats = await axios.get(`${process.env.HOST}/api/chats`, {
-      params: { userId },
+      data: { userId },
     });
     // return chats to page
     return {

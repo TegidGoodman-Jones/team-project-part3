@@ -17,7 +17,7 @@ export default async function handler(
 ) {
   if (req.method == "GET") {
     // Get the list of all existing chats
-    let { userId } = req.query;
+    let { userId } = req.body;
 
     const chats = await prisma.user.findUnique({
       where: {
